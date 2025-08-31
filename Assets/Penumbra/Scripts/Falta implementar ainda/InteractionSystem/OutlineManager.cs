@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class OutlineManager : MonoBehaviour
-{
+{/*
     public static OutlineManager Instance { get; private set; }
 
     private List<Outline> allOutlines = new List<Outline>();
@@ -107,5 +107,5 @@ public class OutlineManager : MonoBehaviour
             if (outline != null)
                 outline.OutlineWidth = width;
         }
-    }
+    }*/
 }
