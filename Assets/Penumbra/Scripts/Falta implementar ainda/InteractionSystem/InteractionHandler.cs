@@ -27,10 +27,7 @@ public class InteractionHandler : MonoBehaviour
 
     private void Update()
     {
-        if (GameStateManager.Instance.CurrentState == InputState.House)
-            FindByRaycast();
-        else
-            FindNearestByProximity();
+        FindByRaycast();
     }
 
     private void FindByRaycast()
@@ -76,7 +73,7 @@ public class InteractionHandler : MonoBehaviour
         nearestInteractable = newInteractable;
 
         // Atualiza o outline através do OutlineManager
-        OutlineManager.Instance?.Highlight(newInteractable);
+        //OutlineManager.Instance?.Highlight(newInteractable);
 
         lastHighlighted = newInteractable;
     }
@@ -99,11 +96,11 @@ public class InteractionHandler : MonoBehaviour
 
         GameObject go = ((Component)interactable).gameObject;
 
-        OutlineURPEffect outline = go.GetComponent<OutlineURPEffect>();
-        if (outline != null)
-        {
-            outline.DisableOutline();
-        }
+        //OutlineURPEffect outline = go.GetComponent<OutlineURPEffect>();
+        //if (outline != null)
+        //{
+        //    outline.DisableOutline();
+        //}
 
         if (Instance != null)
         {

@@ -46,15 +46,6 @@ public class InputManager : MonoBehaviour
                 HandleMenuInput();
                 break;
 
-            case InputState.Minigame:
-                HandleMinigameInput();
-                break;
-            case InputState.Camera:
-                HandleCameraInput();
-                break;
-            case InputState.House:
-                HandleHouseInput();
-                break;
         }
     }
 
@@ -134,45 +125,6 @@ public class InputManager : MonoBehaviour
         }
 
     }
-    private void HandleMinigameInput()
-    {
 
-        foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
-        {
-            if (Input.GetKeyDown(key) && IsValidKey(key))
-            {
-                MinigameManager.Instance.HandleInput(key);
-            }
-        }
-    }
-    private void HandleCameraInput()
-    {
-
-
-    }
-
-    private void HandleHouseInput()
-    {
-
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-
-        if (PlayerController.Instance != null)
-        {
-            PlayerController.Instance.Move(h, v);
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            MenuManager.Instance?.ToggleMainMenu();
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            PlayerController.Instance.Interagir();
-        }
-    }
-    private bool IsValidKey(KeyCode key)
-    {
-        return key >= KeyCode.A && key <= KeyCode.Z || key >= KeyCode.Alpha0 && key <= KeyCode.Alpha9;
-    }
 
 }
