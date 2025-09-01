@@ -107,3 +107,4 @@ public class MenuManager : MonoBehaviour
         Debug.Log("Estado do InputManager agora é: " + GameStateManager.Instance.CurrentState);
     }
 }
+                               

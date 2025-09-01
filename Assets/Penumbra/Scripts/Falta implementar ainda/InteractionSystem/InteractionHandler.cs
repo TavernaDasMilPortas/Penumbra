@@ -7,7 +7,6 @@ public class InteractionHandler : MonoBehaviour
     [Header("Configurações")]
     public float interactionDistance = 2f;
     public float sphereRadius = 0.5f;
-    public KeyCode interactionKey = KeyCode.E;
     public LayerMask interactionLayer;
 
     [Header("Status Atual")]

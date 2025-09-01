@@ -4,7 +4,6 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
 
-
     private void Awake()
     {
         // Singleton
@@ -51,19 +50,13 @@ public class InputManager : MonoBehaviour
 
     private void HandleGameplayInput()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
 
-        if (PlayerController.Instance != null)
-        {
-            PlayerController.Instance.Move(h, v);
-
-        }
-
+       PlayerController.Instance.HandleMovement();
+       PlayerController.Instance.HandleMouseLook();
         // Abre o menu principal (com abas como inventário, mapa etc)
         if (Input.GetKeyDown(KeyCode.I))
         {
-            MenuManager.Instance?.ToggleMainMenu();
+           //MenuManager.Instance?.ToggleMainMenu();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
