@@ -10,12 +10,17 @@ public class PlayerController : MonoBehaviour
 
     [Header("Configuração Movimento")]
     public float moveSpeed = 5f;
+    public float rotationSpeed = 120f; // velocidade de rotação com A/D
     public float gravity = -9.81f;
     public float jumpHeight = 2f;
 
-    [Header("Configuração Mouse")]
+    [Header("Configuração Mouse (cabeça)")]
     public float mouseSensitivity = 200f;
-    private float xRotation = 0f;
+    public float headYawLimit = 30f;   // limite esquerda/direita (como virar a cabeça)
+    public float headPitchLimit = 60f; // limite cima/baixo
+
+    private float headYaw = 0f;   // rotação lateral da cabeça
+    private float headPitch = 0f; // rotação vertical da cabeça
 
     private Vector3 velocity;
 
@@ -23,52 +28,62 @@ public class PlayerController : MonoBehaviour
     {
         Instance = this;
 
-        // trava e esconde o cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
+    private void Update()
+    {
 
+    }
 
-    // === Movimento com WASD ===
+    // === Movimento com W/S (frente e trás) ===
     public void HandleMovement()
     {
-        float h = Input.GetAxis("Horizontal"); // A/D ou setas
-        float v = Input.GetAxis("Vertical");   // W/S ou setas
-
-        Vector3 move = transform.right * h + transform.forward * v;
+        float v = Input.GetAxis("Vertical"); // W/S
+        Vector3 move = transform.forward * v;
         controller.Move(move * moveSpeed * Time.deltaTime);
 
         // gravidade
         if (controller.isGrounded && velocity.y < 0)
-        {
-            velocity.y = -2f; // mantém "grudado" no chão
-        }
+            velocity.y = -2f;
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
 
-    // === Rotação com o mouse ===
-    public void HandleMouseLook()
+    // === Rotação com A/D ===
+    public void HandleRotationKeys()
+    {
+        float h = Input.GetAxis("Horizontal"); // A/D
+        transform.Rotate(Vector3.up * h * rotationSpeed * Time.deltaTime);
+    }
+
+    // === Movimento de cabeça com mouse ===
+    public void HandleHeadLook()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        // rotaciona o corpo no eixo Y
-        transform.Rotate(Vector3.up * mouseX);
+        // virar a cabeça para os lados (yaw relativo ao corpo)
+        headYaw += mouseX;
+        headYaw = Mathf.Clamp(headYaw, -headYawLimit, headYawLimit);
 
-        // rotaciona a câmera no eixo X (para cima/baixo)
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // evita girar 360°
+        // olhar para cima/baixo (pitch)
+        headPitch -= mouseY;
+        headPitch = Mathf.Clamp(headPitch, -headPitchLimit, headPitchLimit);
 
-        playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        // aplica rotação relativa à cabeça (localRotation)
+        playerCamera.transform.localRotation = Quaternion.Euler(headPitch, headYaw, 0f);
+
+        // garante que a câmera fique na posição da "cabeça"
+        playerCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
     }
 
-    // Funções de interface que você já tinha
+    // === Funções de interface ===
     public void Move(float h, float v)
     {
-        Vector3 move = transform.right * h + transform.forward * v;
+        Vector3 move = transform.forward * v;
         controller.Move(move * moveSpeed * Time.deltaTime);
     }
 
