@@ -27,9 +27,10 @@ public class InteractionHandler : MonoBehaviour
     private void Update()
     {
         FindByRaycast();
+        FindNearestByProximity();
     }
 
-    private void FindByRaycast()
+    public void FindByRaycast()
     {
         if (mainCamera == null) return;
 
@@ -45,7 +46,7 @@ public class InteractionHandler : MonoBehaviour
         }
     }
 
-    private void FindNearestByProximity()
+    public void FindNearestByProximity()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, interactionDistance, interactionLayer);
         IInteractable closest = null;

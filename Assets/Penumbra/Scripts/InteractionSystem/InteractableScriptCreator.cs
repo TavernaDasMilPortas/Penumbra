@@ -2,9 +2,9 @@
 using UnityEngine;
 using System.IO;
 
-public class InteractableScriptCreator : MonoBehaviour
+public class InteractableScriptCreator : EditorWindow
 {
-   /* private string scriptName = "Interactable";
+    private string scriptName = "Interactable";
 
     private static InteractableScriptCreator windowInstance;
 
@@ -34,7 +34,7 @@ public class InteractableScriptCreator : MonoBehaviour
             return;
         }
 
-        string folderPath = "Assets/EverGreen/Systems/InteractionSystem/InteractableItens";
+        string folderPath = "Assets/Penumbra/Scripts/InteractionSystem/Interactables";
         string filePath = Path.Combine(folderPath, scriptName + ".cs");
 
         if (!Directory.Exists(folderPath))
@@ -59,14 +59,13 @@ public class {scriptName} : MonoBehaviour, IInteractable
     [TextArea]
     public string interactionMessage = ""Interagiu com Interactable"";
 
-    // Implementação das propriedades da interface (nomes exatos conforme a interface)
     public Item RequiredItem => requiredItem;
     public int RequiredItemQuantity => requiredItemQuantity;
     public string InteractionMessage => interactionMessage;
 
     public void Interact()
     {{
-        if (RequiredItem == null || InventoryManager.Instance.HasItem(RequiredItem, RequiredItemQuantity))
+        if (RequiredItem == null)
         {{
             PerformInteraction();
         }}
@@ -83,7 +82,6 @@ public class {scriptName} : MonoBehaviour, IInteractable
     }}
 }}";
 
-
         File.WriteAllText(filePath, scriptTemplate);
         AssetDatabase.Refresh();
         Debug.Log($"Script '{scriptName}.cs' criado em {folderPath}");
@@ -97,5 +95,5 @@ public class {scriptName} : MonoBehaviour, IInteractable
         {
             Close();
         }
-    }*/
+    }
 }

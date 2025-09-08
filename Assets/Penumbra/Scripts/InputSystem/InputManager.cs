@@ -52,8 +52,7 @@ public class InputManager : MonoBehaviour
     {
 
        PlayerController.Instance.HandleMovement();
-       PlayerController.Instance.HandleRotationKeys();
-        PlayerController.Instance.HandleHeadLook();
+       PlayerController.Instance.HandleMouseLook();
 
         // Abre o menu principal (com abas como inventário, mapa etc)
         if (Input.GetKeyDown(KeyCode.I))
