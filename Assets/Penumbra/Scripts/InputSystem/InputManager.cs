@@ -53,6 +53,7 @@ public class InputManager : MonoBehaviour
 
        PlayerController.Instance.HandleMovement();
        PlayerController.Instance.HandleMouseLook();
+       InteractionHandler.Instance.FindInteractable();
 
         // Abre o menu principal (com abas como inventário, mapa etc)
         if (Input.GetKeyDown(KeyCode.I))

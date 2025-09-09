@@ -292,27 +292,26 @@ namespace cakeslice
 			outlineCamera.Render();
 		}
 
-        private void OnEnable()
-        {
-			// Substitui o uso obsoleto de FindObjectsOfType<Outline>() por FindObjectsByType<Outline>(FindObjectsSortMode.None)
-            Outline[] o = Object.FindObjectsByType<Outline>(FindObjectsSortMode.None);
-            if (autoEnableOutlines)
-            {
-                foreach (Outline oL in o)
-                {
-                    oL.enabled = false;
-                    oL.enabled = true;
-                }
-            }
-            else
-            {
-                foreach (Outline oL in o)
-                {
-                    if (!outlines.Contains(oL))
-                        outlines.Add(oL);
-                }
-            }
-        }
+		private void OnEnable()
+		{
+			Outline[] o = FindObjectsOfType<Outline>();
+			if (autoEnableOutlines)
+			{
+				foreach (Outline oL in o)
+				{
+					oL.enabled = false;
+					oL.enabled = true;
+				}
+			}
+			else
+			{
+				foreach (Outline oL in o)
+				{
+					if (!outlines.Contains(oL))
+						outlines.Add(oL);
+				}
+			}
+		}
 
 		void OnDestroy()
 		{

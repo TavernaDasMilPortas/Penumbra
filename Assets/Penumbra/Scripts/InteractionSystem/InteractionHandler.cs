@@ -4,51 +4,58 @@ public class InteractionHandler : MonoBehaviour
 {
     public static InteractionHandler Instance { get; private set; }
 
-    [Header("Configurações")]
-    public float interactionDistance = 2f;
-    public float sphereRadius = 0.5f;
+    [Header("Configurações Raycast")]
+    public float interactionDistance = 5f; // raio do raycast
     public LayerMask interactionLayer;
+
+    [Header("Configurações Overlap")]
+    public float overlapRadius = 2f; // raio do OverlapSphere
+    public LayerMask overlapLayer;
 
     [Header("Status Atual")]
     public IInteractable nearestInteractable;
-    [HideInInspector]
-    public IInteractable lastHighlighted;
+    [HideInInspector] public IInteractable lastHighlighted;
 
-    private Camera mainCamera;
+    public Camera mainCamera;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-
-        mainCamera = Camera.main;
     }
 
-    private void Update()
+    /// <summary>
+    /// Raycast central da câmera para interação
+    /// </summary>
+    public void FindInteractable()
     {
-        FindByRaycast();
-        FindNearestByProximity();
+        IInteractable raycastTarget = GetInteractableByRaycast();
+        UpdateHighlight(raycastTarget);
     }
 
-    public void FindByRaycast()
+    /// <summary>
+    /// Retorna o IInteractable detectado pelo raycast ou null
+    /// </summary>
+    public IInteractable GetInteractableByRaycast()
     {
-        if (mainCamera == null) return;
+        if (mainCamera == null) return null;
 
         Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayer))
         {
-            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-            UpdateHighlight(interactable);
+            return hit.collider.GetComponent<IInteractable>();
         }
-        else
-        {
-            UpdateHighlight(null);
-        }
+
+        return null;
     }
 
-    public void FindNearestByProximity()
+    /// <summary>
+    /// Função separada para detectar o mais próximo usando OverlapSphere
+    /// </summary>
+    public IInteractable GetNearestByOverlap()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, interactionDistance, interactionLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, overlapRadius, overlapLayer);
+
         IInteractable closest = null;
         float shortestDistance = float.MaxValue;
 
@@ -65,14 +72,13 @@ public class InteractionHandler : MonoBehaviour
             }
         }
 
-        UpdateHighlight(closest);
+        return closest;
     }
 
     private void UpdateHighlight(IInteractable newInteractable)
     {
         nearestInteractable = newInteractable;
 
-        // Atualiza o outline através do OutlineManager
         //OutlineManager.Instance?.Highlight(newInteractable);
 
         lastHighlighted = newInteractable;
@@ -80,36 +86,24 @@ public class InteractionHandler : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, interactionDistance);
-
-        if (nearestInteractable != null)
+        if (mainCamera != null)
         {
-            Gizmos.color = Color.green;
-            Gizmos.DrawLine(transform.position, ((Component)nearestInteractable).transform.position);
-        }
-    }
+            Gizmos.color = Color.red;
 
-    public static void SafeDestroy(IInteractable interactable)
-    {
-        if (interactable == null) return;
+            // origem e direção do Raycast
+            Vector3 start = mainCamera.transform.position;
+            Vector3 end = start + mainCamera.transform.forward * interactionDistance;
 
-        GameObject go = ((Component)interactable).gameObject;
-
-        //OutlineURPEffect outline = go.GetComponent<OutlineURPEffect>();
-        //if (outline != null)
-        //{
-        //    outline.DisableOutline();
-        //}
-
-        if (Instance != null)
-        {
-            if (Instance.nearestInteractable == interactable)
-                Instance.nearestInteractable = null;
-            if (Instance.lastHighlighted == interactable)
-                Instance.lastHighlighted = null;
+            // desenha apenas a linha do Raycast
+            Gizmos.DrawLine(start, end);
         }
 
-        Object.Destroy(go);
+        // opcional: visualize o OverlapSphere
+        //Gizmos.color = Color.yellow;
+        //Gizmos.DrawWireSphere(transform.position, overlapRadius);
     }
+
+
+    // Função para desenhar “cilindro” como gizmo (linha grossa)
+
 }
