@@ -5,6 +5,9 @@ public class RoomTracker : MonoBehaviour
     private Session currentSession;
     private Room currentRoom;
 
+    public Room CurrentRoom => currentRoom;
+    public Session CurrentSession => currentSession;
+
     void Update()
     {
         (Session session, Room room) = SessionManager.Instance.GetLocation(transform.position);

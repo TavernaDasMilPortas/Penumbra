@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class VisibilityCulling : MonoBehaviour
 {
+    public static VisibilityCulling Instance { get; private set; }
+
     [Header("Referências")]
     public FacingSystem facingSystem;
     public Transform player;
@@ -21,6 +23,9 @@ public class VisibilityCulling : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+
         if (player == null && Camera.main != null)
             player = Camera.main.transform;
 
@@ -50,6 +55,26 @@ public class VisibilityCulling : MonoBehaviour
             {
                 allCulledObjects.Add(col);
             }
+        }
+    }
+
+    /// <summary>
+    /// Registra dinamicamente um novo objeto no sistema de culling.
+    /// </summary>
+    public void Register(Collider col)
+    {
+        if (col == null) return;
+
+        // Se já estiver registrado, ignora
+        if (allCulledObjects.Contains(col)) return;
+
+        // Só adiciona se estiver na layer de interesse
+        if (((1 << col.gameObject.layer) & facingSystem.targetMask) != 0)
+        {
+            allCulledObjects.Add(col);
+
+            // Garante que comece invisível
+            SetObjectActive(col, false);
         }
     }
 
@@ -109,3 +134,4 @@ public class VisibilityCulling : MonoBehaviour
         return ((1 << col.gameObject.layer) & essentialLayers) != 0;
     }
 }
+
