@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1067881110918968380}
   - component: {fileID: 9003581577171456945}
   - component: {fileID: 5539368607463611029}
+  - component: {fileID: 9173024068312355590}
+  - component: {fileID: 3598418864652984986}
   m_Layer: 0
   m_Name: teste
   m_TagString: Untagged
@@ -121,3 +123,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a57b4a96bd381340959e61ed7020c19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!195 &9173024068312355590
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2787303738700761410}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.99999994
+  m_BaseOffset: 0.49999997
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &3598418864652984986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2787303738700761410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7983815e166eae245a90803f4a3d955d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolGroup: {fileID: 0}
+  patrolMode: 0
+  arrivalThreshold: 1
+  startFromClosest: 1
+  waitTimeAtPoint: 0.3

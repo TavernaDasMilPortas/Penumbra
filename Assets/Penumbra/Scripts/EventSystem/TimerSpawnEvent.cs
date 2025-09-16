@@ -1,14 +1,15 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using System.Collections.Generic;
 
 public class TimerSpawnEvent : MonoBehaviour
 {
-    [Header("ConfiguraÁ„o de Spawn")]
+    [Header("Configura√ß√£o de Spawn")]
     public GameObject prefabToSpawn;
     public Transform[] spawnPoints;
+    public PatrolPointGroup patrolGroup; // üîπ Grupo definido no Inspector
 
     [Header("Timer")]
-    public TimerEventReference eventReference; // Agora usamos o TimerEventReference
+    public TimerEventReference eventReference;
 
     private Transform player;
 
@@ -18,7 +19,7 @@ public class TimerSpawnEvent : MonoBehaviour
 
         if (eventReference == null)
         {
-            Debug.LogError($"[TimerSpawnEvent] {name} n„o possui TimerEventReference configurado!");
+            Debug.LogError($"[TimerSpawnEvent] {name} n√£o possui TimerEventReference configurado!");
             return;
         }
 
@@ -29,7 +30,7 @@ public class TimerSpawnEvent : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[TimerSpawnEvent] TimerEventScheduler n„o encontrado na cena!");
+            Debug.LogError("[TimerSpawnEvent] TimerEventScheduler n√£o encontrado na cena!");
         }
     }
 
@@ -51,11 +52,11 @@ public class TimerSpawnEvent : MonoBehaviour
 
         if (player == null)
         {
-            Debug.LogWarning("[TimerSpawnEvent] Player n„o encontrado!");
+            Debug.LogWarning("[TimerSpawnEvent] Player n√£o encontrado!");
             return;
         }
 
-        // Filtra apenas spawns em salas onde o jogador N√O est·
+        // Filtra apenas spawns em salas onde o jogador N√ÉO est√°
         List<Transform> validSpawns = new List<Transform>();
 
         foreach (var spawn in spawnPoints)
@@ -71,12 +72,11 @@ public class TimerSpawnEvent : MonoBehaviour
             {
                 Room room = tracker.CurrentRoom;
 
-                Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} est· na sala {room.roomName}");
+                Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} est√° na sala {room.roomName}");
 
-                // Se o jogador n„o est· dentro dessa sala, È um spawn v·lido
                 if (!room.Contains(player.position))
                 {
-                    Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} È v·lido (player fora da sala).");
+                    Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} √© v√°lido (player fora da sala).");
                     validSpawns.Add(spawn);
                 }
                 else
@@ -86,24 +86,43 @@ public class TimerSpawnEvent : MonoBehaviour
             }
             else
             {
-                Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} n„o possui RoomTracker ou est· sem sala associada.");
+                Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} n√£o possui RoomTracker ou est√° sem sala associada.");
             }
         }
 
         if (validSpawns.Count == 0)
         {
-            Debug.LogWarning("[TimerSpawnEvent] Nenhum spawn v·lido encontrado!");
+            Debug.LogWarning("[TimerSpawnEvent] Nenhum spawn v√°lido encontrado!");
             return;
         }
 
-        // Escolhe um spawn aleatÛrio v·lido
+        // Escolhe um spawn aleat√≥rio v√°lido
         Transform chosen = validSpawns[Random.Range(0, validSpawns.Count)];
         Debug.Log($"[TimerSpawnEvent] SpawnPoint escolhido: {chosen.name}");
 
         GameObject spawned = Instantiate(prefabToSpawn, chosen.position, chosen.rotation);
         Debug.Log($"[TimerSpawnEvent] Objeto {spawned.name} instanciado em {chosen.position}");
 
-        // Se o prefab possuir SpawnableObject, registra no sistema de culling
+        // üîπ Inicializa o PatrolGroup configurado no Inspector
+        if (patrolGroup != null)
+        {
+            Patrol controller = spawned.GetComponent<Patrol>();
+            if (controller != null)
+            {
+                controller.SetPatrolGroup(patrolGroup);
+                Debug.Log($"[TimerSpawnEvent] {spawned.name} vinculado ao PatrolGroup {patrolGroup.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"[TimerSpawnEvent] {spawned.name} n√£o possui componente Patrol.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[TimerSpawnEvent] Nenhum PatrolGroup configurado no Inspector!");
+        }
+
+        // üîπ Registra no sistema de culling se aplic√°vel
         SpawnableObject spawnable = spawned.GetComponent<SpawnableObject>();
         if (spawnable != null)
         {
@@ -112,7 +131,7 @@ public class TimerSpawnEvent : MonoBehaviour
         }
         else
         {
-            Debug.Log($"[TimerSpawnEvent] {spawned.name} n„o possui SpawnableObject, nada a registrar.");
+            Debug.Log($"[TimerSpawnEvent] {spawned.name} n√£o possui SpawnableObject, nada a registrar.");
         }
     }
 }
