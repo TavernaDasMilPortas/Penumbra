@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5539368607463611029}
   - component: {fileID: 9173024068312355590}
   - component: {fileID: 3598418864652984986}
+  - component: {fileID: 3865168875228790934}
   m_Layer: 0
   m_Name: teste
   m_TagString: Untagged
@@ -133,7 +134,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 50
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -162,3 +163,23 @@ MonoBehaviour:
   arrivalThreshold: 1
   startFromClosest: 1
   waitTimeAtPoint: 0.3
+--- !u!114 &3865168875228790934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2787303738700761410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c1039929f211d241be3a12d6afc916a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewRadius: 20
+  viewAngle: 252
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 1
