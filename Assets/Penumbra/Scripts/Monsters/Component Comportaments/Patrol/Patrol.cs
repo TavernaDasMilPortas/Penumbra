@@ -9,12 +9,12 @@ public enum PatrolMode { Random, Sequential, PingPong }
 public class Patrol : MonoBehaviour
 {
     [Header("Configuração de Patrulha")]
-    public PatrolPointGroup patrolGroup; // pode ser setado no inspector ou em runtime
+    public PatrolPointGroup patrolGroup;
     public PatrolMode patrolMode = PatrolMode.Random;
     public float arrivalThreshold = 1.0f;
     public bool startFromClosest = true;
-    public float waitTimeAtPoint = 0f; // tempo parado em cada ponto
-    public float rotationSpeed = 5f;   // velocidade da rotação suave
+    public float waitTimeAtPoint = 0f;
+    public float rotationSpeed = 5f;
 
     private NavMeshAgent agent;
     private Transform currentTarget;
@@ -31,7 +31,9 @@ public class Patrol : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false; // desligamos a rotação automática do NavMeshAgent
+        agent.updateRotation = false; // nós controlamos a rotação
+        agent.stoppingDistance = arrivalThreshold; // 🔹 garante que ele para antes
+        agent.autoBraking = true;                  // 🔹 desacelera ao chegar
     }
 
     private void Start()
@@ -42,9 +44,6 @@ public class Patrol : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Configura o grupo de patrulha em runtime (pode ser chamado no spawn).
-    /// </summary>
     public void InitializePatrol(PatrolPointGroup group)
     {
         if (group == null || group.patrolPoints == null || group.patrolPoints.Length == 0)
@@ -57,7 +56,6 @@ public class Patrol : MonoBehaviour
         patrolGroup = group;
         patrolPoints = patrolGroup.patrolPoints;
 
-        // Define o primeiro ponto
         if (startFromClosest)
         {
             currentTarget = GetClosestPoint(transform.position, patrolPoints.ToList());
@@ -70,9 +68,6 @@ public class Patrol : MonoBehaviour
         MoveTo(currentTarget);
     }
 
-    /// <summary>
-    /// Troca o grupo de patrulha em runtime.
-    /// </summary>
     public void SetPatrolGroup(PatrolPointGroup group)
     {
         InitializePatrol(group);
@@ -82,7 +77,6 @@ public class Patrol : MonoBehaviour
     {
         if (currentTarget == null || patrolPoints == null || patrolPoints.Length == 0) return;
 
-        // 🔹 Se não está esperando, patrulha normalmente
         if (isWaiting)
         {
             waitTimer -= Time.deltaTime;
@@ -94,21 +88,26 @@ public class Patrol : MonoBehaviour
             return;
         }
 
-        if (!agent.pathPending && agent.remainingDistance <= arrivalThreshold)
+        // 🔹 Checa se chegou no destino de forma mais "firme"
+        if (!agent.pathPending && HasReachedTarget())
         {
             if (waitTimeAtPoint > 0f)
             {
                 isWaiting = true;
                 waitTimer = waitTimeAtPoint;
-                agent.ResetPath(); // para não tentar andar no "nada"
+                agent.isStopped = true;   // 🔹 força parada
+                agent.velocity = Vector3.zero;
             }
             else
             {
                 ChooseNextPoint();
             }
         }
+        else
+        {
+            agent.isStopped = false;
+        }
 
-        // 🔹 Sempre gira em direção ao destino (horizontalmente)
         RotateTowardsTarget();
     }
 
@@ -161,6 +160,7 @@ public class Patrol : MonoBehaviour
     {
         if (agent.isActiveAndEnabled && target != null)
         {
+            agent.isStopped = false;
             agent.SetDestination(target.position);
         }
     }
@@ -169,9 +169,8 @@ public class Patrol : MonoBehaviour
     {
         if (agent.velocity.sqrMagnitude > 0.01f && currentTarget != null)
         {
-            // Direção no plano XZ
             Vector3 direction = (agent.steeringTarget - transform.position).normalized;
-            direction.y = 0; // só gira no eixo Y
+            direction.y = 0;
 
             if (direction.sqrMagnitude > 0.001f)
             {
@@ -179,6 +178,12 @@ public class Patrol : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             }
         }
+    }
+
+    private bool HasReachedTarget()
+    {
+        return agent.remainingDistance <= agent.stoppingDistance &&
+               (!agent.hasPath || agent.velocity.sqrMagnitude < 0.05f);
     }
 
     private Transform GetClosestPoint(Vector3 position, List<Transform> points)
@@ -204,4 +209,3 @@ public class Patrol : MonoBehaviour
         return closest[Random.Range(0, closest.Count)];
     }
 }
-
