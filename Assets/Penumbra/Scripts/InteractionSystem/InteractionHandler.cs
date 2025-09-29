@@ -88,7 +88,7 @@ public class InteractionHandler : MonoBehaviour
     {
         if (mainCamera != null)
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = Color.gray;
 
             // origem e direção do Raycast
             Vector3 start = mainCamera.transform.position;

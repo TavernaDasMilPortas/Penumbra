@@ -1,21 +1,23 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using UnityEngine.AI;
 
 public class Vision : MonoBehaviour
 {
-    [Header("ConfiguraÁ„o de Vis„o")]
+    [Header("Configura√ß√£o de Vis√£o")]
     public float viewRadius = 10f;
     [Range(0, 360)]
     public float viewAngle = 90f;
 
-    [Tooltip("Camadas que podem bloquear a vis„o (ex: paredes)")]
+    [Tooltip("Camadas que podem bloquear a vis√£o (ex: paredes)")]
     public LayerMask obstacleMask;
 
-    [Tooltip("Camada que o player pertence")]
+    [Tooltip("Camada que o player pertence")]   
     public LayerMask targetMask;
 
-    private Transform target;
+    public Transform target;
     private NavMeshAgent agent;
+
+    private bool lastSeePlayer = false; // controle para evitar spam de logs
 
     private void Start()
     {
@@ -25,28 +27,47 @@ public class Vision : MonoBehaviour
         if (player != null)
         {
             target = player.transform;
+            Debug.Log($"{name}: Player encontrado ‚Üí {player.name}");
+        }
+        else
+        {
+            Debug.LogWarning($"{name}: Nenhum objeto com tag 'Player' encontrado!");
         }
     }
 
     public bool CanSeePlayer()
     {
-        if (target == null) return false;
+        if (target == null)
+        {
+            Debug.LogWarning($"{name}: Target est√° null, n√£o pode ver o player.");
+            return false;
+        }
 
         Vector3 dirToTarget = (target.position - transform.position).normalized;
         float distToTarget = Vector3.Distance(transform.position, target.position);
 
         if (distToTarget <= viewRadius)
         {
-            // Frente real do inimigo (se parado usa transform.forward)
             Vector3 viewDir = GetViewDirection();
 
             if (Vector3.Angle(viewDir, dirToTarget) < viewAngle / 2f)
             {
                 if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, obstacleMask))
                 {
+                    if (!lastSeePlayer)
+                    {
+                        Debug.Log($"{name}: Player avistado em dist√¢ncia {distToTarget:F2}");
+                        lastSeePlayer = true;
+                    }
                     return true;
                 }
             }
+        }
+
+        if (lastSeePlayer)
+        {
+            Debug.Log($"{name}: Perdeu o player de vista.");
+            lastSeePlayer = false;
         }
 
         return false;
@@ -56,11 +77,11 @@ public class Vision : MonoBehaviour
     {
         if (agent != null && agent.velocity.sqrMagnitude > 0.01f)
         {
-            return agent.velocity.normalized; // frente = direÁ„o que est· andando
+            return agent.velocity.normalized;
         }
         else
         {
-            return transform.forward; // frente padr„o
+            return transform.forward;
         }
     }
 

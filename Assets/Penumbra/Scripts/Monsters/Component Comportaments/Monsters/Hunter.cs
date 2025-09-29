@@ -1,82 +1,90 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-[RequireComponent(typeof(Chaser))]
-[RequireComponent(typeof(Vision))]
+/// <summary>
+/// Controla o comportamento de patrulha e perseguição de um inimigo.
+/// </summary>
 [RequireComponent(typeof(Patrol))]
+[RequireComponent(typeof(Chaser))]
 public class Hunter : MonoBehaviour
 {
-    private enum State { Patrolling, Chasing }
-    private State currentState = State.Patrolling;
+    [Header("Configuração do Hunter")]
+    public float chaseLostTime = 3f; // tempo que ele continua perseguindo depois de perder a visão
+    public float chaseStopDistance = 1.2f; // distância para considerar que chegou no player
 
-    private Vision vision;
-    private Chaser chaser;
     private Patrol patrol;
+    public Vision vision;
+    private Chaser chaser;
 
-    [Header("Configurações de Hunter")]
-    public float lostPlayerCooldown = 3f; // tempo que ele continua procurando após perder visão
+    public Transform player;
     private float lostTimer = 0f;
-
-    private Transform player;
+    private bool isChasing = false;
 
     private void Awake()
     {
-        vision = GetComponent<Vision>();
-        chaser = GetComponent<Chaser>();
         patrol = GetComponent<Patrol>();
-    }
-
-    private void Start()
-    {
-        GameObject p = GameObject.FindGameObjectWithTag("Player");
-        if (p != null)
-            player = p.transform;
+        chaser = GetComponent<Chaser>();
     }
 
     private void Update()
     {
-        switch (currentState)
-        {
-            case State.Patrolling:
-                PatrolBehaviour();
-                break;
+        player = vision != null ? GetTargetFromVision() : null;
 
-            case State.Chasing:
-                ChaseBehaviour();
-                break;
+        if (vision != null && vision.CanSeePlayer())
+        {
+            Debug.Log($"{name}: Player avistado, começando perseguição!");
+            StartChasing();
+            lostTimer = chaseLostTime;
+        }
+        else if (isChasing)
+        {
+            lostTimer -= Time.deltaTime;
+            Debug.Log($"{name}: Não vejo o player, timer = {lostTimer:F2}");
+
+            if (lostTimer <= 0f)
+            {
+                Debug.Log($"{name}: Perdeu o player definitivamente, voltando a patrulhar.");
+                StopChasing();
+            }
+        }
+
+        if (isChasing && player != null)
+        {
+            chaser.ChaseTarget(player);
+            Debug.Log($"{name}: Perseguindo player, distância = {Vector3.Distance(transform.position, player.position):F2}");
+
+            if (chaser.HasReachedTarget(chaseStopDistance))
+            {
+                Debug.Log($"{name}: Alcancei o player, parando para atacar!");
+                chaser.StopChasing();
+                // lógica de ataque pode ir aqui
+            }
         }
     }
 
-    private void PatrolBehaviour()
+    private Transform GetTargetFromVision()
     {
-        patrol.enabled = true;
+        return vision.target;
+    }
 
-        if (vision.CanSeePlayer())
+    private void StartChasing()
+    {
+        if (!isChasing)
         {
-            currentState = State.Chasing;
+            Debug.Log($"{name}: Iniciando perseguição!");
+            isChasing = true;
             patrol.enabled = false;
         }
     }
 
-    private void ChaseBehaviour()
+    private void StopChasing()
     {
-        if (player == null) return;
-
-        chaser.ChaseTarget(player);
-
-        if (vision.CanSeePlayer())
+        if (isChasing)
         {
-            lostTimer = 0f; // reset porque ainda vê
-        }
-        else
-        {
-            lostTimer += Time.deltaTime;
-            if (lostTimer >= lostPlayerCooldown)
-            {
-                // perdeu o player, volta para patrulha
-                currentState = State.Patrolling;
-                chaser.StopChasing();
-                patrol.enabled = true;
-            }
+            Debug.Log($"{name}: Parando perseguição, retomando patrulha.");
+            isChasing = false;
+            chaser.StopChasing();
+            patrol.enabled = true;
         }
     }
 }
