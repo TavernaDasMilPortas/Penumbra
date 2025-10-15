@@ -34,10 +34,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 231.19806, y: 47.300003, z: -259.35254}
-  m_LocalScale: {x: 8, y: 7, z: 8}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3870544011989183445}
+  - {fileID: 2760583902956156404}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3676406296042642871
@@ -47,7 +48,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2787303738700761410}
-  m_Mesh: {fileID: 3240111963191467312, guid: 8df28363e2a34514993c420e57df90ef, type: 3}
+  m_Mesh: {fileID: 1811863193675636553, guid: 8df28363e2a34514993c420e57df90ef, type: 3}
 --- !u!23 &1067881110918968380
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -124,7 +125,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 0.99999994
-  m_BaseOffset: 0.49999997
+  m_BaseOffset: 6
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &3598418864652984986
@@ -164,7 +165,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3240111963191467312, guid: 8df28363e2a34514993c420e57df90ef, type: 3}
 --- !u!114 &5935050935908780935
@@ -179,6 +180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2601cb8cac471874c876950b4dabcf6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  rotationSpeed: 10
 --- !u!114 &1787189707775114752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,10 +194,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4239c4bd2bb938544bf065db381e87aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundPoint: {fileID: 2760583902956156404}
+  groundCheckDistance: 10
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  OnAgentReady:
+    m_PersistentCalls:
+      m_Calls: []
   chaseLostTime: 3
   chaseStopDistance: 1.2
   vision: {fileID: 6081763102341324876}
-  player: {fileID: 0}
+--- !u!1 &3783767431427586956
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2760583902956156404}
+  m_Layer: 0
+  m_Name: GroundPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2760583902956156404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3783767431427586956}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -4.86, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7605270307679617168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5231615681804325432
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,12 +280,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1039929f211d241be3a12d6afc916a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 40
-  viewAngle: 105
+  viewRadius: 300
+  viewAngle: 90
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
   targetMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 63
   target: {fileID: 0}

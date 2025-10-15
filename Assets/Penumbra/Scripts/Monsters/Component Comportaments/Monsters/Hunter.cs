@@ -1,90 +1,89 @@
-using UnityEngine;
-using UnityEngine.AI;
+ï»¿using UnityEngine;
 
-/// <summary>
-/// Controla o comportamento de patrulha e perseguição de um inimigo.
-/// </summary>
 [RequireComponent(typeof(Patrol))]
 [RequireComponent(typeof(Chaser))]
-public class Hunter : MonoBehaviour
+public class Hunter : EnemyBase
 {
-    [Header("Configuração do Hunter")]
-    public float chaseLostTime = 3f; // tempo que ele continua perseguindo depois de perder a visão
-    public float chaseStopDistance = 1.2f; // distância para considerar que chegou no player
+    [Header("Hunter Settings")]
+    public float chaseLostTime = 3f;
+    public float chaseStopDistance = 1.2f;
 
     private Patrol patrol;
-    public Vision vision;
     private Chaser chaser;
+    [SerializeField] private Vision vision;
 
-    public Transform player;
     private float lostTimer = 0f;
     private bool isChasing = false;
-
-    private void Awake()
+    public float originalAgentSpeed = 20f; // armazena velocidade original do agente
+    protected override void Awake()
     {
+        base.Awake();
         patrol = GetComponent<Patrol>();
         chaser = GetComponent<Chaser>();
+
+        // Salva a velocidade original do agente
+
     }
+
+    protected override void Start()
+    {
+        base.Start();
+        OnAgentReady.AddListener(HandleAgentReady);
+        chaser.agent.stoppingDistance = chaseStopDistance;
+    }
+
+        private void HandleAgentReady()
+    {
+        Debug.Log($"{name}: agente pronto, comportamento iniciado.");
+        chaser.agent.speed = originalAgentSpeed;
+        // agora o Hunter comeÃ§a a operar
+    }
+
 
     private void Update()
     {
-        player = vision != null ? GetTargetFromVision() : null;
+        if (!agentReady) return; // sÃ³ age quando estiver pronto
+       
 
-        if (vision != null && vision.CanSeePlayer())
+        if (vision.CanSeePlayer())
         {
-            Debug.Log($"{name}: Player avistado, começando perseguição!");
-            StartChasing();
+            if (!isChasing) Debug.Log($"{name}: jogador avistado!");
+            isChasing = true;
             lostTimer = chaseLostTime;
+
+            // opcional: aumentar a velocidade do agente ao perseguir
+            chaser.agent.speed = originalAgentSpeed * 1.5f;
         }
         else if (isChasing)
         {
             lostTimer -= Time.deltaTime;
-            Debug.Log($"{name}: Não vejo o player, timer = {lostTimer:F2}");
-
             if (lostTimer <= 0f)
             {
-                Debug.Log($"{name}: Perdeu o player definitivamente, voltando a patrulhar.");
-                StopChasing();
+                isChasing = false;
+                Debug.Log($"{name}: jogador perdido, retornando Ã  patrulha.");
+
+                // ðŸ”¹ restaura a velocidade original do agente
+                chaser.agent.speed = originalAgentSpeed;
             }
         }
 
-        if (isChasing && player != null)
+        if (isChasing && vision.target != null)
         {
-            chaser.ChaseTarget(player);
-            Debug.Log($"{name}: Perseguindo player, distância = {Vector3.Distance(transform.position, player.position):F2}");
+            chaser.ChaseTarget(vision.target);
 
-            if (chaser.HasReachedTarget(chaseStopDistance))
+            if (Vector3.Distance(transform.position, vision.target.position) <= chaseStopDistance)
             {
-                Debug.Log($"{name}: Alcancei o player, parando para atacar!");
                 chaser.StopChasing();
-                // lógica de ataque pode ir aqui
+
+                // Faz o inimigo olhar para o jogador ao parar
+                Vector3 lookDir = (vision.target.position - transform.position).normalized;
+                lookDir.y = 0f;
+                if (lookDir.sqrMagnitude > 0.001f)
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir), Time.deltaTime * 10f);
+
+                // lÃ³gica de ataque futura
             }
         }
     }
 
-    private Transform GetTargetFromVision()
-    {
-        return vision.target;
-    }
-
-    private void StartChasing()
-    {
-        if (!isChasing)
-        {
-            Debug.Log($"{name}: Iniciando perseguição!");
-            isChasing = true;
-            patrol.enabled = false;
-        }
-    }
-
-    private void StopChasing()
-    {
-        if (isChasing)
-        {
-            Debug.Log($"{name}: Parando perseguição, retomando patrulha.");
-            isChasing = false;
-            chaser.StopChasing();
-            patrol.enabled = true;
-        }
-    }
 }

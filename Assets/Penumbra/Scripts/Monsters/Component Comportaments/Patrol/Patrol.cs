@@ -23,6 +23,7 @@ public class Patrol : MonoBehaviour
     private bool pingPongForward = true;
 
     private Transform[] patrolPoints;
+    private EnemyBase enemyBase;
 
     // Controle de espera
     private float waitTimer = 0f;
@@ -31,24 +32,74 @@ public class Patrol : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false; // nós controlamos a rotação
-        agent.stoppingDistance = arrivalThreshold; // 🔹 garante que ele para antes
-        agent.autoBraking = true;                  // 🔹 desacelera ao chegar
+        enemyBase = GetComponent<EnemyBase>();
+
+        agent.updateRotation = false;
+        agent.stoppingDistance = arrivalThreshold;
+        agent.autoBraking = true;
+    }
+
+    private void OnEnable()
+    {
+        // 🔹 Garante que escutamos o evento do EnemyBase
+        if (enemyBase != null)
+            enemyBase.OnAgentReady.AddListener(OnAgentReady);
+    }
+
+    private void OnDisable()
+    {
+        if (enemyBase != null)
+            enemyBase.OnAgentReady.RemoveListener(OnAgentReady);
     }
 
     private void Start()
     {
-        if (patrolGroup != null)
+        // 🔹 Caso o grupo seja atribuído via Inspector
+        if (enemyBase.agentReady && patrolGroup != null)
         {
             InitializePatrol(patrolGroup);
         }
     }
 
+    /// <summary>
+    /// Chamado quando o EnemyBase sinaliza que o agente está pronto.
+    /// </summary>
+    private void OnAgentReady()
+    {
+        if (patrolGroup != null)
+        {
+            InitializePatrol(patrolGroup);
+            Debug.Log($"[{name}] Patrulha iniciada após agentReady com grupo {patrolGroup.name}.");
+        }
+        else
+        {
+            Debug.LogWarning($"[{name}] AgentReady, mas PatrolGroup ainda não definido!");
+        }
+    }
+
+    /// <summary>
+    /// Define o grupo de patrulha, mas só inicia quando o agente estiver pronto.
+    /// </summary>
+    public void SetPatrolGroup(PatrolPointGroup group)
+    {
+        patrolGroup = group;
+        Debug.Log($"[{name}] PatrolGroup {group.name} atribuído (aguardando agentReady).");
+    }
+
+    /// <summary>
+    /// Inicializa efetivamente a patrulha.
+    /// </summary>
     public void InitializePatrol(PatrolPointGroup group)
     {
+        if (!enemyBase.agentReady)
+        {
+            Debug.Log($"[{name}] Tentativa de iniciar patrulha antes de agentReady, abortando.");
+            return;
+        }
+
         if (group == null || group.patrolPoints == null || group.patrolPoints.Length == 0)
         {
-            Debug.LogWarning($"{name}: Grupo de patrulha inválido!");
+            Debug.LogWarning($"[{name}] Grupo de patrulha inválido!");
             enabled = false;
             return;
         }
@@ -56,26 +107,19 @@ public class Patrol : MonoBehaviour
         patrolGroup = group;
         patrolPoints = patrolGroup.patrolPoints;
 
+        // Escolhe o ponto inicial
         if (startFromClosest)
-        {
             currentTarget = GetClosestPoint(transform.position, patrolPoints.ToList());
-        }
         else
-        {
             currentTarget = patrolPoints[0];
-        }
 
         MoveTo(currentTarget);
     }
 
-    public void SetPatrolGroup(PatrolPointGroup group)
-    {
-        InitializePatrol(group);
-    }
-
     private void Update()
     {
-        if (currentTarget == null || patrolPoints == null || patrolPoints.Length == 0) return;
+        if (!enemyBase.agentReady || currentTarget == null || patrolPoints == null || patrolPoints.Length == 0)
+            return;
 
         if (isWaiting)
         {
@@ -88,14 +132,13 @@ public class Patrol : MonoBehaviour
             return;
         }
 
-        // 🔹 Checa se chegou no destino de forma mais "firme"
         if (!agent.pathPending && HasReachedTarget())
         {
             if (waitTimeAtPoint > 0f)
             {
                 isWaiting = true;
                 waitTimer = waitTimeAtPoint;
-                agent.isStopped = true;   // 🔹 força parada
+                agent.isStopped = true;
                 agent.velocity = Vector3.zero;
             }
             else
@@ -118,11 +161,9 @@ public class Patrol : MonoBehaviour
         switch (patrolMode)
         {
             case PatrolMode.Random:
-                List<Transform> candidates = patrolPoints.Where(p => p != lastTarget).ToList();
+                var candidates = patrolPoints.Where(p => p != lastTarget).ToList();
                 if (candidates.Count > 0)
-                {
                     currentTarget = candidates[Random.Range(0, candidates.Count)];
-                }
                 break;
 
             case PatrolMode.Sequential:
