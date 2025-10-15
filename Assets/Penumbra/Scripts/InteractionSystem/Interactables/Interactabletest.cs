@@ -28,6 +28,7 @@ public class Interactabletest : MonoBehaviour, IInteractable
     private void PerformInteraction()
     {
         Debug.Log(InteractionMessage);
+        NightManager.Instance.CompleteTask("interagir com o quadrado");
         // TODO: lógica específica de interação aqui.
     }
 }

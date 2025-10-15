@@ -81,7 +81,7 @@ public class Hunter : EnemyBase
                 if (lookDir.sqrMagnitude > 0.001f)
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDir), Time.deltaTime * 10f);
 
-                // lógica de ataque futura
+                NightManager.Instance.OnPlayerDeath();
             }
         }
     }
