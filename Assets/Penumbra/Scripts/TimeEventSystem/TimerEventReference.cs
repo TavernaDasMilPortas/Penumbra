@@ -5,6 +5,7 @@ public class TimerEventReference : MonoBehaviour
     [Tooltip("Tempo em MM:SS")]
     public string triggerTime = "0:30";
 
+    public string nameReference;
     [HideInInspector]
     public int triggerSecond;
 

@@ -5,18 +5,19 @@ using UnityEngine.Events;
 public class TimedEvent
 {
     public int triggerSecond;
+    public string description;
     public UnityEvent onTrigger;
 
-    public TimedEvent(int second)
+    public TimedEvent(int second, string desc = "")
     {
         triggerSecond = second;
+        description = desc;
         onTrigger = new UnityEvent();
     }
 }
 
 public class TimerEventScheduler : MonoBehaviour
 {
-    // Singleton
     public static TimerEventScheduler Instance { get; private set; }
 
     public TimedEvent[] events;
@@ -24,7 +25,6 @@ public class TimerEventScheduler : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -32,7 +32,7 @@ public class TimerEventScheduler : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject); // opcional, se quiser persistir entre cenas
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
@@ -62,11 +62,13 @@ public class TimerEventScheduler : MonoBehaviour
         }
     }
 
-    // Adiciona evento em runtime
-    public void AddEvent(int triggerSecond, UnityAction action)
+    /// <summary>
+    /// Adiciona um evento ao agendador com tempo, ação e descrição opcional.
+    /// </summary>
+    public void AddEvent(int triggerSecond, UnityAction action, string description = "")
     {
         var list = new System.Collections.Generic.List<TimedEvent>(events);
-        var newEvent = new TimedEvent(triggerSecond);
+        var newEvent = new TimedEvent(triggerSecond, description);
         newEvent.onTrigger.AddListener(action);
         list.Add(newEvent);
         events = list.ToArray();
@@ -74,5 +76,12 @@ public class TimerEventScheduler : MonoBehaviour
         var triggeredList = new System.Collections.Generic.List<bool>(triggered);
         triggeredList.Add(false);
         triggered = triggeredList.ToArray();
+
+        // 🔍 Log de depuração aprimorado
+        string sourceName = action.Target != null ? action.Target.ToString() : "Objeto desconhecido";
+        string methodName = action.Method != null ? action.Method.Name : "Método desconhecido";
+        string descText = string.IsNullOrEmpty(description) ? "" : $" ({description})";
+
+        Debug.Log($"🕒 Evento registrado por '{sourceName}.{methodName}' para o segundo {triggerSecond}{descText}.");
     }
 }

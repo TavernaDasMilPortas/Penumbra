@@ -33,6 +33,9 @@ public class NightManager : MonoBehaviour
 
     private void Start()
     {
+        // 🔹 Agora a primeira noite também prepara a cena e seus spawns
+        //ScenePreparator.PrepareScene();
+
         LoadCurrentNightTasks();
         UpdateUI();
     }
@@ -44,6 +47,8 @@ public class NightManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // 🔹 Garante que ao mudar de cena, os spawns da noite atual sejam criados
+        ScenePreparator.PrepareScene();
         Invoke(nameof(UpdateUI), 0.1f);
     }
 
@@ -76,8 +81,7 @@ public class NightManager : MonoBehaviour
                 Debug.Log("⚡ Todas as noites concluídas!");
             }
 
-            // tentativas persistem entre noites
-            LoadCurrentNightTasks(); // carrega tasks da nova noite
+            LoadCurrentNightTasks();
         }
         else
         {
@@ -96,10 +100,9 @@ public class NightManager : MonoBehaviour
 
     private void ReloadScene()
     {
-        ScenePreparator.PrepareNextScene();
+        ScenePreparator.PrepareScene();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
 
     public void UpdateUI()
     {

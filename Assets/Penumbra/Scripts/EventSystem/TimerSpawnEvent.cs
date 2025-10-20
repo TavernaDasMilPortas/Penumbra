@@ -1,15 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class SpawnData
+{
+    [Header("📦 Dados do Spawn")]
+    public GameObject monsterPrefab;
+    public Transform[] spawnPoints;
+    public PatrolPointGroup patrolGroup;
+
+    [Header("🕒 Evento de Tempo")]
+    public TimerEventReference eventReference;
+    [Range(1, 100)] public int choiceChance = 100;
+}
+
+[System.Serializable]
+public class SpawnEntry
+{
+    [Header("📦 Spawns")]
+    public string spawnName = "Novo Spawn";
+    public List<SpawnData> spawnData = new List<SpawnData>();
+
+    [HideInInspector] public SpawnData chosenData; // armazenará o spawnData escolhido
+}
+
 public class TimerSpawnEvent : MonoBehaviour
 {
-    [Header("Configuração de Spawn")]
-    public GameObject prefabToSpawn;
-    public Transform[] spawnPoints;
-    public PatrolPointGroup patrolGroup; // 🔹 Grupo definido no Inspector
-
-    [Header("Timer")]
-    public TimerEventReference eventReference;
+    [Header("Configuração de Spawns")]
+    public List<SpawnEntry> spawns = new List<SpawnEntry>();
 
     private Transform player;
 
@@ -17,38 +35,72 @@ public class TimerSpawnEvent : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-        if (eventReference == null)
+        if (TimerEventScheduler.Instance == null)
         {
-            Debug.LogError($"[TimerSpawnEvent] {name} não possui TimerEventReference configurado!");
+            Debug.LogError("[TimerSpawnEvent] TimerEventScheduler não encontrado na cena!");
             return;
         }
 
-        if (TimerEventScheduler.Instance != null)
+        foreach (var entry in spawns)
         {
-            Debug.Log($"[TimerSpawnEvent] Registrando evento para {eventReference.triggerSecond}s.");
-            TimerEventScheduler.Instance.AddEvent(eventReference.triggerSecond, TrySpawn);
-        }
-        else
-        {
-            Debug.LogError("[TimerSpawnEvent] TimerEventScheduler não encontrado na cena!");
+            if (entry.spawnData == null || entry.spawnData.Count == 0)
+            {
+                Debug.LogWarning($"[TimerSpawnEvent] {entry.spawnName} não possui SpawnData configurado!");
+                continue;
+            }
+
+            // 🔹 Escolhe um SpawnData com base na chance
+            entry.chosenData = PickRandomSpawnData(entry.spawnData);
+
+            if (entry.chosenData == null || entry.chosenData.eventReference == null)
+            {
+                Debug.LogWarning($"[TimerSpawnEvent] {entry.spawnName} não tem evento ou prefab válido!");
+                continue;
+            }
+
+            int triggerSecond = entry.chosenData.eventReference.triggerSecond;
+            Debug.Log($"[TimerSpawnEvent] Registrando evento '{entry.spawnName}' para {triggerSecond}s ({entry.chosenData.monsterPrefab?.name}).");
+
+            var localEntry = entry;
+            TimerEventScheduler.Instance.AddEvent(
+                triggerSecond,
+                () => TrySpawn(localEntry),
+                $"Spawn '{localEntry.spawnName}'"
+            );
         }
     }
 
-    private void TrySpawn()
+    private SpawnData PickRandomSpawnData(List<SpawnData> dataList)
     {
-        Debug.Log($"[TimerSpawnEvent] Tentando spawnar objeto ({prefabToSpawn?.name ?? "null"})...");
+        int totalChance = 0;
+        foreach (var data in dataList)
+            totalChance += data.choiceChance;
 
-        if (spawnPoints.Length == 0)
+        int randomValue = Random.Range(0, totalChance);
+        int cumulative = 0;
+
+        foreach (var data in dataList)
         {
-            Debug.LogWarning("[TimerSpawnEvent] Nenhum spawnPoint configurado!");
+            cumulative += data.choiceChance;
+            if (randomValue < cumulative)
+                return data;
+        }
+
+        return dataList[0]; // fallback
+    }
+
+    private void TrySpawn(SpawnEntry entry)
+    {
+        if (entry.chosenData == null)
+        {
+            Debug.LogWarning($"[TimerSpawnEvent] Nenhum SpawnData escolhido para {entry.spawnName}");
             return;
         }
 
-        if (prefabToSpawn == null)
-        {
-            Debug.LogWarning("[TimerSpawnEvent] Nenhum prefab configurado!");
-            return;
-        }
+        var data = entry.chosenData;
+        var prefabToSpawn = data.monsterPrefab;
+        var spawnPoints = data.spawnPoints;
+        var patrolGroup = data.patrolGroup;
 
         if (player == null)
         {
@@ -56,82 +108,66 @@ public class TimerSpawnEvent : MonoBehaviour
             return;
         }
 
-        // Filtra apenas spawns em salas onde o jogador NÃO está
+        if (prefabToSpawn == null)
+        {
+            Debug.LogWarning($"[TimerSpawnEvent] {entry.spawnName} sem prefab definido!");
+            return;
+        }
+
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogWarning($"[TimerSpawnEvent] {entry.spawnName} sem spawn points!");
+            return;
+        }
+
         List<Transform> validSpawns = new List<Transform>();
 
         foreach (var spawn in spawnPoints)
         {
-            if (spawn == null)
-            {
-                Debug.LogWarning("[TimerSpawnEvent] SpawnPoint nulo encontrado, ignorando...");
-                continue;
-            }
+            if (spawn == null) continue;
 
             RoomTracker tracker = spawn.GetComponent<RoomTracker>();
             if (tracker != null && tracker.CurrentRoom != null)
             {
                 Room room = tracker.CurrentRoom;
-
-                Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} está na sala {room.roomName}");
-
                 if (!room.Contains(player.position))
-                {
-                    Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} é válido (player fora da sala).");
                     validSpawns.Add(spawn);
-                }
-                else
-                {
-                    Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} ignorado (player dentro da sala).");
-                }
             }
             else
             {
-                Debug.Log($"[TimerSpawnEvent] SpawnPoint {spawn.name} não possui RoomTracker ou está sem sala associada.");
+                validSpawns.Add(spawn);
             }
         }
 
         if (validSpawns.Count == 0)
         {
-            Debug.LogWarning("[TimerSpawnEvent] Nenhum spawn válido encontrado!");
+            Debug.LogWarning($"[TimerSpawnEvent] Nenhum spawn válido encontrado para {entry.spawnName}");
             return;
         }
 
-        // Escolhe um spawn aleatório válido
         Transform chosen = validSpawns[Random.Range(0, validSpawns.Count)];
-        Debug.Log($"[TimerSpawnEvent] SpawnPoint escolhido: {chosen.name}");
-
         GameObject spawned = Instantiate(prefabToSpawn, chosen.position, chosen.rotation);
-        Debug.Log($"[TimerSpawnEvent] Objeto {spawned.name} instanciado em {chosen.position}");
 
-        // 🔹 Inicializa o PatrolGroup configurado no Inspector
+        Debug.Log($"[TimerSpawnEvent] Spawn '{entry.spawnName}' criado: {spawned.name} em {chosen.name}");
+
         if (patrolGroup != null)
         {
-            Patrol controller = spawned.GetComponent<Patrol>();
-            if (controller != null)
-            {
-                controller.SetPatrolGroup(patrolGroup);
-                Debug.Log($"[TimerSpawnEvent] {spawned.name} vinculado ao PatrolGroup {patrolGroup.name}");
-            }
-            else
-            {
-                Debug.LogWarning($"[TimerSpawnEvent] {spawned.name} não possui componente Patrol.");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("[TimerSpawnEvent] Nenhum PatrolGroup configurado no Inspector!");
+            Patrol patrol = spawned.GetComponent<Patrol>();
+            if (patrol != null)
+                patrol.SetPatrolGroup(patrolGroup);
         }
 
-        // 🔹 Registra no sistema de culling se aplicável
         SpawnableObject spawnable = spawned.GetComponent<SpawnableObject>();
-        if (spawnable != null)
+        spawnable?.RegisterToCulling();
+    }
+
+    // 🔹 Permite sortear novamente os prefabs e eventos (por exemplo, a cada noite)
+    public void RandomizeSpawns()
+    {
+        foreach (var entry in spawns)
         {
-            spawnable.RegisterToCulling();
-            Debug.Log($"[TimerSpawnEvent] {spawned.name} registrado no sistema de culling.");
+            entry.chosenData = PickRandomSpawnData(entry.spawnData);
         }
-        else
-        {
-            Debug.Log($"[TimerSpawnEvent] {spawned.name} não possui SpawnableObject, nada a registrar.");
-        }
+        Debug.Log("[TimerSpawnEvent] Spawns randomizados para todos os grupos.");
     }
 }
