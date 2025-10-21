@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8000169867451778809}
   - component: {fileID: 1343057542699681023}
   - component: {fileID: 8997363421317666736}
-  - component: {fileID: 1976065249926462094}
+  - component: {fileID: 4943531168774807420}
   m_Layer: 0
   m_Name: HunterSpawn
   m_TagString: Untagged
@@ -68,16 +68,16 @@ MonoBehaviour:
       spawnPoints:
       - {fileID: 7381087600119554009, guid: f1882f61ed85634428570d9ef5274807, type: 3}
       - {fileID: 6756481490642046838, guid: 68b8173ab1aaff3449609c9e4ab73db4, type: 3}
-      patrolGroup: {fileID: 1976065249926462094}
+      patrolGroup: {fileID: 0}
       eventReference: {fileID: 1343057542699681023}
-      choiceChance: 0
+      choiceChance: 1
     chosenData:
       monsterPrefab: {fileID: 0}
       spawnPoints: []
       patrolGroup: {fileID: 0}
       eventReference: {fileID: 0}
       choiceChance: 0
---- !u!114 &1976065249926462094
+--- !u!114 &4943531168774807420
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,16 +89,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a492a37ff50ad14b86f9673a5d9b89a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseGroup: {fileID: 6286975176086395839, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
   patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  gizmoColor: {r: 0, g: 0.01960802, b: 1, a: 1}
+  - {fileID: 4063612530255177536, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  - {fileID: 2258968642790840591, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  - {fileID: 2475183559746795568, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  - {fileID: 8677170541835288103, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  - {fileID: 6674367609992917519, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  - {fileID: 2564002870791435569, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  - {fileID: 241897574230080168, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  - {fileID: 3095271655607579815, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  - {fileID: 6117731730822720687, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  gizmoColor: {r: 0, g: 1, b: 1, a: 1}
   gizmoRadius: 0.3
+  autoUpdateInEditor: 1
