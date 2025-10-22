@@ -2290,6 +2290,11 @@ MonoBehaviour:
   nightText: {fileID: 1938264196}
   attemptText: {fileID: 1822620952}
   tasksText: {fileID: 255112148}
+--- !u!1 &1125505936 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2890270332139014730, guid: f1882f61ed85634428570d9ef5274807, type: 3}
+  m_PrefabInstance: {fileID: 2190854327884539916}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1183865601
 GameObject:
   m_ObjectHideFlags: 0
@@ -3009,6 +3014,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7381087600119554009, guid: f1882f61ed85634428570d9ef5274807, type: 3}
   m_PrefabInstance: {fileID: 2190854327884539916}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1484072897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125505936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c0db8c5b2e35741a03cbe71fe8207f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: HunterSpawn(1)
+  selfTransform: {fileID: 0}
 --- !u!1 &1500530183
 GameObject:
   m_ObjectHideFlags: 0
@@ -3154,8 +3173,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1697477691}
+  - component: {fileID: 1697477692}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: PointGroupRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3185,6 +3205,20 @@ Transform:
   - {fileID: 363326723}
   m_Father: {fileID: 241995248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1697477692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697477690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c0db8c5b2e35741a03cbe71fe8207f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: HunterPatrolGroup
+  selfTransform: {fileID: 0}
 --- !u!1 &1698628800
 GameObject:
   m_ObjectHideFlags: 0
@@ -3836,6 +3870,7 @@ Transform:
   - {fileID: 1726487961}
   - {fileID: 693253600}
   - {fileID: 1394927236}
+  - {fileID: 1973257131}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1878356517
@@ -4143,6 +4178,73 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1950154813}
   m_CullTransparentMesh: 1
+--- !u!1 &1973257130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1973257131}
+  - component: {fileID: 1973257132}
+  m_Layer: 0
+  m_Name: PointFinder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1973257131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973257130}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1863277654}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1973257132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1973257130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f49cc80fb76074459198064a4313b83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {fileID: 2054979803}
+  - {fileID: 1484072897}
+  - {fileID: 1697477692}
+--- !u!1 &2054979802 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3826903833346392515, guid: 68b8173ab1aaff3449609c9e4ab73db4, type: 3}
+  m_PrefabInstance: {fileID: 3303682531363430391}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2054979803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054979802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4c0db8c5b2e35741a03cbe71fe8207f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: HunterSpawn(2)
+  selfTransform: {fileID: 0}
 --- !u!1001 &2190854327884539916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4198,7 +4300,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2890270332139014730, guid: f1882f61ed85634428570d9ef5274807, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1484072897}
   m_SourcePrefab: {fileID: 100100000, guid: f1882f61ed85634428570d9ef5274807, type: 3}
 --- !u!1001 &3303682531363430391
 PrefabInstance:
@@ -4255,7 +4360,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3826903833346392515, guid: 68b8173ab1aaff3449609c9e4ab73db4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2054979803}
   m_SourcePrefab: {fileID: 100100000, guid: 68b8173ab1aaff3449609c9e4ab73db4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
