@@ -4223,9 +4223,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points:
-  - {fileID: 2054979803}
   - {fileID: 1484072897}
   - {fileID: 1697477692}
+  - {fileID: 2054979803}
 --- !u!1 &2054979802 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3826903833346392515, guid: 68b8173ab1aaff3449609c9e4ab73db4, type: 3}
