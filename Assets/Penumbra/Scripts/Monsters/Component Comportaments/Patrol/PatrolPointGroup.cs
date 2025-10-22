@@ -4,11 +4,12 @@ using System.Collections.Generic;
 public class PatrolPointGroup : MonoBehaviour
 {
     [Header("Configuração")]
-    [Tooltip("Objeto que contém os pontos de patrulha como filhos.")]
-    public Transform baseGroup;
+    [Tooltip("PointReference que define o objeto base que contém os pontos de patrulha como filhos.")]
+    public PointReference basePoint;
 
-    [Tooltip("Lista automática dos pontos de patrulha (preenchida a partir dos filhos de baseGroup).")]
+    [Tooltip("Lista automática dos pontos de patrulha (preenchida a partir dos filhos do Point).")]
     public Transform[] patrolPoints;
+
     public string patrolGroupName;
 
     [Header("Debug")]
@@ -18,23 +19,36 @@ public class PatrolPointGroup : MonoBehaviour
 
     private void OnValidate()
     {
-        if (baseGroup != null && autoUpdateInEditor)
+        if (autoUpdateInEditor)
             RefreshPatrolPoints();
     }
 
     /// <summary>
-    /// Atualiza a lista de patrolPoints com base nos filhos do baseGroup.
+    /// Atualiza a lista de patrolPoints com base nos filhos do objeto referenciado pelo PointReference.
     /// </summary>
     public void RefreshPatrolPoints()
     {
-        if (baseGroup == null)
+        patrolPoints = new Transform[0];
+
+        if (basePoint == null || string.IsNullOrEmpty(basePoint.pointName))
+            return;
+
+        if (PointManager.Instance == null)
         {
-            patrolPoints = new Transform[0];
+            Debug.LogWarning("[PatrolPointGroup] PointManager não encontrado na cena!");
             return;
         }
 
+        Point basePointObj = PointManager.Instance.GetPointByName(basePoint.pointName);
+        if (basePointObj == null)
+        {
+            Debug.LogWarning($"[PatrolPointGroup] Nenhum Point encontrado com o nome '{basePoint.pointName}'");
+            return;
+        }
+
+        // Coleta todos os filhos do transform do Point
         List<Transform> points = new List<Transform>();
-        foreach (Transform child in baseGroup)
+        foreach (Transform child in basePointObj.selfTransform)
         {
             if (child != null)
                 points.Add(child);
@@ -47,7 +61,7 @@ public class PatrolPointGroup : MonoBehaviour
     {
         if (patrolPoints == null || patrolPoints.Length == 0)
         {
-            if (baseGroup != null)
+            if (autoUpdateInEditor)
                 RefreshPatrolPoints();
             else
                 return;

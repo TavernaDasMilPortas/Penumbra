@@ -1,18 +1,67 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+
 [System.Serializable]
 public class SpawnData
 {
     [Header("📦 Dados do Spawn")]
     public GameObject monsterPrefab;
-    public Transform[] spawnPoints;
+
+    [Tooltip("Nomes dos pontos de spawn (selecionados via PointDrawer).")]
+    public List<PointReference> spawnPointNames = new List<PointReference>();
+
+    [HideInInspector]
+    public List<Transform> resolvedSpawnPoints = new List<Transform>();
+
     public PatrolPointGroup patrolGroup;
 
     [Header("🕒 Evento de Tempo")]
     public TimerEventReference eventReference;
     [Range(1, 100)] public int choiceChance = 100;
+
+    /// <summary>
+    /// Resolve os nomes em Transforms reais através do PointManager.
+    /// </summary>
+    public void ResolvePoints()
+    {
+        resolvedSpawnPoints.Clear();
+
+        if (PointManager.Instance == null)
+        {
+            Debug.LogWarning("[SpawnData] PointManager não encontrado na cena!");
+            return;
+        }
+
+        // Cria uma lista de nomes a partir das referências
+        List<string> names = new List<string>();
+        foreach (var pr in spawnPointNames)
+        {
+            if (!string.IsNullOrEmpty(pr.pointName))
+                names.Add(pr.pointName);
+        }
+
+        if (names.Count == 0)
+        {
+            Debug.LogWarning($"[SpawnData] Nenhum nome de ponto definido em SpawnData de {monsterPrefab?.name ?? "objeto indefinido"}.");
+            return;
+        }
+
+        // Busca os pontos reais pelo nome
+        var points = PointManager.Instance.GetPointsByName(names);
+        foreach (var point in points)
+        {
+            if (point != null)
+                resolvedSpawnPoints.Add(point.transform);
+        }
+
+        if (resolvedSpawnPoints.Count == 0)
+        {
+            Debug.LogWarning($"[SpawnData] Nenhum ponto válido encontrado para {monsterPrefab?.name ?? "Spawn sem nome"}.");
+        }
+    }
 }
+
 
 [System.Serializable]
 public class SpawnEntry
@@ -58,6 +107,9 @@ public class TimerSpawnEvent : MonoBehaviour
                 continue;
             }
 
+            // 🔹 Resolve os pontos de spawn (nome → Transform)
+            entry.chosenData.ResolvePoints();
+
             int triggerSecond = entry.chosenData.eventReference.triggerSecond;
             Debug.Log($"[TimerSpawnEvent] Registrando evento '{entry.spawnName}' para {triggerSecond}s ({entry.chosenData.monsterPrefab?.name}).");
 
@@ -99,7 +151,7 @@ public class TimerSpawnEvent : MonoBehaviour
 
         var data = entry.chosenData;
         var prefabToSpawn = data.monsterPrefab;
-        var spawnPoints = data.spawnPoints;
+        var spawnPoints = data.resolvedSpawnPoints;
         var patrolGroup = data.patrolGroup;
 
         if (player == null)
@@ -114,9 +166,9 @@ public class TimerSpawnEvent : MonoBehaviour
             return;
         }
 
-        if (spawnPoints == null || spawnPoints.Length == 0)
+        if (spawnPoints == null || spawnPoints.Count == 0)
         {
-            Debug.LogWarning($"[TimerSpawnEvent] {entry.spawnName} sem spawn points!");
+            Debug.LogWarning($"[TimerSpawnEvent] {entry.spawnName} sem pontos de spawn válidos!");
             return;
         }
 
@@ -167,7 +219,8 @@ public class TimerSpawnEvent : MonoBehaviour
         foreach (var entry in spawns)
         {
             entry.chosenData = PickRandomSpawnData(entry.spawnData);
+            entry.chosenData.ResolvePoints();
         }
-        Debug.Log("[TimerSpawnEvent] Spawns randomizados para todos os grupos.");
+        Debug.Log("[TimerSpawnEvent] Spawns randomizados e resolvidos novamente.");
     }
 }

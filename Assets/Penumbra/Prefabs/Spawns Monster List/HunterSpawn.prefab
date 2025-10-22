@@ -65,15 +65,17 @@ MonoBehaviour:
   - spawnName: Andar de Cima
     spawnData:
     - monsterPrefab: {fileID: 2787303738700761410, guid: 2e7194753e18e4340aa33f728997933a, type: 3}
-      spawnPoints:
-      - {fileID: 7381087600119554009, guid: f1882f61ed85634428570d9ef5274807, type: 3}
-      - {fileID: 6756481490642046838, guid: 68b8173ab1aaff3449609c9e4ab73db4, type: 3}
-      patrolGroup: {fileID: 0}
+      spawnPointNames:
+      - pointName: HunterSpawn(1)
+      - pointName: HunterSpawn(2)
+      resolvedSpawnPoints: []
+      patrolGroup: {fileID: 4943531168774807420}
       eventReference: {fileID: 1343057542699681023}
       choiceChance: 1
     chosenData:
       monsterPrefab: {fileID: 0}
-      spawnPoints: []
+      spawnPointNames: []
+      resolvedSpawnPoints: []
       patrolGroup: {fileID: 0}
       eventReference: {fileID: 0}
       choiceChance: 0
@@ -89,17 +91,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a492a37ff50ad14b86f9673a5d9b89a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseGroup: {fileID: 6286975176086395839, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
-  patrolPoints:
-  - {fileID: 4063612530255177536, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
-  - {fileID: 2258968642790840591, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
-  - {fileID: 2475183559746795568, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
-  - {fileID: 8677170541835288103, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
-  - {fileID: 6674367609992917519, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
-  - {fileID: 2564002870791435569, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
-  - {fileID: 241897574230080168, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
-  - {fileID: 3095271655607579815, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
-  - {fileID: 6117731730822720687, guid: c125441460b6be4409a6d72f11788ee6, type: 3}
+  basePoint:
+    pointName: HunterPatrolGroup
+  patrolPoints: []
+  patrolGroupName: PatrolGroup Hunter
   gizmoColor: {r: 0, g: 1, b: 1, a: 1}
   gizmoRadius: 0.3
   autoUpdateInEditor: 1
