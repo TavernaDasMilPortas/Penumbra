@@ -1,5 +1,6 @@
 public enum InputState
 {
     Gameplay,
-    Menu 
+    Menu,
+    Document
 }

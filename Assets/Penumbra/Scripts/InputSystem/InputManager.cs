@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
             // Estado mudou
             if (GameStateManager.Instance.CurrentState != InputState.Gameplay)
             {
-                // Não é gameplay, para o movimento do player
+                // Para o movimento do player
                 if (PlayerController.Instance != null)
                     PlayerController.Instance.Stop();
             }
@@ -45,20 +45,25 @@ public class InputManager : MonoBehaviour
                 HandleMenuInput();
                 break;
 
+            case InputState.Document:
+                HandleDocumentInput();
+                break;
         }
     }
 
+
     private void HandleGameplayInput()
     {
-
-       PlayerController.Instance.HandleMovement();
-       PlayerController.Instance.HandleMouseLook();
-       InteractionHandler.Instance.FindInteractable();
-       //FacingSystem.Instance.UpdateVisibleTargets();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        PlayerController.Instance.HandleMovement();
+        PlayerController.Instance.HandleMouseLook();
+        InteractionHandler.Instance.FindInteractable();
+        //FacingSystem.Instance.UpdateVisibleTargets();
         // Abre o menu principal (com abas como inventário, mapa etc)
         if (Input.GetKeyDown(KeyCode.I))
         {
-           //MenuManager.Instance?.ToggleMainMenu();
+            //MenuManager.Instance?.ToggleMainMenu();
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -75,7 +80,7 @@ public class InputManager : MonoBehaviour
         {
             Debug.Log("Navegando para direita");
             MenuManager.Instance?.Navigate(Vector2.right);
-        } 
+        }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             Debug.Log("Navegando para esquerda");
@@ -121,5 +126,29 @@ public class InputManager : MonoBehaviour
 
     }
 
+    private void HandleDocumentInput()
+    {
+        if (DocumentViewer.Instance == null || DocumentViewer.Instance.CurrentDocument == null) return;
+        var doc = DocumentViewer.Instance.CurrentDocument;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        // Avançar / virar página
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            doc.ContinueReading();
+        }
+
+        // Voltar página / voltar lado
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            doc.PreviousReading();
+        }
+
+        // Fechar documento diretamente
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            doc.CloseReading();
+        }
+    }
 
 }

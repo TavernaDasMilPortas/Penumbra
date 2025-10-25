@@ -30,20 +30,12 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
-        HandleMouseLook();
+        if (GameStateManager.Instance.CurrentState == InputState.Gameplay)
+        {
+            HandleMovement();
+            HandleMouseLook();
+        }
 
-        // Libera cursor com ESC e trava de novo com clique
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else if (Input.GetMouseButtonDown(0))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
     }
 
     // === Movimento com WASD ===

@@ -31,7 +31,11 @@ public class FacingSystem : MonoBehaviour
 
     private void Update()
     {
-        UpdateVisibleTargets();
+        if (GameStateManager.Instance.CurrentState == InputState.Gameplay)
+        {
+            UpdateVisibleTargets();
+        }
+
     }
 
     public void UpdateVisibleTargets()
