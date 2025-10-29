@@ -17,7 +17,7 @@ public class ActionHintManager : MonoBehaviour
         public GameObject gameObject;
         public int priority;
         public string key;
-        public Sprite originalSprite;
+        [SerializeField] public Sprite originalSprite;
         public Image buttonImage;
 
         public ActionHint(GameObject obj, int prio, string keyLabel)

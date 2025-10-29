@@ -31,6 +31,12 @@ public class InteractionHandler : MonoBehaviour
     {
         IInteractable raycastTarget = GetInteractableByRaycast();
         UpdateHighlight(raycastTarget);
+        if (raycastTarget != null)
+        {
+            ActionHintManager.Instance.ShowHint("E", "Interagir", priority: 10);
+            return;
+        }
+        ActionHintManager.Instance.HideHint("E");
     }
 
     /// <summary>

@@ -1,0 +1,465 @@
+fileFormatVersion: 2
+guid: ad983e8475ba38b45a443cdbfac2de8b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_0
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 1486
+        width: 394
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2304cc3dca344d4eabd579fbb7ce681
+      internalID: -2098043287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_1
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 1486
+        width: 394
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ccf9c2b63710764a972076c96e9e632
+      internalID: 1660434473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_2
+      rect:
+        serializedVersion: 2
+        x: 1033
+        y: 1486
+        width: 396
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f08f9f822347814fb87375c4dfdf570
+      internalID: -1120993304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_3
+      rect:
+        serializedVersion: 2
+        x: 1498
+        y: 1486
+        width: 394
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfd2f320ebcced8498bb7abde13f2af3
+      internalID: -501964118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_4
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 1022
+        width: 394
+        height: 412
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f31977dbe48b8b43b26eb9a947e1483
+      internalID: -481393464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_5
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 1022
+        width: 395
+        height: 412
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cee085bbfc9bb7498f91a4b4c933081
+      internalID: 145574108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_6
+      rect:
+        serializedVersion: 2
+        x: 1033
+        y: 1022
+        width: 397
+        height: 412
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50e7508188b51cf4c8981b4ccb6ae6f4
+      internalID: -1946670503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_7
+      rect:
+        serializedVersion: 2
+        x: 1498
+        y: 1022
+        width: 394
+        height: 412
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ad51aca36f526f41b112ddf4691d101
+      internalID: 228539025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_8
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 558
+        width: 394
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c61467a41c5491e4499e4766902fd4e3
+      internalID: -1777902688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_9
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 558
+        width: 395
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2c78a31ad3d640b49843af198d3a03a9
+      internalID: 1890567122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_10
+      rect:
+        serializedVersion: 2
+        x: 1029
+        y: 558
+        width: 866
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f37cb7957cc1b2245879629c2c0e8246
+      internalID: 2025826991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_11
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 94
+        width: 395
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5381de3eb24ce8488e5f6309fae1445
+      internalID: 2074559747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_12
+      rect:
+        serializedVersion: 2
+        x: 571
+        y: 94
+        width: 394
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba74bf274bb827b499caa0f39094f970
+      internalID: 30797575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_13
+      rect:
+        serializedVersion: 2
+        x: 1029
+        y: 94
+        width: 866
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8934f3085076997498c2489f14fa0947
+      internalID: -195084783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 7e1af50cc071a3c4babe430df9298f7d
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_0: -2098043287
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_1: 1660434473
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_10: 2025826991
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_11: 2074559747
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_12: 30797575
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_13: -195084783
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_2: -1120993304
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_3: -501964118
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_4: -481393464
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_5: 145574108
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_6: -1946670503
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_7: 228539025
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_8: -1777902688
+      conjunto-escuro-de-elementos-de-botao-de-jogo-e-barra-de-progresso-botoes-brilhantes-de-diferentes-formas-para-jogos-e-aplicativos_9: 1890567122
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
