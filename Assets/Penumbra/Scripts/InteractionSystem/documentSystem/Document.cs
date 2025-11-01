@@ -89,7 +89,12 @@ public class Document : MonoBehaviour, IInteractable
         showingBackSide = false;
         viewer.OpenDocument(this);
         GameStateManager.Instance.SetState(InputState.Document);
+        ActionHintManager.Instance.ShowHint("E", "Próxima Página");
+        ActionHintManager.Instance.ShowHint("Q", "Página Anterior");
+        ActionHintManager.Instance.ShowHint("Esc", "Fechar Documento");
     }
+
+
 
     /// <summary>
     /// Avança para a próxima página ou mostra verso se aplicável.
@@ -119,6 +124,7 @@ public class Document : MonoBehaviour, IInteractable
         {
             // Última página → fechar documento
             CloseReading();
+
         }
     }
 
@@ -158,5 +164,6 @@ public class Document : MonoBehaviour, IInteractable
 
         viewer.CloseDocument();
         GameStateManager.Instance.RestorePreviousState();
+        ActionHintManager.Instance.ClearHints();
     }
 }
