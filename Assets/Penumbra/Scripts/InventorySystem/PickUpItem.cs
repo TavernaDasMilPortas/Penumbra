@@ -9,7 +9,7 @@ public class PickupItem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            InventoryManager.Instance.AddItem(item, quantity);
+            QuickInventoryManager.Instance.AddItem(item, 1);
             Destroy(gameObject);
         }
     }
