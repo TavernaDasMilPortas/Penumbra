@@ -67,21 +67,32 @@ public class TimerEventScheduler : MonoBehaviour
     /// </summary>
     public void AddEvent(int triggerSecond, UnityAction action, string description = "")
     {
+        // 🔧 Garante que events e triggered nunca sejam nulos
+        if (events == null)
+            events = new TimedEvent[0];
+        if (triggered == null)
+            triggered = new bool[0];
+
+        // Cria nova lista de eventos
         var list = new System.Collections.Generic.List<TimedEvent>(events);
+
+        // Cria e adiciona o novo evento
         var newEvent = new TimedEvent(triggerSecond, description);
         newEvent.onTrigger.AddListener(action);
         list.Add(newEvent);
         events = list.ToArray();
 
+        // Atualiza lista de eventos disparados
         var triggeredList = new System.Collections.Generic.List<bool>(triggered);
         triggeredList.Add(false);
         triggered = triggeredList.ToArray();
 
-        // 🔍 Log de depuração aprimorado
+        // 🔍 Log detalhado
         string sourceName = action.Target != null ? action.Target.ToString() : "Objeto desconhecido";
         string methodName = action.Method != null ? action.Method.Name : "Método desconhecido";
         string descText = string.IsNullOrEmpty(description) ? "" : $" ({description})";
 
         Debug.Log($"🕒 Evento registrado por '{sourceName}.{methodName}' para o segundo {triggerSecond}{descText}.");
     }
+
 }

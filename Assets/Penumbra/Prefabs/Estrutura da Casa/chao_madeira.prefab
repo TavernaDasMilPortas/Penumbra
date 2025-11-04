@@ -52,6 +52,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: chao_madeira
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6366489242019701185, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754517069520412499, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
