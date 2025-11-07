@@ -24,7 +24,7 @@ public class RightArmController : MonoBehaviour
         // Teste temporário: alternar manualmente com tecla L
         if (Input.GetKeyDown(KeyCode.L))
         {
-            SetLampVisible(!isVisible);
+            //SetLampVisible(!isVisible);
         }
     }
 }

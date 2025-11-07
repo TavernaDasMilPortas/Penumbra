@@ -10,12 +10,15 @@ public class VisibilityCulling : MonoBehaviour
     public Transform player;
 
     [Header("Configurações")]
+    [Tooltip("Se true, os objetos são completamente desativados. Caso contrário, apenas os Renderers são desativados.")]
     public bool disableCompletely = true;
 
-    [Header("Layers especiais")]
+    [Header("Layers Especiais")]
     public LayerMask floorLayer;
     public float floorSafeRadius = 2f;
     public LayerMask essentialLayers;
+    [Tooltip("Objetos nessas layers serão completamente ignorados pelo sistema.")]
+    public LayerMask ignoredLayers;
 
     // Lista de todos os objetos que podem ser culled
     private List<Collider> allCulledObjects = new List<Collider>();
@@ -24,7 +27,7 @@ public class VisibilityCulling : MonoBehaviour
     private void Awake()
     {
         if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        else { Destroy(gameObject); return; }
 
         if (player == null && Camera.main != null)
             player = Camera.main.transform;
@@ -32,14 +35,11 @@ public class VisibilityCulling : MonoBehaviour
         if (facingSystem == null)
             facingSystem = FindObjectOfType<FacingSystem>();
 
-        // Pré-cadastra apenas os objetos que estão nas layers target
         RegisterCulledObjects();
 
-        // Inicializa todos os objetos como invisíveis
         foreach (var col in allCulledObjects)
             SetObjectActive(col, false);
 
-        // Assina os eventos do FacingSystem
         facingSystem.OnEnterVision.AddListener(ActivateObject);
         facingSystem.OnExitVision.AddListener(DeactivateObject);
     }
@@ -50,8 +50,14 @@ public class VisibilityCulling : MonoBehaviour
 
         foreach (var col in FindObjectsOfType<Collider>())
         {
-            // Apenas colliders que estão nas layers alvo
-            if (((1 << col.gameObject.layer) & facingSystem.targetMask) != 0)
+            int objLayer = col.gameObject.layer;
+
+            // Ignora layers não relevantes
+            if (((1 << objLayer) & ignoredLayers) != 0)
+                continue;
+
+            // Apenas colliders que estão nas layers alvo do FacingSystem
+            if (((1 << objLayer) & facingSystem.targetMask) != 0)
             {
                 allCulledObjects.Add(col);
             }
@@ -65,15 +71,18 @@ public class VisibilityCulling : MonoBehaviour
     {
         if (col == null) return;
 
-        // Se já estiver registrado, ignora
-        if (allCulledObjects.Contains(col)) return;
+        int objLayer = col.gameObject.layer;
 
-        // Só adiciona se estiver na layer de interesse
-        if (((1 << col.gameObject.layer) & facingSystem.targetMask) != 0)
+        // Ignora layers não relevantes
+        if (((1 << objLayer) & ignoredLayers) != 0)
+            return;
+
+        if (allCulledObjects.Contains(col))
+            return;
+
+        if (((1 << objLayer) & facingSystem.targetMask) != 0)
         {
             allCulledObjects.Add(col);
-
-            // Garante que comece invisível
             SetObjectActive(col, false);
         }
     }
@@ -82,8 +91,7 @@ public class VisibilityCulling : MonoBehaviour
     {
         if (col == null) return;
 
-        if (IsFloorAndPlayerOnTop(col)) return;
-        if (IsEssential(col)) return;
+        if (ShouldIgnore(col)) return;
 
         if (!currentlyActive.Contains(col))
         {
@@ -96,14 +104,19 @@ public class VisibilityCulling : MonoBehaviour
     {
         if (col == null) return;
 
-        if (IsFloorAndPlayerOnTop(col)) return;
-        if (IsEssential(col)) return;
+        if (ShouldIgnore(col)) return;
 
         if (currentlyActive.Contains(col))
         {
             SetObjectActive(col, false);
             currentlyActive.Remove(col);
         }
+    }
+
+    private bool ShouldIgnore(Collider col)
+    {
+        int layer = col.gameObject.layer;
+        return IsFloorAndPlayerOnTop(col) || IsEssential(col) || IsIgnored(col);
     }
 
     private void SetObjectActive(Collider col, bool state)
@@ -133,5 +146,9 @@ public class VisibilityCulling : MonoBehaviour
     {
         return ((1 << col.gameObject.layer) & essentialLayers) != 0;
     }
-}
 
+    private bool IsIgnored(Collider col)
+    {
+        return ((1 << col.gameObject.layer) & ignoredLayers) != 0;
+    }
+}

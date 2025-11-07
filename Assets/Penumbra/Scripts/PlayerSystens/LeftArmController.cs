@@ -25,12 +25,12 @@ public class LeftArmController : MonoBehaviour
         }
 
         // 🔹 Atualiza o estado de animação correspondente
-        if (animator != null)
-        {
-            animator.Play(newItem != null && !string.IsNullOrEmpty(newItem.leftArmState)
-                ? newItem.leftArmState
-                : "Empty");
-        }
+        //if (animator != null)
+        //{
+        //    animator.Play(newItem != null && !string.IsNullOrEmpty(newItem.leftArmState)
+        //        ? newItem.leftArmState
+        //        : "Empty");
+        //}
 
         Debug.Log($"[LeftArm] Equipado item: {newItem?.itemName ?? "nenhum"}");
     }

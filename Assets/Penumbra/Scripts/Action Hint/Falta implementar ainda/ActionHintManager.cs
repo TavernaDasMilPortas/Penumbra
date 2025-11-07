@@ -33,16 +33,16 @@ public class ActionHintManager : MonoBehaviour
                 if (buttonImage != null)
                 {
                     originalSprite = buttonImage.sprite;
-                    Debug.Log($"[ActionHint] Sprite original salvo para '{keyLabel}'");
+                    //Debug.Log($"[ActionHint] Sprite original salvo para '{keyLabel}'");
                 }
                 else
                 {
-                    Debug.LogWarning($"[ActionHint] 'Image' não encontrado em AHButtom de '{keyLabel}'");
+                    //Debug.LogWarning($"[ActionHint] 'Image' não encontrado em AHButtom de '{keyLabel}'");
                 }
             }
             else
             {
-                Debug.LogWarning($"[ActionHint] AHButtom não encontrado em '{keyLabel}'");
+                //Debug.LogWarning($"[ActionHint] AHButtom não encontrado em '{keyLabel}'");
             }
         }
     }
@@ -67,17 +67,17 @@ public class ActionHintManager : MonoBehaviour
                     if (hint.buttonImage.sprite != targetSprite)
                     {
                         hint.buttonImage.sprite = targetSprite;
-                        Debug.Log($"[Update] Sprite de '{hint.key}' alterado para: {(Input.GetKey(keyCode) ? "pressedSprite" : "originalSprite")}");
+                        //Debug.Log($"[Update] Sprite de '{hint.key}' alterado para: {(Input.GetKey(keyCode) ? "pressedSprite" : "originalSprite")}");
                     }
                 }
                 else
                 {
-                    Debug.LogWarning($"[Update] buttonImage nulo para '{hint.key}'");
+                    //Debug.LogWarning($"[Update] buttonImage nulo para '{hint.key}'");
                 }
             }
             else
             {
-                Debug.LogWarning($"[Update] Key inválida: '{hint.key}'");
+                //Debug.LogWarning($"[Update] Key inválida: '{hint.key}'");
             }
         }
     }
@@ -102,10 +102,10 @@ public class ActionHintManager : MonoBehaviour
         var actionText = hintItem.transform.Find("ActionText")?.GetComponent<TMP_Text>();
 
         if (keyLabel != null) keyLabel.text = key;
-        else Debug.LogWarning($"[ShowHint] KeyLabel não encontrado em '{key}'");
+        //else Debug.LogWarning($"[ShowHint] KeyLabel não encontrado em '{key}'");
 
         if (actionText != null) actionText.text = message;
-        else Debug.LogWarning($"[ShowHint] ActionText não encontrado em '{key}'");
+        //else Debug.LogWarning($"[ShowHint] ActionText não encontrado em '{key}'");
 
         activeHints.Add(key, new ActionHint(hintItem, priority, key));
         SortHints();
@@ -156,7 +156,7 @@ public class ActionHintManager : MonoBehaviour
         }
         catch
         {
-            Debug.LogWarning($"[TryParseKey] Falha ao interpretar tecla: '{key}' (normalizado: '{normalized}')");
+            //Debug.LogWarning($"[TryParseKey] Falha ao interpretar tecla: '{key}' (normalizado: '{normalized}')");
             keyCode = KeyCode.None;
             return false;
         }

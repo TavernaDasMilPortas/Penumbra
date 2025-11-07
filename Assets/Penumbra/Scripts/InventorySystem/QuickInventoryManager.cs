@@ -56,6 +56,12 @@ public class QuickInventoryManager : MonoBehaviour
 
         Debug.Log($"[QuickInventoryManager] Criou novo slot: {item.itemName} x{quantity}");
         OnInventoryChanged?.Invoke();
+
+        if (internalInventory.Count == 1) // se for o primeiro item
+        {
+            if (ArmsManager.Instance != null)
+                ArmsManager.Instance.EquipItem(GetSelectedItem());
+        }
     }
 
     /// <summary>
@@ -71,6 +77,8 @@ public class QuickInventoryManager : MonoBehaviour
                 slot.quantity -= quantity;
                 Debug.Log($"[QuickInventoryManager] Removeu {item.itemName} x{quantity}");
 
+                bool wasEquipped = (i == selectedIndex); // verifica se era o item equipado
+
                 if (slot.quantity <= 0)
                 {
                     Debug.Log($"[QuickInventoryManager] Removeu slot vazio de {item.itemName}");
@@ -81,11 +89,29 @@ public class QuickInventoryManager : MonoBehaviour
                         selectedIndex = Mathf.Max(0, internalInventory.Count - 1);
                 }
 
+                // 🔹 Atualiza UI
                 OnInventoryChanged?.Invoke();
+
+                // 🔹 Atualiza o item equipado
+                if (ArmsManager.Instance != null)
+                {
+                    if (internalInventory.Count == 0)
+                    {
+                        // Nenhum item restante — desequipa tudo
+                        ArmsManager.Instance.EquipItem(null);
+                    }
+                    else if (wasEquipped)
+                    {
+                        // Se o item removido era o equipado, equipa o novo selecionado
+                        ArmsManager.Instance.EquipItem(GetSelectedItem());
+                    }
+                }
+
                 return;
             }
         }
     }
+
 
     /// <summary>
     /// Retorna item atualmente selecionado.
@@ -116,6 +142,8 @@ public class QuickInventoryManager : MonoBehaviour
 
         Debug.Log($"[QuickInventoryManager] Próximo slot: {oldIndex} ➜ {selectedIndex}");
         OnInventoryChanged?.Invoke();
+        if (ArmsManager.Instance != null)
+            ArmsManager.Instance.EquipItem(GetSelectedItem());
     }
 
     /// <summary>
@@ -130,5 +158,7 @@ public class QuickInventoryManager : MonoBehaviour
 
         Debug.Log($"[QuickInventoryManager] Slot anterior: {oldIndex} ➜ {selectedIndex}");
         OnInventoryChanged?.Invoke();
+        if (ArmsManager.Instance != null)
+            ArmsManager.Instance.EquipItem(GetSelectedItem());
     }
 }

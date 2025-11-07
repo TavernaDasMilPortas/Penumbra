@@ -108,7 +108,10 @@ public class InteractionHandler : MonoBehaviour
         //Gizmos.color = Color.yellow;
         //Gizmos.DrawWireSphere(transform.position, overlapRadius);
     }
-
+    public void Refresh()
+    {
+        FindInteractable();
+    }
 
     // Função para desenhar “cilindro” como gizmo (linha grossa)
 

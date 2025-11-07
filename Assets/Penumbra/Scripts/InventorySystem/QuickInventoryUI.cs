@@ -14,13 +14,17 @@ public class QuickSlotUI
 public class QuickInventoryUI : MonoBehaviour
 {
     [Header("Referências HUD")]
-    public Transform slotContainer;
+    public RectTransform slotContainer;
     public GameObject slotPrefab;
     public Image selectedHighlight;
     public TMP_Text selectedItemName;
 
     private List<QuickSlotUI> slotUIs = new List<QuickSlotUI>();
     private Coroutine nameFadeRoutine;
+    private Coroutine alignRoutine;
+
+    private Canvas rootCanvas;
+    private RectTransform canvasRT;
 
     private void OnEnable()
     {
@@ -36,7 +40,21 @@ public class QuickInventoryUI : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("[QuickInventoryUI] Iniciado.");
+        rootCanvas = slotContainer.GetComponentInParent<Canvas>();
+        if (rootCanvas == null)
+        {
+            Debug.LogError("[QuickInventoryUI] Nenhum Canvas encontrado!");
+            return;
+        }
+
+        canvasRT = rootCanvas.transform as RectTransform;
+
+        if (selectedHighlight != null)
+        {
+            selectedHighlight.transform.SetParent(rootCanvas.transform, false);
+            selectedHighlight.transform.SetAsLastSibling();
+        }
+
         RefreshUI();
     }
 
@@ -55,58 +73,53 @@ public class QuickInventoryUI : MonoBehaviour
             QuickInventoryManager.Instance.SelectNext();
     }
 
-    /// <summary>
-    /// Atualiza a UI de acordo com o inventário interno.
-    /// </summary>
+    // =====================================================
+    // Atualiza completamente a UI do inventário rápido
+    // =====================================================
     public void RefreshUI()
     {
-        if (QuickInventoryManager.Instance == null)
+        if (QuickInventoryManager.Instance == null) return;
+
+        var inventory = QuickInventoryManager.Instance.internalInventory;
+
+        // 🔹 Se o inventário estiver vazio, desativa highlight e limpa texto
+        if (inventory.Count == 0)
         {
-            Debug.LogError("[QuickInventoryUI] QuickInventoryManager não encontrado!");
+            if (selectedHighlight != null)
+                selectedHighlight.enabled = false;
+
+            if (selectedItemName != null)
+                selectedItemName.text = "";
+
+            // Remove slots antigos
+            foreach (var s in slotUIs)
+                if (s?.slotObject != null)
+                    Destroy(s.slotObject);
+
+            slotUIs.Clear();
             return;
         }
 
-        var inventory = QuickInventoryManager.Instance.internalInventory;
-        Debug.Log($"[QuickInventoryUI] Atualizando UI. {inventory.Count} slots no inventário.");
-
-        // 🔹 Remove slots que não existem mais
+        // 🔹 Remove slots excedentes
         while (slotUIs.Count > inventory.Count)
         {
-            int lastIndex = slotUIs.Count - 1;
-            Destroy(slotUIs[lastIndex].slotObject);
-            slotUIs.RemoveAt(lastIndex);
+            int last = slotUIs.Count - 1;
+            if (slotUIs[last]?.slotObject != null)
+                Destroy(slotUIs[last].slotObject);
+            slotUIs.RemoveAt(last);
         }
 
-        // 🔹 Cria novos slots se necessário
+        // 🔹 Cria novos slots
         while (slotUIs.Count < inventory.Count)
         {
-            var slotData = inventory[slotUIs.Count];
-            if (slotData.item == null) continue;
-
-            if (slotPrefab == null)
-            {
-                Debug.LogError("[QuickInventoryUI] SlotPrefab não atribuído!");
-                return;
-            }
-
+            if (slotPrefab == null) return;
             GameObject obj = Instantiate(slotPrefab, slotContainer);
             Image icon = obj.transform.Find("Icon")?.GetComponent<Image>();
 
-            if (icon == null)
-            {
-                Debug.LogError("[QuickInventoryUI] Prefab de slot precisa de um filho 'Icon' com componente Image!");
-                Destroy(obj);
-                return;
-            }
-
-            slotUIs.Add(new QuickSlotUI
-            {
-                slotObject = obj,
-                icon = icon
-            });
+            slotUIs.Add(new QuickSlotUI { slotObject = obj, icon = icon });
         }
 
-        // 🔹 Atualiza ícones existentes
+        // 🔹 Atualiza ícones
         for (int i = 0; i < slotUIs.Count; i++)
         {
             var slotData = inventory[i];
@@ -122,28 +135,62 @@ public class QuickInventoryUI : MonoBehaviour
             slotUI.icon.sprite = slotData.item.icon;
         }
 
-        // 🔹 Atualiza destaque
-        UpdateHighlight();
+        // 🔹 Atualiza destaque com leve delay
+        if (alignRoutine != null) StopCoroutine(alignRoutine);
+        alignRoutine = StartCoroutine(DelayedHighlightUpdate());
     }
 
-    private void UpdateHighlight()
+    private IEnumerator DelayedHighlightUpdate()
     {
+        yield return new WaitForEndOfFrame();
+        UpdateHighlight(true);
+    }
+
+    // =====================================================
+    // Atualiza posição e nome do item selecionado
+    // =====================================================
+    private void UpdateHighlight(bool instant = false)
+    {
+        if (selectedHighlight == null) return;
+
         var inventory = QuickInventoryManager.Instance.internalInventory;
 
-        if (slotUIs.Count == 0)
+        // 🔹 Se não houver itens, desativa o highlight e limpa o nome
+        if (inventory == null || inventory.Count == 0 || slotUIs.Count == 0)
         {
             selectedHighlight.enabled = false;
-            selectedItemName.text = "";
+            if (selectedItemName != null)
+                selectedItemName.text = "";
             return;
         }
 
-        int selectedIndex = QuickInventoryManager.Instance.selectedIndex;
-        selectedIndex = Mathf.Clamp(selectedIndex, 0, slotUIs.Count - 1);
+        int selectedIndex = Mathf.Clamp(QuickInventoryManager.Instance.selectedIndex, 0, slotUIs.Count - 1);
+        var slotUI = slotUIs[selectedIndex];
 
+        if (slotUI?.slotObject == null)
+        {
+            selectedHighlight.enabled = false;
+            return;
+        }
+
+        RectTransform iconRT = slotUI.icon.GetComponent<RectTransform>();
+        RectTransform highlightRT = selectedHighlight.rectTransform;
+
+        Camera cam = rootCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : rootCanvas.worldCamera;
+
+        // Centraliza o highlight no ícone
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(cam, iconRT.TransformPoint(iconRT.rect.center));
+        Vector2 localPoint;
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRT, screenPoint, cam, out localPoint))
+        {
+            highlightRT.anchoredPosition = localPoint;
+        }
+
+        // Não mexe no tamanho, escala ou rotação — deixa manual no editor
         selectedHighlight.enabled = true;
-        selectedHighlight.transform.SetParent(slotUIs[selectedIndex].slotObject.transform, false);
-        selectedHighlight.transform.SetAsFirstSibling();
+        selectedHighlight.transform.SetAsLastSibling();
 
+        // Atualiza nome do item
         var selectedItem = inventory[selectedIndex].item;
         if (selectedItem != null)
             StartNameFade(selectedItem.itemName);
@@ -151,6 +198,9 @@ public class QuickInventoryUI : MonoBehaviour
             selectedItemName.text = "";
     }
 
+    // =====================================================
+    // Fade suave do nome do item selecionado
+    // =====================================================
     private void StartNameFade(string itemName)
     {
         if (nameFadeRoutine != null)
