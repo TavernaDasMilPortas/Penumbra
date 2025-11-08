@@ -34,7 +34,11 @@ public class InputManager : MonoBehaviour
         }
 
         lastState = GameStateManager.Instance.CurrentState;
-
+        if (GameStateManager.Instance.CurrentState != InputState.Gameplay)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
         switch (GameStateManager.Instance.CurrentState)
         {
             case InputState.Gameplay:
@@ -130,8 +134,7 @@ public class InputManager : MonoBehaviour
     {
         if (DocumentViewer.Instance == null || DocumentViewer.Instance.CurrentDocument == null) return;
         var doc = DocumentViewer.Instance.CurrentDocument;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+
         // Avançar / virar página
         if (Input.GetKeyDown(KeyCode.E))
         {

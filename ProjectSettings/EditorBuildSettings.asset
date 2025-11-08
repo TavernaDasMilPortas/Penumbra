@@ -4,6 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Penumbra/Scenes/Main Menu.unity
+    guid: 53a769c335b775b48963d3d1316ae68a
+  - enabled: 1
+    path: Assets/Penumbra/Scenes/MainGame.unity
+    guid: 55fea53316c9c874a8a86e50de0d8393
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

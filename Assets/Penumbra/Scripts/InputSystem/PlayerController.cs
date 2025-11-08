@@ -28,16 +28,6 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
     }
 
-    void Update()
-    {
-        if (GameStateManager.Instance.CurrentState == InputState.Gameplay)
-        {
-            HandleMovement();
-            HandleMouseLook();
-        }
-
-    }
-
     // === Movimento com WASD ===
     public void HandleMovement()
     {

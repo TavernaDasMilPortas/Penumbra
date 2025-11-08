@@ -22,49 +22,31 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
+        GameStateManager.Instance.SetState(InputState.Pause);
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
-
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     public void Home()
     {
         Time.timeScale = 1f;
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-
+        GameStateManager.Instance.SetState(InputState.Menu);
         SceneManager.LoadScene("Main Menu");
     }
 
     public void Resume()
     {
+        GameStateManager.Instance.RestorePreviousState();
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
-
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void Restart()
     {
         Time.timeScale = 1f;
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-
+        GameStateManager.Instance.SetState(InputState.Menu);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    void Start()
-    {
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
 
 }

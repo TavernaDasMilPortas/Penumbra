@@ -18,3 +18,5 @@ MonoBehaviour:
   consumable: 0
   handPrefab: {fileID: 4760963328404456366, guid: 69b6219b205db5e4fa385d6a9bc27923, type: 3}
   leftArmState: 
+  placementOffset: {x: 0, y: -0.3, z: 0}
+  placementRotationOffset: {x: 0, y: 0, z: 0}
