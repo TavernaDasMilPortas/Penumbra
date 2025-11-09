@@ -7,6 +7,9 @@ public class ItemHolder : MonoBehaviour, IInteractable
     public GameObject currentItemObject; // Instância física atual
     public Item currentItem; // Dados do item contido
 
+    [Header("Controle de Interação")]
+    public bool interactionLocked = false; // 🔒 Bloqueia colocar/pegar itens quando true
+
     [TextArea]
     public string interactionMessage = "Pressione E para interagir";
 
@@ -22,6 +25,12 @@ public class ItemHolder : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        if (interactionLocked)
+        {
+            Debug.LogWarning($"[ItemHolder] Interação bloqueada em {gameObject.name}!");
+            return;
+        }
+
         Debug.Log($"[ItemHolder] Interact() chamado em {gameObject.name} — currentItem: {(currentItem ? currentItem.itemName : "nenhum")}");
 
         if (currentItemObject == null)
@@ -36,6 +45,12 @@ public class ItemHolder : MonoBehaviour, IInteractable
 
     private void TryPlaceItem()
     {
+        if (interactionLocked)
+        {
+            Debug.LogWarning($"[ItemHolder] Tentou colocar item, mas interação está bloqueada ({gameObject.name}).");
+            return;
+        }
+
         Debug.Log("[ItemHolder] Tentando colocar item...");
 
         Item selectedItem = QuickInventoryManager.Instance.GetSelectedItem();
@@ -94,9 +109,14 @@ public class ItemHolder : MonoBehaviour, IInteractable
         Debug.Log($"[ItemHolder] Colocou item: {selectedItem.itemName}");
     }
 
-
     private void TryTakeItem()
     {
+        if (interactionLocked)
+        {
+            Debug.LogWarning($"[ItemHolder] Tentou pegar item, mas interação está bloqueada ({gameObject.name}).");
+            return;
+        }
+
         Debug.Log($"[ItemHolder] Tentando pegar item em {gameObject.name}");
 
         if (currentItem == null)
@@ -129,15 +149,15 @@ public class ItemHolder : MonoBehaviour, IInteractable
         interactionMessage = "Clique esquerdo para colocar um item.";
         Debug.Log("[ItemHolder] Estado limpo, pronto para novo item.");
 
-        // 🔄 Atualiza o handler de interação, se existir
         if (InteractionHandler.Instance != null)
         {
-            Debug.Log("[ItemHolder] Atualizando InteractionHandler...");
             InteractionHandler.Instance.Refresh();
         }
-        else
-        {
-            Debug.LogWarning("[ItemHolder] Nenhum InteractionHandler ativo na cena.");
-        }
+    }
+
+    // 🔓 Métodos auxiliares para scripts externos
+    public void LockHolder(bool state)
+    {
+        interactionLocked = state;
     }
 }

@@ -1928,6 +1928,7 @@ MonoBehaviour:
   itemSpawnPoint: {fileID: 0}
   currentItemObject: {fileID: 0}
   currentItem: {fileID: 0}
+  interactionLocked: 0
   interactionMessage: Pressione E para interagir
 --- !u!1 &611466052
 GameObject:
@@ -2124,7 +2125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5997098648222453709, guid: 355f3eb9d5ff9b24bba5a85e1003f2eb, type: 3}
       propertyPath: m_Name
-      value: CandleLocation (3)
+      value: CL3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2831,7 +2832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5997098648222453709, guid: 355f3eb9d5ff9b24bba5a85e1003f2eb, type: 3}
       propertyPath: m_Name
-      value: CandleLocation (2)
+      value: CL2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2841,6 +2842,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1971075148}
   m_SourcePrefab: {fileID: 100100000, guid: 355f3eb9d5ff9b24bba5a85e1003f2eb, type: 3}
+--- !u!1 &861411497
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 861411498}
+  m_Layer: 0
+  m_Name: PuzzleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &861411498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861411497}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1863277654}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &871765546
 GameObject:
   m_ObjectHideFlags: 0
@@ -3298,7 +3330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5997098648222453709, guid: 355f3eb9d5ff9b24bba5a85e1003f2eb, type: 3}
       propertyPath: m_Name
-      value: CandleLocation (1)
+      value: CL1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4807,6 +4839,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: HunterSpawn(1)
   selfTransform: {fileID: 0}
+--- !u!1 &1484709663 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7974380679223572587, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
+  m_PrefabInstance: {fileID: 4742344591387737438}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1500530183
 GameObject:
   m_ObjectHideFlags: 0
@@ -5555,6 +5592,7 @@ MonoBehaviour:
   itemSpawnPoint: {fileID: 0}
   currentItemObject: {fileID: 0}
   currentItem: {fileID: 0}
+  interactionLocked: 0
   interactionMessage: Pressione E para interagir
 --- !u!1 &1718188443
 GameObject:
@@ -6178,6 +6216,7 @@ Transform:
   - {fileID: 1394927236}
   - {fileID: 1973257131}
   - {fileID: 289096333}
+  - {fileID: 861411498}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1878356517
@@ -6687,6 +6726,30 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 594935014663110053, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
   m_PrefabInstance: {fileID: 4742344591387737438}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1962881372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1484709663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b223f86fb3ce354ba8b361c59d578ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holders:
+  - {fileID: 2013579835}
+  - {fileID: 1971075148}
+  - {fileID: 599723451}
+  - {fileID: 1704062880}
+  - {fileID: 2145147540}
+  candleItems:
+  - {fileID: 11400000, guid: 3e5480ed7a012034e9a805298df08620, type: 2}
+  - {fileID: 11400000, guid: eb10f255cfe42434b945f8ea7f42a077, type: 2}
+  - {fileID: 11400000, guid: 873684ae495434e4691fdec8ff86bf30, type: 2}
+  - {fileID: 11400000, guid: efeef6c409d1e0d4bb17c246f636c033, type: 2}
+  - {fileID: 11400000, guid: b8e0e086aa03cab42a5452468257af8d, type: 2}
 --- !u!1 &1971075143 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5997098648222453709, guid: 355f3eb9d5ff9b24bba5a85e1003f2eb, type: 3}
@@ -6712,6 +6775,7 @@ MonoBehaviour:
   itemSpawnPoint: {fileID: 0}
   currentItemObject: {fileID: 0}
   currentItem: {fileID: 0}
+  interactionLocked: 0
   interactionMessage: Pressione E para interagir
 --- !u!1 &1973257130
 GameObject:
@@ -6786,6 +6850,7 @@ MonoBehaviour:
   itemSpawnPoint: {fileID: 0}
   currentItemObject: {fileID: 0}
   currentItem: {fileID: 0}
+  interactionLocked: 0
   interactionMessage: Pressione E para interagir
 --- !u!1 &2054979802 stripped
 GameObject:
@@ -6831,6 +6896,7 @@ MonoBehaviour:
   itemSpawnPoint: {fileID: 0}
   currentItemObject: {fileID: 0}
   currentItem: {fileID: 0}
+  interactionLocked: 0
   interactionMessage: Pressione E para interagir
 --- !u!1001 &2190854327884539916
 PrefabInstance:
@@ -7073,6 +7139,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4409761928865996239, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
+      propertyPath: m_Name
+      value: CL4
+      objectReference: {fileID: 0}
     - target: {fileID: 7974380679223572587, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
       propertyPath: m_Name
       value: SafeItemDesk
@@ -7081,18 +7151,21 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 594935014663110053, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 2013579831}
     - targetCorrespondingSourceObject: {fileID: 594935014663110053, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
-      insertIndex: -1
+      insertIndex: 1
       addedObject: {fileID: 1971075144}
     - targetCorrespondingSourceObject: {fileID: 594935014663110053, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
-      insertIndex: -1
+      insertIndex: 2
       addedObject: {fileID: 599723447}
     - targetCorrespondingSourceObject: {fileID: 594935014663110053, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2145147536}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7974380679223572587, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1962881372}
     - targetCorrespondingSourceObject: {fileID: 4409761928865996239, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1704062880}
@@ -7147,7 +7220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5997098648222453709, guid: 355f3eb9d5ff9b24bba5a85e1003f2eb, type: 3}
       propertyPath: m_Name
-      value: CandleLocation (4)
+      value: CL5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
