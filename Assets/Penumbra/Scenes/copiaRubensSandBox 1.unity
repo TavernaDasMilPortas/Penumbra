@@ -202,6 +202,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vela 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4760963328404456366, guid: 7a0682eb3156a7246b31fee2a90da52d, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3963,7 +3967,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1260232424}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5335,12 +5339,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5522350772437211744, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5522350772437211744, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 8b306ac50ba728a40b86986baa8eee45, type: 2}
+    - target: {fileID: 5522350772437211744, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e1381c05da2a21048867688b6f4567d4, type: 2}
     - target: {fileID: 7974380679223572587, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
       propertyPath: m_Name
       value: SafeItemDesk (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7974380679223572587, guid: 29cb325628c07214c94ee257eefd6847, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
