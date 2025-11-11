@@ -119,112 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &432432459
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 432432461}
-  - component: {fileID: 432432462}
-  m_Layer: 0
-  m_Name: Sky and Fog Volume
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &432432461
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 432432459}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &432432462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 432432459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26d6499a6bd256e47b859377446493a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  fadeRadius: 0
-  priority: 0
-  customPasses:
-  - rid: 283484006626885888
-  - rid: 283484006626885890
-  injectionPoint: 6
-  m_TargetCamera: {fileID: 0}
-  useTargetCamera: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 283484006626885888
-      type: {class: DrawRenderersCustomPass, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
-      data:
-        m_Name: objects
-        enabled: 1
-        targetColorBuffer: 1
-        targetDepthBuffer: 1
-        clearFlags: 3
-        passFoldout: 0
-        m_Version: 0
-        filterFoldout: 1
-        rendererFoldout: 1
-        renderQueueType: 10
-        layerMask:
-          serializedVersion: 2
-          m_Bits: 192
-        sortingCriteria: 59
-        overrideMode: 1
-        overrideMaterial: {fileID: 2100000, guid: 3d1a1d2c1850b074399eb05a2009d138, type: 2}
-        overrideMaterialPassIndex: 0
-        overrideMaterialPassName: FirstPass
-        overrideShader: {fileID: 0}
-        overrideShaderPassIndex: 0
-        overrideShaderPassName: Forward
-        overrideDepthState: 0
-        depthCompareFunction: 4
-        depthWrite: 1
-        overrideStencil: 0
-        stencilReferenceValue: 64
-        stencilWriteMask: 192
-        stencilReadMask: 192
-        stencilCompareFunction: 8
-        stencilPassOperation: 0
-        stencilFailOperation: 0
-        stencilDepthFailOperation: 0
-        shaderPass: 0
-    - rid: 283484006626885890
-      type: {class: FullScreenCustomPass, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
-      data:
-        m_Name: Custom Pass
-        enabled: 1
-        targetColorBuffer: 0
-        targetDepthBuffer: 0
-        clearFlags: 0
-        passFoldout: 0
-        m_Version: 0
-        fullscreenPassMaterial: {fileID: 2100000, guid: 0138e207cf5f54b4198e41463eee8583, type: 2}
-        materialPassIndex: 0
-        materialPassName: Custom Pass 0
-        fetchColorBuffer: 0
 --- !u!1 &695783614
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +132,7 @@ GameObject:
   - component: {fileID: 695783616}
   - component: {fileID: 695783615}
   - component: {fileID: 695783619}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da01327b33407748b81f9d2186a1e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionColor: {r: 1, g: 0.058490515, b: 0.058490515, a: 1}
+  selectionColor: {r: 1, g: 0.0047169924, b: 0.0047169924, a: 1}
 --- !u!1 &1823688464
 GameObject:
   m_ObjectHideFlags: 0
@@ -763,12 +657,137 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3498212041798973223
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: customPasses.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: 'customPasses.Array.data[2]'
+      value: 4279022439133872128
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: 'managedReferences[4279022439133872128]'
+      value: Assembly-CSharp Outline
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].m_Name
+      value: Custom Pass
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].m_Version
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].threshold
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].clearFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].passFoldout
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].outlineShader
+      value: 
+      objectReference: {fileID: -6465566751694194690, guid: 80850997b896cdc4aa3b2697109d79e3, type: 3}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].outlineColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].outlineColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].outlineColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].outlineColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].targetColorBuffer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].targetDepthBuffer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1059275374605274317, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: managedReferences[4279022439133872128].outlineLayer.m_Bits
+      value: 192
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406335589223725533, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_Name
+      value: CustomPass Outline Config
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7091027920565659127, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a0886040a4bfad945a57db9a31d712a5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1823688467}
-  - {fileID: 432432461}
+  - {fileID: 3498212041798973223}
   - {fileID: 2013410475}
   - {fileID: 914386851}
   - {fileID: 695783618}

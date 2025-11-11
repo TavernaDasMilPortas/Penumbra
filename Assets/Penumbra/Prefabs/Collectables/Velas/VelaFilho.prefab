@@ -10,31 +10,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 379.0508
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.931
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -373.2242
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071067
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalRotation.x
@@ -46,11 +46,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -81,10 +81,10 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5284903373205463656}
+      addedObject: {fileID: 8868799537932674298}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 65516de25df468448a1c27b157a23f31, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8868799537932674298}
+      addedObject: {fileID: 4116070043417532881}
   m_SourcePrefab: {fileID: 100100000, guid: 65516de25df468448a1c27b157a23f31, type: 3}
 --- !u!4 &2355280767661331191 stripped
 Transform:
@@ -96,23 +96,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 65516de25df468448a1c27b157a23f31, type: 3}
   m_PrefabInstance: {fileID: 2820689450797774108}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5284903373205463656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3162780164848552013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d81b31d23234b040b8061467f32efc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  requiredItem: {fileID: 0}
-  requiredItemQuantity: 1
-  interactionMessage: Interagiu com Interactable
-  collectableItem: {fileID: 11400000, guid: b6afb2370e3d5ae409fd56dffe1fb5da, type: 2}
-  collectableQuantity: 1
 --- !u!64 &8868799537932674298
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -135,6 +118,23 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: 65516de25df468448a1c27b157a23f31, type: 3}
+--- !u!114 &4116070043417532881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3162780164848552013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965fad9b78fba734bb67fbc07d18c367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiredItem: {fileID: 0}
+  requiredItemQuantity: 1
+  interactionMessage: 
+  collectedItem: {fileID: 11400000, guid: b6afb2370e3d5ae409fd56dffe1fb5da, type: 2}
+  collectedItemQuantity: 1
 --- !u!1001 &6617375122950212134
 PrefabInstance:
   m_ObjectHideFlags: 0

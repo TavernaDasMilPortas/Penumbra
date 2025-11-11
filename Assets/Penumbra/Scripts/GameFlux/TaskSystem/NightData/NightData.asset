@@ -14,19 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nightName: 
   tasks:
-  - rid: 1434773746233639012
+  - rid: 4279022440648278021
   spawnPrefabs:
   - {fileID: 0}
   references:
     version: 2
     RefIds:
-    - rid: 1434773746233639012
-      type: {class: TimedTask, ns: , asm: Assembly-CSharp}
+    - rid: 4279022440648278021
+      type: {class: ProgressiveTask, ns: , asm: Assembly-CSharp}
       data:
         taskName: 
         isCompleted: 0
-        timeLimit: 10
-        elapsedTime: 0
-        failed: 0
         currentProgress: 0
-        targetProgress: 1
+        targetProgress: 5
