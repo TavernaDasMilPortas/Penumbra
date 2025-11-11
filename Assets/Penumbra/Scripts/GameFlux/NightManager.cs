@@ -39,7 +39,11 @@ public class NightManager : MonoBehaviour
         LoadCurrentNightTasks();
         UpdateUI();
     }
-
+    private void Update()
+    {
+        if (taskManager != null)
+            taskManager.UpdateTimedTasks(Time.deltaTime);
+    }
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;

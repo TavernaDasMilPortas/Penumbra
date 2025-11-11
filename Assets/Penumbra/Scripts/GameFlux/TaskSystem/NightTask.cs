@@ -1,6 +1,8 @@
 [System.Serializable]
-public class NightTask
+public abstract class NightTask
 {
     public string taskName;
     public bool isCompleted;
+
+    public abstract void CheckProgress();
 }

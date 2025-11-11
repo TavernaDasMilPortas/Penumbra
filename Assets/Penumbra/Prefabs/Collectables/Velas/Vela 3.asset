@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8948de54074c2a04a81c9fcdbf4cdc7d, type: 3}
+  m_Name: Vela 3
+  m_EditorClassIdentifier: 
+  itemName: Vela 3
+  description: 
+  icon: {fileID: 360942633, guid: 993ecbe10557dc44ca6c66c451360b4b, type: 3}
+  consumable: 0
+  handPrefab: {fileID: 3162780164848552013, guid: 2dd8e9b4fbaa78e479c18a1a58a277cc, type: 3}
+  leftArmState: 

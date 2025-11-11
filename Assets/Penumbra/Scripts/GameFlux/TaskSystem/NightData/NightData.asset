@@ -10,11 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7800252dbc2d45644bae67cf391fc01f, type: 3}
-  m_Name: Noite1
+  m_Name: NightData
   m_EditorClassIdentifier: 
-  nightName: Noite 1
+  nightName: 
   tasks:
-  - taskName: interagir com o quadrado
-    isCompleted: 0
+  - rid: 1434773746233639012
   spawnPrefabs:
-  - {fileID: 1067644997654388716, guid: 6b2cb0b1f38840742badc54127203d16, type: 3}
+  - {fileID: 0}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1434773746233639012
+      type: {class: TimedTask, ns: , asm: Assembly-CSharp}
+      data:
+        taskName: 
+        isCompleted: 0
+        timeLimit: 10
+        elapsedTime: 0
+        failed: 0
+        currentProgress: 0
+        targetProgress: 1
