@@ -37,40 +37,72 @@ public class ItemHolder : InteractableBase
         else
             TryTakeItem();
     }
-
     private void TryPlaceItem()
     {
-        if (!IsInteractable) { Debug.LogWarning($"[ItemHolder] Tentou colocar item, mas interação está bloqueada ({gameObject.name})."); return; }
-        Item selectedItem = QuickInventoryManager.Instance.GetSelectedItem(); if (selectedItem == null) { Debug.LogWarning("[ItemHolder] Nenhum item selecionado no inventário."); return; }
-        Debug.Log($"[ItemHolder] Item selecionado: {selectedItem.itemName}"); 
-        // Instancia o prefab do item
-        if (selectedItem.handPrefab != null) 
-        { currentItemObject = Instantiate(selectedItem.handPrefab, itemSpawnPoint); 
-            currentItemObject.transform.localPosition = Vector3.zero; 
-            currentItemObject.transform.localRotation = Quaternion.identity; 
-            // Tenta alinhar pelo "AlignmentPoint"
-            Transform alignPoint = currentItemObject.transform.Find("AlignmentPoint"); 
+        if (IsInteractable == false)
+        {
+            Debug.LogWarning($"[ItemHolder] Tentou colocar item, mas interação está bloqueada ({gameObject.name}).");
+            return;
+        }
+
+        Debug.Log("[ItemHolder] Tentando colocar item...");
+
+        Item selectedItem = QuickInventoryManager.Instance.GetSelectedItem();
+        if (selectedItem == null)
+        {
+            Debug.LogWarning("[ItemHolder] Nenhum item selecionado no inventário.");
+            return;
+        }
+
+        Debug.Log($"[ItemHolder] Item selecionado: {selectedItem.itemName}");
+
+        if (selectedItem.handPrefab != null)
+        {
+            // Instancia o objeto
+            currentItemObject = Instantiate(selectedItem.handPrefab);
+            currentItemObject.transform.SetParent(itemSpawnPoint);
+
+            // Tenta encontrar o ponto de alinhamento dentro do prefab
+            Transform alignPoint = currentItemObject.transform.Find("AlignmentPoint");
             if (alignPoint != null)
-            { 
-                Vector3 offset = itemSpawnPoint.position - alignPoint.position; 
-                currentItemObject.transform.position += offset; 
-                currentItemObject.transform.rotation = itemSpawnPoint.rotation; 
-            } 
+            {
+                // Calcula o deslocamento necessário para alinhar o ponto ao spawn
+                Vector3 offset = itemSpawnPoint.position - alignPoint.position;
+                currentItemObject.transform.position += offset;
+
+                // Igualar rotação do holder
+                currentItemObject.transform.rotation = itemSpawnPoint.rotation;
+            }
             else
-            { 
-                Debug.LogWarning($"[ItemHolder] Nenhum 'AlignmentPoint' encontrado em {selectedItem.handPrefab.name}. Usando posição padrão."); 
-            } 
-            // Offset e rotação definidos pelo item
-             currentItemObject.transform.position += currentItemObject.transform.TransformDirection(selectedItem.placementOffset); 
-            currentItemObject.transform.Rotate(selectedItem.placementRotationOffset, Space.Self); } 
-        else { Debug.LogWarning($"[ItemHolder] O item '{selectedItem.itemName}' não possui um handPrefab definido."); 
-        } currentItem = selectedItem; QuickInventoryManager.Instance.RemoveItem(selectedItem, 1); 
-        InteractionMessage = $"Pressione E para pegar {selectedItem.itemName}"; 
-        Debug.Log($"[ItemHolder] Colocou item: {selectedItem.itemName}"); 
+            {
+                // Se não tiver ponto de alinhamento, apenas centraliza
+                currentItemObject.transform.position = itemSpawnPoint.position;
+                currentItemObject.transform.rotation = itemSpawnPoint.rotation;
+                Debug.LogWarning($"[ItemHolder] Nenhum 'AlignmentPoint' encontrado em {selectedItem.handPrefab.name}. Usando posição padrão.");
+            }
+
+            // Aplica offset manual definido no item (se houver)
+            currentItemObject.transform.position += currentItemObject.transform.TransformDirection(selectedItem.placementOffset);
+
+            // Aplica rotação adicional
+            currentItemObject.transform.Rotate(selectedItem.placementRotationOffset, Space.Self);
+
+            Debug.Log($"[ItemHolder] Instanciou prefab '{selectedItem.handPrefab.name}' em {itemSpawnPoint.position}");
+        }
+        else
+        {
+            Debug.LogWarning($"[ItemHolder] O item '{selectedItem.itemName}' não possui um handPrefab definido.");
+        }
+
+        currentItem = selectedItem;
+        QuickInventoryManager.Instance.RemoveItem(selectedItem, 1);
+
+        InteractionMessage = $"Pressione E para pegar {selectedItem.itemName}";
+        Debug.Log($"[ItemHolder] Colocou item: {selectedItem.itemName}");
     }
 
 
-        private void TryTakeItem()
+    private void TryTakeItem()
     {
         if (currentItem == null)
         {
