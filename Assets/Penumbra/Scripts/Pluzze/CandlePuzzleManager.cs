@@ -47,18 +47,20 @@ public class CandlePuzzleManager : PuzzleManager
         {
             holder.LockHolder(false);
 
-            // 🔹 Procura um IInteractable dentro do holder
-            var interactable = holder.GetComponentInChildren<IInteractable>();
-            if (interactable != null)
+            // Pega todos os IInteractable dentro do holder, inclusive filhos inativos
+            var interactables = holder.GetComponentsInChildren<IInteractable>(true);
+
+            foreach (var interactable in interactables)
             {
-                // Tenta desativar a interação, se possível
-                if (interactable is InteractableBase baseInteractable)
+                // Evita afetar o próprio holder se ele também implementar IInteractable
+                if (interactable is InteractableBase baseInteractable && interactable != holder)
                 {
                     baseInteractable.IsInteractable = false;
+                    Debug.Log($"Desativou interação em {baseInteractable.gameObject.name} dentro de {holder.name}");
                 }
-
             }
         }
+
 
         OnPuzzleSolved();
     }
