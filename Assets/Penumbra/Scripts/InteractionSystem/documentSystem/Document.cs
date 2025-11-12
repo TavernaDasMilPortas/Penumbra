@@ -1,28 +1,16 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]
-public class Document : MonoBehaviour, IInteractable
+public class Document : InteractableBase
 {
     [Header("Referência ao Documento")]
-    public DocumentData documentData;
+    [SerializeField] public DocumentData documentData;
 
     [Header("Estado Atual")]
-    public int currentPageIndex = 0;
-    public bool showingBackSide = false;
+    [SerializeField] private int currentPageIndex = 0;
+    [SerializeField] private bool showingBackSide = false;
 
     private MeshRenderer meshRenderer;
-
-    [Header("Item necessário para interação (opcional)")]
-    public Item requiredItem;
-    public int requiredItemQuantity = 1;
-
-    [TextArea]
-    public string interactionMessage = "Interagiu com Interactable";
-
-    public Item RequiredItem => requiredItem;
-    public int RequiredItemQuantity => requiredItemQuantity;
-    public string InteractionMessage => interactionMessage;
-
     private DocumentViewer viewer;
 
     private void Awake()
@@ -32,16 +20,16 @@ public class Document : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        ApplyDocumentMaterial();
         viewer = FindObjectOfType<DocumentViewer>();
         if (viewer == null)
             Debug.LogWarning("[Document] Nenhum DocumentViewer encontrado na cena!");
+
+        ApplyDocumentMaterial();
+
+        InteractionMessage = "Pressione E para ler o documento";
     }
 
-    /// <summary>
-    /// Aplica o material base do documento (feito apenas uma vez).
-    /// </summary>
-    public void ApplyDocumentMaterial()
+    private void ApplyDocumentMaterial()
     {
         if (documentData == null)
         {
@@ -54,30 +42,30 @@ public class Document : MonoBehaviour, IInteractable
             meshRenderer.material = mat;
     }
 
-    /// <summary>
-    /// Retorna o texto da página atual (frente ou verso).
-    /// </summary>
     public string GetCurrentText()
     {
         return documentData?.GetPageText(currentPageIndex, showingBackSide) ?? string.Empty;
     }
 
-    public void Interact()
+    public override void Interact()
     {
-        if (RequiredItem == null)
+        if (!IsInteractable)
         {
-            StartReading();
+            Debug.LogWarning($"[Document] {gameObject.name} não está interagível no momento.");
+            return;
         }
-        else
+
+        if (RequiredItem != null && !QuickInventoryManager.Instance.HasItem(RequiredItem, RequiredItemQuantity))
         {
-            Debug.Log("Item necessário: " + RequiredItem.itemName);
+            ActionHintManager.Instance.ShowHint("E", $"Necessita: {RequiredItem.itemName} x{RequiredItemQuantity}");
+            Debug.Log($"[Document] Item necessário: {RequiredItem.itemName}");
+            return;
         }
+
+        StartReading();
     }
 
-    /// <summary>
-    /// Inicia a leitura do documento, mudando o game state e abrindo o viewer.
-    /// </summary>
-    public void StartReading()
+    private void StartReading()
     {
         if (viewer == null)
         {
@@ -87,25 +75,22 @@ public class Document : MonoBehaviour, IInteractable
 
         currentPageIndex = 0;
         showingBackSide = false;
+
         viewer.OpenDocument(this);
         GameStateManager.Instance.SetState(InputState.Document);
+
+        ActionHintManager.Instance.ClearHints();
         ActionHintManager.Instance.ShowHint("E", "Próxima Página");
         ActionHintManager.Instance.ShowHint("Q", "Página Anterior");
         ActionHintManager.Instance.ShowHint("Esc", "Fechar Documento");
     }
 
-
-
-    /// <summary>
-    /// Avança para a próxima página ou mostra verso se aplicável.
-    /// </summary>
     public void ContinueReading()
     {
         if (documentData == null || viewer == null) return;
 
         var page = documentData.pages[currentPageIndex];
 
-        // TwoSide: se ainda não mostramos o verso, mostrar agora
         if (page.sideMode == DocumentPage.PageSideMode.TwoSide && !showingBackSide)
         {
             showingBackSide = true;
@@ -113,18 +98,15 @@ public class Document : MonoBehaviour, IInteractable
             return;
         }
 
-        // Próxima página
         if (currentPageIndex < documentData.pages.Count - 1)
         {
             currentPageIndex++;
-            showingBackSide = false; // sempre começar a nova página pelo lado da frente
+            showingBackSide = false;
             viewer.UpdatePage(this);
         }
         else
         {
-            // Última página → fechar documento
             CloseReading();
-
         }
     }
 
@@ -134,7 +116,6 @@ public class Document : MonoBehaviour, IInteractable
 
         var page = documentData.pages[currentPageIndex];
 
-        // Se a página atual for TwoSide e estamos no verso, volta para frente
         if (page.sideMode == DocumentPage.PageSideMode.TwoSide && showingBackSide)
         {
             showingBackSide = false;
@@ -142,22 +123,15 @@ public class Document : MonoBehaviour, IInteractable
             return;
         }
 
-        // Voltar para página anterior
         if (currentPageIndex > 0)
         {
             currentPageIndex--;
             var prevPage = documentData.pages[currentPageIndex];
-
-            // Se a página anterior for TwoSide, começar mostrando o verso (ao voltar)
-            showingBackSide = prevPage.sideMode == DocumentPage.PageSideMode.TwoSide ? true : false;
+            showingBackSide = prevPage.sideMode == DocumentPage.PageSideMode.TwoSide;
             viewer.UpdatePage(this);
         }
     }
 
-
-    /// <summary>
-    /// Fecha o documento e retorna o game state para gameplay.
-    /// </summary>
     public void CloseReading()
     {
         if (viewer == null) return;
@@ -165,5 +139,6 @@ public class Document : MonoBehaviour, IInteractable
         viewer.CloseDocument();
         GameStateManager.Instance.RestorePreviousState();
         ActionHintManager.Instance.ClearHints();
+        InteractionMessage = "Pressione E para ler o documento";
     }
 }

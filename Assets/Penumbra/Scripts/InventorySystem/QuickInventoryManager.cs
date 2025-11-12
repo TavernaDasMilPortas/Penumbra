@@ -112,7 +112,6 @@ public class QuickInventoryManager : MonoBehaviour
         }
     }
 
-
     /// <summary>
     /// Retorna item atualmente selecionado.
     /// </summary>
@@ -160,5 +159,22 @@ public class QuickInventoryManager : MonoBehaviour
         OnInventoryChanged?.Invoke();
         if (ArmsManager.Instance != null)
             ArmsManager.Instance.EquipItem(GetSelectedItem());
+    }
+
+    // 🔹🔹🔹 NOVO MÉTODO 🔹🔹🔹
+    /// <summary>
+    /// Retorna true se o jogador tiver o item (e quantidade suficiente, se especificada).
+    /// </summary>
+    public bool HasItem(Item item, int quantity = 1)
+    {
+        if (item == null) return false;
+
+        foreach (var slot in internalInventory)
+        {
+            if (slot.item == item && slot.quantity >= quantity)
+                return true;
+        }
+
+        return false;
     }
 }

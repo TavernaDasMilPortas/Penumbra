@@ -56,9 +56,6 @@ public abstract class PuzzleManager : MonoBehaviour
         Debug.Log($"✅ {name}: Puzzle resolvido!");
 
         // Bloqueia todos os holders
-        foreach (var holder in holders)
-        {
-            holder.LockHolder(true);
-        }
+
     }
 }

@@ -69,7 +69,7 @@ public class InputManager : MonoBehaviour
         {
             //MenuManager.Instance?.ToggleMainMenu();
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && InteractionHandler.Instance.nearestInteractable != null)
         {
             PlayerController.Instance.Interagir();
         }

@@ -1,36 +1,51 @@
 using UnityEngine;
 
-public class Collectable : MonoBehaviour, IInteractable
+[RequireComponent(typeof(Collider))]
+public class Collectable : InteractableBase
 {
-    [Header("Item necessário para interação (opcional)")]
-    public Item requiredItem;
-    public int requiredItemQuantity = 1;
+    [Header("Item a ser Coletado")]
+    [SerializeField] private Item collectableItem;
+    [SerializeField] private int collectableQuantity = 1;
 
-    [TextArea]
-    public string interactionMessage = "Interagiu com Interactable";
-
-    [Header("Item adquirido")]
-    public Item collectableItem;
-    public int collectableQuantity = 1;
-    public Item RequiredItem => requiredItem;
-    public int RequiredItemQuantity => requiredItemQuantity;
-    public string InteractionMessage => interactionMessage;
-
-    public void Interact()
+    private void Awake()
     {
-        if (RequiredItem == null)
+        if (collectableItem == null)
+            Debug.LogWarning($"[Collectable] {name} não possui um item configurado para coleta.");
+    }
+
+    public override void Interact()
+    {
+        if (!IsInteractable)
         {
-            PerformInteraction();
+            Debug.Log($"[Collectable] {name} não está interagível no momento.");
+            return;
         }
-        else
+
+        // ✅ Se há item requerido, verifica no inventário
+        if (RequiredItem != null)
         {
-            Debug.Log("Item necessário: " + RequiredItem.itemName);
+            if (!QuickInventoryManager.Instance.HasItem(RequiredItem, RequiredItemQuantity))
+            {
+                Debug.Log($"[Collectable] Você precisa de {RequiredItemQuantity}x {RequiredItem.itemName} para coletar este item.");
+                return;
+            }
         }
+
+        PerformInteraction();
     }
 
     private void PerformInteraction()
     {
+        if (collectableItem == null)
+        {
+            Debug.LogWarning($"[Collectable] Nenhum item configurado para coleta em {name}!");
+            return;
+        }
+
         QuickInventoryManager.Instance.AddItem(collectableItem, collectableQuantity);
+        Debug.Log($"[Collectable] Coletou {collectableQuantity}x {collectableItem.itemName}");
+
+        IsInteractable = false;
         Destroy(gameObject);
     }
 }

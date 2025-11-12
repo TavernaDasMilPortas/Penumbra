@@ -12,6 +12,9 @@ public class Interactabletest : MonoBehaviour, IInteractable
     public Item RequiredItem => requiredItem;
     public int RequiredItemQuantity => requiredItemQuantity;
     public string InteractionMessage => interactionMessage;
+    [Header("Flag")]
+    public bool isInteractable;
+    public bool IsInteractable => isInteractable;
 
     public void Interact()
     {

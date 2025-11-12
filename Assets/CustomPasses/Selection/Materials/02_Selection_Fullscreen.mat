@@ -39,8 +39,8 @@ Material:
     - _SamplePrecision: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _InnerColor: {r: 0.1254902, g: 0.1254902, b: 0.1254902, a: 0}
-    - _OuterColor: {r: 1, g: 1, b: 1, a: 1}
+    - _InnerColor: {r: 0.12549016, g: 0.12549016, b: 0.12549016, a: 1}
+    - _OuterColor: {r: 0.9719955, g: 1, b: 0, a: 1}
     - _TextureSize: {r: 23, g: 16, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

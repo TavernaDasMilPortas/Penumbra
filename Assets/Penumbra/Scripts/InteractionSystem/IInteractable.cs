@@ -6,4 +6,7 @@ public interface IInteractable
     Item RequiredItem { get; }
     int RequiredItemQuantity { get; }
     string InteractionMessage { get; }
+    bool IsInteractable  { get; }
+
+
 }

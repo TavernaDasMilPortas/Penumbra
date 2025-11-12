@@ -42,7 +42,25 @@ public class CandlePuzzleManager : PuzzleManager
                 return;
         }
 
-        // Se chegou aqui, está certo
+        // Se chegou aqui, o puzzle está correto
+        foreach (var holder in holders)
+        {
+            holder.LockHolder(false);
+
+            // 🔹 Procura um IInteractable dentro do holder
+            var interactable = holder.GetComponentInChildren<IInteractable>();
+            if (interactable != null)
+            {
+                // Tenta desativar a interação, se possível
+                if (interactable is InteractableBase baseInteractable)
+                {
+                    baseInteractable.IsInteractable = false;
+                }
+
+            }
+        }
+
         OnPuzzleSolved();
     }
+
 }

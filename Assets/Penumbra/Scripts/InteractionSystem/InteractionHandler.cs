@@ -1,15 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+using System.Collections.Generic;
 
 public class InteractionHandler : MonoBehaviour
 {
     public static InteractionHandler Instance { get; private set; }
 
-    [Header("Configurações Raycast")]
-    public float interactionDistance = 5f; // raio do raycast
+    [Header("ConfiguraÃ§Ãµes Raycast")]
+    public float interactionDistance = 5f;
     public LayerMask interactionLayer;
 
-    [Header("Configurações Overlap")]
-    public float overlapRadius = 2f; // raio do OverlapSphere
+    [Header("ConfiguraÃ§Ãµes Overlap")]
+    public float overlapRadius = 2f;
     public LayerMask overlapLayer;
 
     [Header("Status Atual")]
@@ -18,30 +19,30 @@ public class InteractionHandler : MonoBehaviour
 
     public Camera mainCamera;
 
+    // ðŸ”¹ Armazena a layer original dos objetos destacados
+    private readonly Dictionary<GameObject, int> originalLayers = new();
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
 
-    /// <summary>
-    /// Raycast central da câmera para interação
-    /// </summary>
     public void FindInteractable()
     {
         IInteractable raycastTarget = GetInteractableByRaycast();
         UpdateHighlight(raycastTarget);
+
         if (raycastTarget != null)
         {
             ActionHintManager.Instance.ShowHint("E", "Interagir", priority: 10);
-            return;
         }
-        ActionHintManager.Instance.HideHint("E");
+        else
+        {
+            ActionHintManager.Instance.HideHint("E");
+        }
     }
 
-    /// <summary>
-    /// Retorna o IInteractable detectado pelo raycast ou null
-    /// </summary>
     public IInteractable GetInteractableByRaycast()
     {
         if (mainCamera == null) return null;
@@ -49,45 +50,110 @@ public class InteractionHandler : MonoBehaviour
         Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactionLayer))
         {
-            return hit.collider.GetComponent<IInteractable>();
+            var col = hit.collider;
+            if (col == null) return null;
+
+            if (col.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                try
+                {
+                    if (interactable != null && interactable.IsInteractable)
+                        return interactable;
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogWarning($"InteragÃ­vel encontrado, mas falha ao acessar IsInteractable: {ex.Message}");
+                }
+            }
         }
 
         return null;
     }
 
-    /// <summary>
-    /// Função separada para detectar o mais próximo usando OverlapSphere
-    /// </summary>
-    public IInteractable GetNearestByOverlap()
+    private void UpdateHighlight(IInteractable newInteractable)
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, overlapRadius, overlapLayer);
-
-        IInteractable closest = null;
-        float shortestDistance = float.MaxValue;
-
-        foreach (Collider hit in hits)
+        // ðŸ”¸ Verifica se o Ãºltimo interagÃ­vel ainda existe
+        if (lastHighlighted != null)
         {
-            IInteractable interactable = hit.GetComponent<IInteractable>();
-            if (interactable == null) continue;
-
-            float distance = Vector3.Distance(transform.position, hit.transform.position);
-            if (distance < shortestDistance)
+            var lastMB = lastHighlighted as MonoBehaviour;
+            if (lastMB == null || lastMB.gameObject == null)
             {
-                shortestDistance = distance;
-                closest = interactable;
+                // O objeto foi destruÃ­do, entÃ£o limpamos a referÃªncia
+                lastHighlighted = null;
             }
         }
 
-        return closest;
-    }
+        // ðŸ”¸ Evita processar se for o mesmo interagÃ­vel ainda ativo
+        if (newInteractable == lastHighlighted)
+            return;
 
-    private void UpdateHighlight(IInteractable newInteractable)
-    {
-        nearestInteractable = newInteractable;
+        // ðŸ”¸ Remove o destaque do anterior (se ainda existe)
+        if (lastHighlighted != null)
+        {
+            var lastMB = lastHighlighted as MonoBehaviour;
+            if (lastMB != null && lastMB.gameObject != null)
+                RestoreOriginalLayer(lastMB.gameObject);
+        }
 
-        //OutlineManager.Instance?.Highlight(newInteractable);
+        // ðŸ”¸ Aplica destaque no novo objeto (se vÃ¡lido e nÃ£o destruÃ­do)
+        if (newInteractable != null)
+        {
+            var newMB = newInteractable as MonoBehaviour;
+            if (newMB != null && newMB.gameObject != null)
+                ApplyOutlineLayer(newMB.gameObject);
+        }
 
         lastHighlighted = newInteractable;
+        nearestInteractable = newInteractable;
+    }
+
+
+    /// <summary>
+    /// Coloca o objeto (e filhos) na layer "OutlineObject" e salva as layers originais.
+    /// </summary>
+    private void ApplyOutlineLayer(GameObject obj)
+    {
+        int outlineLayer = LayerMask.NameToLayer("OutlineObject");
+        if (outlineLayer == -1)
+        {
+            Debug.LogWarning("Layer 'OutlineObject' nÃ£o existe! Crie-a no Project Settings > Tags and Layers.");
+            return;
+        }
+
+        if (!originalLayers.ContainsKey(obj))
+            SaveOriginalLayers(obj);
+
+        SetLayerRecursively(obj, outlineLayer);
+    }
+
+    /// <summary>
+    /// Restaura as layers originais salvas quando o objeto deixa de ser destacado.
+    /// </summary>
+    private void RestoreOriginalLayer(GameObject obj)
+    {
+        if (obj == null) return;
+
+        if (originalLayers.TryGetValue(obj, out int originalLayer))
+        {
+            SetLayerRecursively(obj, originalLayer);
+            originalLayers.Remove(obj);
+        }
+    }
+
+    /// <summary>
+    /// Salva a layer atual (antes do destaque).
+    /// </summary>
+    private void SaveOriginalLayers(GameObject obj)
+    {
+        if (obj == null) return;
+        originalLayers[obj] = obj.layer;
+    }
+
+    private void SetLayerRecursively(GameObject obj, int layer)
+    {
+        obj.layer = layer;
+        foreach (Transform child in obj.transform)
+            SetLayerRecursively(child.gameObject, layer);
     }
 
     private void OnDrawGizmosSelected()
@@ -95,24 +161,14 @@ public class InteractionHandler : MonoBehaviour
         if (mainCamera != null)
         {
             Gizmos.color = Color.gray;
-
-            // origem e direção do Raycast
             Vector3 start = mainCamera.transform.position;
             Vector3 end = start + mainCamera.transform.forward * interactionDistance;
-
-            // desenha apenas a linha do Raycast
             Gizmos.DrawLine(start, end);
         }
-
-        // opcional: visualize o OverlapSphere
-        //Gizmos.color = Color.yellow;
-        //Gizmos.DrawWireSphere(transform.position, overlapRadius);
     }
+
     public void Refresh()
     {
         FindInteractable();
     }
-
-    // Função para desenhar “cilindro” como gizmo (linha grossa)
-
 }

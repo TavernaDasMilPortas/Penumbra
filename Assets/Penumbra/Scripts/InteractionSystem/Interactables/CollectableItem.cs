@@ -14,13 +14,17 @@ public class CollectableItem : MonoBehaviour, IInteractable
     public Item collectedItem;
     public int collectedItemQuantity = 1;
 
+    [Header("Flag")]
+    public bool isInteractable = true;
+    public bool IsInteractable => isInteractable;
     public Item RequiredItem => requiredItem;
     public int RequiredItemQuantity => requiredItemQuantity;
     public string InteractionMessage => interactionMessage;
+    
 
     public void Interact()
     {
-        if (RequiredItem == null)
+        if (RequiredItem == null && isInteractable == true)
         {
             interactionMessage = "Coletou " + collectedItem.itemName;
             PerformInteraction();

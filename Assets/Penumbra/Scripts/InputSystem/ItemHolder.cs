@@ -1,163 +1,97 @@
 ﻿using UnityEngine;
 
-public class ItemHolder : MonoBehaviour, IInteractable
+public class ItemHolder : InteractableBase
 {
     [Header("Configuração do Holder")]
-    public Transform itemSpawnPoint; // Onde o item físico será colocado
-    public GameObject currentItemObject; // Instância física atual
-    public Item currentItem; // Dados do item contido
+    [SerializeField] private Transform itemSpawnPoint;
+    [SerializeField] public GameObject currentItemObject;
+    [SerializeField] public Item currentItem;
 
-    [Header("Controle de Interação")]
-    public bool interactionLocked = false; // 🔒 Bloqueia colocar/pegar itens quando true
-
-    [TextArea]
-    public string interactionMessage = "Pressione E para interagir";
-
-    public Item RequiredItem => null;
-    public int RequiredItemQuantity => 0;
-    public string InteractionMessage => interactionMessage;
 
     private void Start()
     {
         if (itemSpawnPoint == null)
             itemSpawnPoint = transform;
+
+        if (string.IsNullOrEmpty(InteractionMessage))
+            InteractionMessage = "Clique esquerdo para colocar um item.";
     }
 
-    public void Interact()
+    public override void Interact()
     {
-        if (interactionLocked)
+        if (!IsInteractable)
         {
             Debug.LogWarning($"[ItemHolder] Interação bloqueada em {gameObject.name}!");
             return;
         }
 
-        Debug.Log($"[ItemHolder] Interact() chamado em {gameObject.name} — currentItem: {(currentItem ? currentItem.itemName : "nenhum")}");
+        if (RequiredItem != null && !QuickInventoryManager.Instance.HasItem(RequiredItem, RequiredItemQuantity))
+        {
+            ActionHintManager.Instance.ShowHint("E", $"Necessita: {RequiredItem.itemName} x{RequiredItemQuantity}");
+            Debug.Log($"[ItemHolder] Item necessário: {RequiredItem.itemName}");
+            return;
+        }
 
         if (currentItemObject == null)
-        {
             TryPlaceItem();
-        }
         else
-        {
             TryTakeItem();
-        }
     }
 
     private void TryPlaceItem()
     {
-        if (interactionLocked)
-        {
-            Debug.LogWarning($"[ItemHolder] Tentou colocar item, mas interação está bloqueada ({gameObject.name}).");
-            return;
-        }
-
-        Debug.Log("[ItemHolder] Tentando colocar item...");
-
-        Item selectedItem = QuickInventoryManager.Instance.GetSelectedItem();
-        if (selectedItem == null)
-        {
-            Debug.LogWarning("[ItemHolder] Nenhum item selecionado no inventário.");
-            return;
-        }
-
-        Debug.Log($"[ItemHolder] Item selecionado: {selectedItem.itemName}");
-
-        if (selectedItem.handPrefab != null)
-        {
-            // Instancia o objeto
-            currentItemObject = Instantiate(selectedItem.handPrefab);
-            currentItemObject.transform.SetParent(itemSpawnPoint);
-
-            // Tenta encontrar o ponto de alinhamento dentro do prefab
-            Transform alignPoint = currentItemObject.transform.Find("AlignmentPoint");
-
+        if (!IsInteractable) { Debug.LogWarning($"[ItemHolder] Tentou colocar item, mas interação está bloqueada ({gameObject.name})."); return; }
+        Item selectedItem = QuickInventoryManager.Instance.GetSelectedItem(); if (selectedItem == null) { Debug.LogWarning("[ItemHolder] Nenhum item selecionado no inventário."); return; }
+        Debug.Log($"[ItemHolder] Item selecionado: {selectedItem.itemName}"); 
+        // Instancia o prefab do item
+        if (selectedItem.handPrefab != null) 
+        { currentItemObject = Instantiate(selectedItem.handPrefab, itemSpawnPoint); 
+            currentItemObject.transform.localPosition = Vector3.zero; 
+            currentItemObject.transform.localRotation = Quaternion.identity; 
+            // Tenta alinhar pelo "AlignmentPoint"
+            Transform alignPoint = currentItemObject.transform.Find("AlignmentPoint"); 
             if (alignPoint != null)
-            {
-                // Calcula o deslocamento necessário para alinhar o ponto ao spawn
-                Vector3 offset = itemSpawnPoint.position - alignPoint.position;
-                currentItemObject.transform.position += offset;
-
-                // Igualar rotação do holder
-                currentItemObject.transform.rotation = itemSpawnPoint.rotation;
-            }
+            { 
+                Vector3 offset = itemSpawnPoint.position - alignPoint.position; 
+                currentItemObject.transform.position += offset; 
+                currentItemObject.transform.rotation = itemSpawnPoint.rotation; 
+            } 
             else
-            {
-                // Se não tiver ponto de alinhamento, apenas centraliza
-                currentItemObject.transform.position = itemSpawnPoint.position;
-                currentItemObject.transform.rotation = itemSpawnPoint.rotation;
-                Debug.LogWarning($"[ItemHolder] Nenhum 'AlignmentPoint' encontrado em {selectedItem.handPrefab.name}. Usando posição padrão.");
-            }
-
-            // Aplica offset manual definido no item (se houver)
-            currentItemObject.transform.position +=
-                currentItemObject.transform.TransformDirection(selectedItem.placementOffset);
-
-            // Aplica rotação adicional
-            currentItemObject.transform.Rotate(selectedItem.placementRotationOffset, Space.Self);
-
-            Debug.Log($"[ItemHolder] Instanciou prefab '{selectedItem.handPrefab.name}' em {itemSpawnPoint.position}");
-        }
-        else
-        {
-            Debug.LogWarning($"[ItemHolder] O item '{selectedItem.itemName}' não possui um handPrefab definido.");
-        }
-
-        currentItem = selectedItem;
-        QuickInventoryManager.Instance.RemoveItem(selectedItem, 1);
-
-        interactionMessage = $"Pressione E para pegar {selectedItem.itemName}";
-        Debug.Log($"[ItemHolder] Colocou item: {selectedItem.itemName}");
+            { 
+                Debug.LogWarning($"[ItemHolder] Nenhum 'AlignmentPoint' encontrado em {selectedItem.handPrefab.name}. Usando posição padrão."); 
+            } 
+            // Offset e rotação definidos pelo item
+             currentItemObject.transform.position += currentItemObject.transform.TransformDirection(selectedItem.placementOffset); 
+            currentItemObject.transform.Rotate(selectedItem.placementRotationOffset, Space.Self); } 
+        else { Debug.LogWarning($"[ItemHolder] O item '{selectedItem.itemName}' não possui um handPrefab definido."); 
+        } currentItem = selectedItem; QuickInventoryManager.Instance.RemoveItem(selectedItem, 1); 
+        InteractionMessage = $"Pressione E para pegar {selectedItem.itemName}"; 
+        Debug.Log($"[ItemHolder] Colocou item: {selectedItem.itemName}"); 
     }
 
-    private void TryTakeItem()
+
+        private void TryTakeItem()
     {
-        if (interactionLocked)
-        {
-            Debug.LogWarning($"[ItemHolder] Tentou pegar item, mas interação está bloqueada ({gameObject.name}).");
-            return;
-        }
-
-        Debug.Log($"[ItemHolder] Tentando pegar item em {gameObject.name}");
-
         if (currentItem == null)
         {
             Debug.LogWarning("[ItemHolder] Nenhum currentItem encontrado, operação cancelada.");
             return;
         }
 
-        Debug.Log($"[ItemHolder] Item atual: {currentItem.itemName}");
-        Debug.Log($"[ItemHolder] currentItemObject existe? {(currentItemObject != null ? "Sim" : "Não")}");
-
-        // Adiciona o item de volta ao inventário
         QuickInventoryManager.Instance.AddItem(currentItem, 1);
-        Debug.Log($"[ItemHolder] Adicionou {currentItem.itemName} de volta ao inventário.");
 
         if (currentItemObject != null)
-        {
-            Debug.Log($"[ItemHolder] Destruindo objeto físico '{currentItemObject.name}'");
-            DestroyImmediate(currentItemObject);
-            Debug.Log("[ItemHolder] Objeto físico destruído.");
-        }
-        else
-        {
-            Debug.LogWarning("[ItemHolder] Nenhum objeto físico para destruir (currentItemObject estava null).");
-        }
+            Destroy(currentItemObject);
 
         currentItemObject = null;
         currentItem = null;
 
-        interactionMessage = "Clique esquerdo para colocar um item.";
-        Debug.Log("[ItemHolder] Estado limpo, pronto para novo item.");
-
-        if (InteractionHandler.Instance != null)
-        {
-            InteractionHandler.Instance.Refresh();
-        }
+        InteractionMessage = "Clique esquerdo para colocar um item.";
+        InteractionHandler.Instance?.Refresh();
     }
 
-    // 🔓 Métodos auxiliares para scripts externos
     public void LockHolder(bool state)
     {
-        interactionLocked = state;
+        IsInteractable = state;
     }
 }
