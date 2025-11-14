@@ -45,7 +45,7 @@ public class CandlePuzzleManager : PuzzleManager
         // Se chegou aqui, o puzzle está correto
         foreach (var holder in holders)
         {
-            holder.LockHolder(false);
+            //holder.LockHolder(false);
 
             // Pega todos os IInteractable dentro do holder, inclusive filhos inativos
             var interactables = holder.GetComponentsInChildren<IInteractable>(true);

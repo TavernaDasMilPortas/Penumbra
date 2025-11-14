@@ -164,7 +164,7 @@ public class FusePuzzleManager : PuzzleManager
         // Se chegou aqui, puzzle resolvido!
         foreach (var holder in holders)
         {
-            holder.LockHolder(false);
+            //holder.LockHolder(false);
 
             var interactables = holder.GetComponentsInChildren<IInteractable>(true);
             foreach (var interactable in interactables)

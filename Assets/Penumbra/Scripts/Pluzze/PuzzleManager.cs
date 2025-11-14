@@ -28,7 +28,8 @@ public abstract class PuzzleManager : MonoBehaviour
     protected virtual void Update()
     {
         if (puzzleSolved) return;
-
+        if (holders == null || lastSetup == null || holders.Count != lastSetup.Count)
+            return;
         bool changed = false;
 
         // Verifica se algum holder mudou de item
