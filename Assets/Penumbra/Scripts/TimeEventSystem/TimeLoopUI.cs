@@ -1,15 +1,23 @@
 using UnityEngine;
-using UnityEngine.UI; // troque por TMPro se for usar TextMeshPro
 using TMPro;
+
 public class TimeLoopUI : MonoBehaviour
 {
     [Header("Referências")]
     public TimeLoopManager timeLoopManager;
     public TextMeshProUGUI timerText;
+    public RightArmController rightArm; // <-- adicionado
 
-    void Update()
+    private void Update()
     {
-        if (timeLoopManager == null || timerText == null) return;
+        if (timeLoopManager == null || timerText == null || rightArm == null)
+            return;
+
+        // Mostra apenas quando estiver segurando Q
+        timerText.enabled = rightArm.IsHoldingUp;
+
+        if (!rightArm.IsHoldingUp)
+            return;
 
         float currentTime = timeLoopManager.CurrentTime;
 

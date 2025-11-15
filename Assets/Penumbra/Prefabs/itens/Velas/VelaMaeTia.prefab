@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3350807933222956716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6698735767456272391}
+  m_Layer: 0
+  m_Name: AlignmentPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6698735767456272391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3350807933222956716}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.92, y: -7.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5281168043100249810}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1201049851921076046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,6 +176,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 04a69727b0634fc46954b347855ab2ac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6698735767456272391}
     - targetCorrespondingSourceObject: {fileID: -2577548232221058511, guid: 04a69727b0634fc46954b347855ab2ac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2196274767103971490}
@@ -239,6 +273,11 @@ MonoBehaviour:
   requiredItemQuantity: 0
   collectableItem: {fileID: 11400000, guid: be811ceae5a4ccf499f60d430b4262a0, type: 2}
   collectableQuantity: 1
+--- !u!4 &5281168043100249810 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 04a69727b0634fc46954b347855ab2ac, type: 3}
+  m_PrefabInstance: {fileID: 5674750106090338617}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8969456038656145209 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5568371526223589888, guid: 04a69727b0634fc46954b347855ab2ac, type: 3}

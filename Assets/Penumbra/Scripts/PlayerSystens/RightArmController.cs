@@ -22,8 +22,10 @@ public class RightArmController : MonoBehaviour
     private GameObject lampInstance;
     private bool isVisible = false;
 
-    // Estado interno
     private bool isHoldingUp = false;
+
+    // Permite que a UI leia o estado
+    public bool IsHoldingUp => isHoldingUp;
 
     private void Awake()
     {

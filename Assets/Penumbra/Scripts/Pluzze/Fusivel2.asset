@@ -20,4 +20,7 @@ MonoBehaviour:
   leftArmState: 
   placementOffset: {x: 0, y: 0, z: 0}
   placementRotationOffset: {x: 0, y: 0, z: 0}
+  placementScaleOffset: {x: 1, y: 1, z: 1}
+  alignmentMode: 2
+  alignmentPointName: AlignmentPoint
   color: 1

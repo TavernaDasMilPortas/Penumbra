@@ -70,14 +70,29 @@ public class QuickInventoryManager : MonoBehaviour
             newSlot.instances.Add(instance);
         }
 
+        // --- ADICIONA AO INVENTÁRIO ---
+        bool wasEmpty = internalInventory.Count == 0;
+
         internalInventory.Add(newSlot);
+
+        // dispara UI
         OnInventoryChanged?.Invoke();
 
-        // equipe automaticamente se for o primeiro item
-        if (internalInventory.Count == 1 && ArmsManager.Instance != null)
+        // --- EQUIPA AUTOMATICAMENTE SE ERA O PRIMEIRO ITEM ---
+        if (wasEmpty && ArmsManager.Instance != null)
         {
-            ArmsManager.Instance.EquipItem(GetSelectedItem());
+            selectedIndex = 0;
+
+            // garantir que existe instância física
+            if (newSlot.instances.Count > 0)
+            {
+                var inst = newSlot.instances[0];
+                inst.SetActive(true); // <- OBRIGATÓRIO
+            }
+
+            ArmsManager.Instance.EquipItem(item);
         }
+
     }
 
     /// <summary>Remove quantidade do inventário (não remove instâncias físicas a menos que slot esvazie).</summary>

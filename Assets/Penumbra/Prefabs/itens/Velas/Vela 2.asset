@@ -19,4 +19,7 @@ MonoBehaviour:
   handPrefab: {fileID: 246423756739855893, guid: a170974cfeb0327459dd382fa65f5089, type: 3}
   leftArmState: 
   placementOffset: {x: 0, y: -0.3, z: 0}
-  placementRotationOffset: {x: 90, y: 0, z: 0}
+  placementRotationOffset: {x: -90, y: 0, z: 0}
+  placementScaleOffset: {x: 10, y: 10, z: 10}
+  alignmentMode: 1
+  alignmentPointName: AlignmentPoint

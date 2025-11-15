@@ -9,6 +9,15 @@ public class ItemInstance : MonoBehaviour
     [Tooltip("Point de origem onde o item deve voltar quando desativado")]
     public Point originPoint;
 
+    [Tooltip("Layer original do item antes de ir para a mão")]
+    public int originalLayer;
+
+    private void Awake()
+    {
+        // Se ainda não foi configurado, registra automaticamente
+        originalLayer = gameObject.layer;
+    }
+
     /// <summary>Retorna o Transform do point associado (seguro mesmo que point seja null).</summary>
     public Transform GetOriginTransform()
     {

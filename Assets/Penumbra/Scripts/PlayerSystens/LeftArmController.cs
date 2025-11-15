@@ -5,12 +5,31 @@ public class LeftArmController : MonoBehaviour
     [Header("Socket onde o item será parentado")]
     public Transform itemSocket;
 
+    [Header("Layer do item quando está na mão")]
+    public LayerMask handLayerMask;
+
+    private int handLayer;
     private GameObject currentItemModel;
     private Item currentItemData;
 
+    private void Awake()
+    {
+        // converte LayerMask → número da layer
+        if (handLayerMask.value != 0)
+            handLayer = Mathf.RoundToInt(Mathf.Log(handLayerMask.value, 2));
+        else
+        {
+            handLayer = -1;
+            Debug.LogError("[LeftArm] LayerMask da mão não configurado!");
+        }
+    }
+
     public void SetEquippedItem(Item newItem)
     {
-        // devolve item atual ao seu origin e desativa
+        // ===============================
+        // DEVOLVE ITEM ATUAL AO ORIGIN
+        // ===============================
+
         if (currentItemModel != null)
         {
             var inst = currentItemModel.GetComponent<ItemInstance>();
@@ -18,7 +37,15 @@ public class LeftArmController : MonoBehaviour
             {
                 Transform origin = inst.GetOriginTransform();
                 if (origin != null)
+                {
                     currentItemModel.transform.SetParent(origin, worldPositionStays: true);
+                    currentItemModel.transform.position = origin.position;
+                    currentItemModel.transform.rotation = origin.rotation;
+                    currentItemModel.transform.localScale = inst.data.placementScaleOffset;
+                }
+
+                // restaura layer original
+                SetLayerRecursively(currentItemModel, inst.originalLayer);
             }
 
             currentItemModel.SetActive(false);
@@ -26,11 +53,14 @@ public class LeftArmController : MonoBehaviour
             currentItemData = null;
         }
 
-        currentItemData = newItem;
+        // ===============================
+        // CONFIGURA NOVO ITEM
+        // ===============================
 
+        currentItemData = newItem;
         if (newItem == null) return;
 
-        // pega instância física do QuickInventory (não remove do inventário)
+        // pega instância física correta do inventário
         var instObj = QuickInventoryManager.Instance.GetSelectedInstance();
         if (instObj == null)
         {
@@ -40,18 +70,39 @@ public class LeftArmController : MonoBehaviour
 
         currentItemModel = instObj;
 
-        // Reparent: parenta e garante posição igual ao pai (world) antes de aplicar offsets
+        // ===============================
+        // PREPARA PARA EQUIPAR (NÃO ativa ainda)
+        // ===============================
+
+        currentItemModel.SetActive(false); // impede artefatos visuais
+
+        // Parent SEM manter posição mundial
         currentItemModel.transform.SetParent(itemSocket, worldPositionStays: false);
 
-        // force position = parent position (world)
+        // Força posição = posição do socket
         currentItemModel.transform.position = itemSocket.position;
         currentItemModel.transform.rotation = itemSocket.rotation;
 
-        // aplica offsets do Item (convertendo offsets relativos ao pai)
+        // Aplica offsets
         currentItemModel.transform.localPosition = newItem.placementOffset;
         currentItemModel.transform.localEulerAngles = newItem.placementRotationOffset;
-        currentItemModel.transform.localScale = Vector3.one;
+        currentItemModel.transform.localScale = newItem.placementScaleOffset;
+
+        // Aplica layer da mão
+        if (handLayer != -1)
+            SetLayerRecursively(currentItemModel, handLayer);
+
+        // ===============================
+        // AGORA ATIVA NO FRAME CORRETO
+        // ===============================
 
         currentItemModel.SetActive(true);
+    }
+
+    private void SetLayerRecursively(GameObject obj, int layer)
+    {
+        obj.layer = layer;
+        foreach (Transform t in obj.transform)
+            SetLayerRecursively(t.gameObject, layer);
     }
 }

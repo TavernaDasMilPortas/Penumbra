@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using static Item;
 
 public class ItemHolder : InteractableBase
 {
@@ -39,50 +40,77 @@ public class ItemHolder : InteractableBase
 
     private void TryPlaceItem()
     {
-        if (!IsInteractable)
-        {
-            Debug.LogWarning($"[ItemHolder] Tentou colocar item, mas interação está bloqueada ({gameObject.name}).");
-            return;
-        }
-
         Item selectedItem = QuickInventoryManager.Instance.GetSelectedItem();
-        if (selectedItem == null)
-        {
-            Debug.LogWarning("[ItemHolder] Nenhum item selecionado no inventário.");
-            return;
-        }
+        if (selectedItem == null) return;
 
-        // Remove a instância física do slot selecionado (se houver)
         var instance = QuickInventoryManager.Instance.RemoveInstanceFromSelectedSlot();
-        if (instance == null)
-        {
-            Debug.LogWarning("[ItemHolder] Não há instância física disponível para colocar no holder.");
-            return;
-        }
+        if (instance == null) return;
 
-        // Parent e posicione na spawn point do holder (posição do pai)
+        // ----------------------------
+        // 0) RESTAURAR LAYER ORIGINAL
+        // ----------------------------
+        var instComp = instance.GetComponent<ItemInstance>();
+        if (instComp != null)
+            SetLayerRecursively(instance, instComp.originalLayer);
+
+        // ----------------------------
+        // 1) Parentar SEM manter posição
+        // ----------------------------
         instance.transform.SetParent(itemSpawnPoint, worldPositionStays: false);
 
-        // força posição igual ao pai (sem contar offsets)
-        instance.transform.position = itemSpawnPoint.position;
-        instance.transform.rotation = itemSpawnPoint.rotation;
+        // ----------------------------
+        // 2) Aplicar rotação e escala DEFINITIVOS
+        // ----------------------------
+        instance.transform.localRotation = Quaternion.Euler(selectedItem.placementRotationOffset);
+        instance.transform.localScale = selectedItem.placementScaleOffset;
 
-        // aplica offsets do SO
-        instance.transform.localPosition = selectedItem.placementOffset;
-        instance.transform.localEulerAngles = selectedItem.placementRotationOffset;
-        instance.transform.localScale = Vector3.one;
+        // ----------------------------
+        // 3) Resetar posição ao spawn
+        // ----------------------------
+        instance.transform.localPosition = Vector3.zero;
 
+        // ----------------------------
+        // 4) CALCULAR alinhamento após rotação e escala
+        // ----------------------------
+        Transform alignmentPoint = instance.transform.Find(selectedItem.alignmentPointName);
+
+        if (alignmentPoint != null && selectedItem.alignmentMode != ItemAlignmentMode.None)
+        {
+            Vector3 worldAP = alignmentPoint.position;
+            Vector3 targetPos = itemSpawnPoint.position;
+
+            Vector3 delta = Vector3.zero;
+
+            switch (selectedItem.alignmentMode)
+            {
+                case ItemAlignmentMode.Vertical:
+                    delta = new Vector3(0, targetPos.y - worldAP.y, 0);
+                    break;
+
+                case ItemAlignmentMode.Horizontal:
+                    delta = new Vector3(targetPos.x - worldAP.x, 0, targetPos.z - worldAP.z);
+                    break;
+            }
+
+            instance.transform.position += delta;
+        }
+        else
+        {
+            instance.transform.localPosition = selectedItem.placementOffset;
+        }
+
+        // ----------------------------
+        // 5) Ativa instância e conclui
+        // ----------------------------
         instance.SetActive(true);
-
         currentItemObject = instance;
         currentItem = selectedItem;
 
-        // Atualiza mensagem / UI
         InteractionMessage = $"Pressione E para pegar {selectedItem.itemName}";
         InteractionHandler.Instance?.Refresh();
-
-        Debug.Log($"[ItemHolder] Colocou item: {selectedItem.itemName}");
     }
+
+
 
     private void TryTakeItem()
     {
@@ -109,6 +137,7 @@ public class ItemHolder : InteractableBase
             instance.transform.SetParent(instComp.originPoint.selfTransform, worldPositionStays: false);
             instance.transform.position = instComp.originPoint.selfTransform.position;
             instance.transform.rotation = instComp.originPoint.selfTransform.rotation;
+            instance.transform.localScale = instComp.data.placementScaleOffset;
         }
         else
         {
@@ -126,5 +155,13 @@ public class ItemHolder : InteractableBase
     public void LockHolder(bool state)
     {
         IsInteractable = state;
+    }
+
+
+    private void SetLayerRecursively(GameObject obj, int layer)
+    {
+        obj.layer = layer;
+        foreach (Transform child in obj.transform)
+            SetLayerRecursively(child.gameObject, layer);
     }
 }

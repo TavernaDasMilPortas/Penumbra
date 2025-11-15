@@ -17,15 +17,17 @@ public class Collectable : InteractableBase
         itemInstance = GetComponent<ItemInstance>();
         if (itemInstance == null)
         {
-            // se não existir, cria e configura
+            // cria ItemInstance
             itemInstance = gameObject.AddComponent<ItemInstance>();
             itemInstance.data = collectableItem;
         }
 
-        // tenta preservar originPoint se já atribuído
+        // 🔥 REGISTRA LAYER ORIGINAL (ESSENCIAL)
+        itemInstance.originalLayer = gameObject.layer;
+
+        // tenta preservar originPoint se já existir
         if (itemInstance.originPoint == null)
         {
-            // tenta achar um Point pai próximo
             var p = GetComponentInParent<Point>();
             if (p != null) itemInstance.originPoint = p;
         }
@@ -52,14 +54,13 @@ public class Collectable : InteractableBase
             return;
         }
 
-        // adiciona o item no inventário, passando a referência física (este gameObject)
+        // adiciona no inventário a referência física
         QuickInventoryManager.Instance.AddItem(collectableItem, collectableQuantity, gameObject);
         Debug.Log($"[Collectable] Coletou {collectableQuantity}x {collectableItem.itemName}");
 
-        // marca não interagível
         IsInteractable = false;
 
-        // parenta no point de origem (se existir) e desativa
+        // envia o objeto para seu origin e o desativa
         if (itemInstance != null && itemInstance.originPoint != null)
         {
             transform.SetParent(itemInstance.originPoint.selfTransform, worldPositionStays: true);
