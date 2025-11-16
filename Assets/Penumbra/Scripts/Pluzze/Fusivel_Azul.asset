@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10998de94aca9fc479897deab351e94a, type: 3}
-  m_Name: Fusivel1
+  m_Name: Fusivel_Azul
   m_EditorClassIdentifier: 
   itemName: Fusivel
   description: 
   icon: {fileID: 79017971, guid: 4a3b36c7a8527d8499577f5faa50a2af, type: 3}
   consumable: 0
-  handPrefab: {fileID: 847368719982304604, guid: 3e7530f224ec08f49925ef27175d6c0f, type: 3}
+  handPrefab: {fileID: 847368719982304604, guid: e1026b9b711ed684194f3d3dff53eb57, type: 3}
   leftArmState: 
   placementOffset: {x: 0, y: 0, z: 0}
   placementRotationOffset: {x: 0, y: 0, z: 0}
   placementScaleOffset: {x: 1, y: 1, z: 1}
   alignmentMode: 2
   alignmentPointName: AlignmentPoint
-  color: 0
+  color: 1

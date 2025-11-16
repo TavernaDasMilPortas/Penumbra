@@ -1,184 +1,196 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class FusePuzzleManager : PuzzleManager
 {
-    [Header("Configuração de Cores e Materiais")]
-    [Tooltip("Quantidade de cores diferentes que serão usadas neste puzzle.")]
-    [Range(1, 5)]
+    [Header("Cores e Materiais Disponíveis")]
     public int colorCount = 3;
-
-    [Tooltip("Materiais disponíveis para cada cor de fusível.")]
     public List<FuseColorMaterial> colorMaterials = new List<FuseColorMaterial>();
 
-    [Header("Sockets dos Fusíveis")]
+    [Header("ScriptableObjects de Cada Cor")]
+    public List<Fuse> fuseDefinitions = new List<Fuse>();
+
+    [Header("Sockets (definem tudo: switch, point, holder)")]
     public List<FuseSocket> sockets = new List<FuseSocket>();
 
     private Dictionary<FuseColor, Material> materialMap = new();
+    private Dictionary<FuseColor, Fuse> fuseMap = new();
+
+    private List<FuseColor> correctColorOrder = new();
 
     protected override void Start()
     {
         base.Start();
 
-        // Cria mapa de materiais por cor
+        // Mapa Material → Cor
         foreach (var cm in colorMaterials)
-        {
             if (!materialMap.ContainsKey(cm.color))
                 materialMap.Add(cm.color, cm.material);
-        }
 
-        // Configura cada socket com cor e materiais
-        AssignColorsToSockets();
-        GenerateCorrectSetup();
+        // Mapa FuseSO → Cor
+        foreach (var fuse in fuseDefinitions)
+            if (!fuseMap.ContainsKey(fuse.color))
+                fuseMap.Add(fuse.color, fuse);
+
+        AssignColors();
+        GenerateCorrectOrder();
+
+        // Aplica material aos fusíveis que já foram instanciados pelo AutoItemSpawner
+        ApplyMaterialsToSpawnedFuses();
     }
 
-    private void AssignColorsToSockets()
+    // --------------------------------------------------------------------
+    // 1) ATRIBUI COR + MATERIAL + SCRIPTABLE + CONFIGURA POINT
+    // --------------------------------------------------------------------
+    private void AssignColors()
     {
-        List<FuseColor> allColors = new List<FuseColor>(
-            (FuseColor[])System.Enum.GetValues(typeof(FuseColor))
-        );
+        List<FuseColor> allColors = new((FuseColor[])System.Enum.GetValues(typeof(FuseColor)));
 
-        // Limita ao número de cores disponíveis
-        int usableColors = Mathf.Clamp(colorCount, 1, allColors.Count);
+        int usable = Mathf.Clamp(colorCount, 1, allColors.Count);
+        List<FuseColor> selected = new();
 
-        // Escolhe N cores aleatórias únicas
-        List<FuseColor> selectedColors = new List<FuseColor>();
-        while (selectedColors.Count < usableColors)
+        // PICK N CORES ÚNICAS
+        while (selected.Count < usable)
         {
-            FuseColor randomColor = allColors[Random.Range(0, allColors.Count)];
-            if (!selectedColors.Contains(randomColor))
-                selectedColors.Add(randomColor);
+            FuseColor c = allColors[Random.Range(0, allColors.Count)];
+            if (!selected.Contains(c))
+                selected.Add(c);
         }
 
-        // 🔹 Embaralha a lista de sockets para distribuir de forma aleatória
-        List<FuseSocket> shuffledSockets = new List<FuseSocket>(sockets);
-        for (int i = 0; i < shuffledSockets.Count; i++)
+        // EMBARALHA SOCKETS
+        List<FuseSocket> shuffled = new List<FuseSocket>(sockets);
+        for (int i = 0; i < shuffled.Count; i++)
         {
-            int rand = Random.Range(i, shuffledSockets.Count);
-            (shuffledSockets[i], shuffledSockets[rand]) = (shuffledSockets[rand], shuffledSockets[i]);
+            int r = Random.Range(i, shuffled.Count);
+            (shuffled[i], shuffled[r]) = (shuffled[r], shuffled[i]);
         }
 
-        // 🔹 Garante que cada cor apareça ao menos uma vez
-        int colorIndex = 0;
-        for (int i = 0; i < shuffledSockets.Count; i++)
+        // ATRIBUI AS CORES
+        for (int i = 0; i < shuffled.Count; i++)
         {
-            FuseColor chosenColor;
+            FuseColor chosen =
+                (i < selected.Count)
+                ? selected[i]
+                : selected[Random.Range(0, selected.Count)];
 
-            // Nas primeiras N posições, use uma de cada cor
-            if (i < selectedColors.Count)
+            var socket = shuffled[i];
+            socket.color = chosen;
+
+            // ★ APLICA MATERIAL AO SWITCH
+            ApplyMaterialToSwitch(socket, chosen);
+
+            // ★ APLICA SCRIPTABLE OBJECT
+            if (fuseMap.TryGetValue(chosen, out Fuse fuseSO))
             {
-                chosenColor = selectedColors[i];
+                socket.assignedFuse = fuseSO;
+                if (socket.fusePoint != null)
+                    socket.fusePoint.spawnItem = fuseSO;
             }
-            else
-            {
-                // Depois disso, repita aleatoriamente entre as cores disponíveis
-                chosenColor = selectedColors[Random.Range(0, selectedColors.Count)];
-            }
-
-            FuseSocket socket = shuffledSockets[i];
-            socket.color = chosenColor;
-
-            ApplyMaterialToSocket(socket, chosenColor);
         }
 
-        Debug.Log($"🔧 Distribuição final de fusíveis: {string.Join(", ", shuffledSockets.ConvertAll(s => s.color.ToString()))}");
+        Debug.Log("🔧 Cores aplicadas aos sockets: " +
+            string.Join(", ", sockets.ConvertAll(s => s.color.ToString())));
     }
 
-
-    private void ApplyMaterialToSocket(FuseSocket socket, FuseColor color)
+    // --------------------------------------------------------------------
+    // 2) APLICA MATERIAL AOS INTERRUPTORES
+    // --------------------------------------------------------------------
+    private void ApplyMaterialToSwitch(FuseSocket socket, FuseColor color)
     {
-        if (!materialMap.TryGetValue(color, out Material mat))
-        {
-            Debug.LogWarning($"[FusePuzzle] Material não encontrado para cor {color}");
+        if (!materialMap.TryGetValue(color, out var mat))
             return;
+
+        if (socket.switchObject == null)
+            return;
+
+        Transform f1 = socket.switchObject.transform.Find("Fita");
+        Transform f2 = socket.switchObject.transform.Find("Fita2");
+
+        if (f1 != null)
+        {
+            Renderer r1 = f1.GetComponent<Renderer>();
+            if (r1 != null) r1.material = mat;
         }
 
-        // Fusível visual (se existir)
-        if (socket.fuseVisual != null)
+        if (f2 != null)
         {
-            Renderer fuseRenderer = socket.fuseVisual.GetComponentInChildren<Renderer>();
-            if (fuseRenderer != null)
-                fuseRenderer.material = mat;
-            socket.fuseRenderer = fuseRenderer;
-        }
-
-        // Interruptor (fita e fita2)
-        if (socket.switchObject != null)
-        {
-            Transform fita1 = socket.switchObject.transform.Find("Fita");
-            Transform fita2 = socket.switchObject.transform.Find("Fita2");
-
-            if (fita1 != null)
-            {
-                Renderer r1 = fita1.GetComponent<Renderer>();
-                if (r1 != null) r1.material = mat;
-                socket.fitaRenderer1 = r1;
-            }
-
-            if (fita2 != null)
-            {
-                Renderer r2 = fita2.GetComponent<Renderer>();
-                if (r2 != null) r2.material = mat;
-                socket.fitaRenderer2 = r2;
-            }
+            Renderer r2 = f2.GetComponent<Renderer>();
+            if (r2 != null) r2.material = mat;
         }
     }
 
-    private void GenerateCorrectSetup()
+    // --------------------------------------------------------------------
+    // 3) APLICA MATERIAL AO FUSÍVEL INSTANCIADO NO POINT
+    // --------------------------------------------------------------------
+    private void ApplyMaterialsToSpawnedFuses()
     {
-        correctSetup = new List<Item>();
         foreach (var socket in sockets)
         {
-            if (socket.holder != null && socket.holder.currentItem != null)
-                correctSetup.Add(socket.holder.currentItem);
-            else
-                correctSetup.Add(null);
-        }
+            if (socket.fusePoint == null) continue;
+            if (socket.fusePoint.spawnItem == null) continue;
 
-        // Embaralha a ordem correta
-        for (int i = 0; i < correctSetup.Count; i++)
-        {
-            int rand = Random.Range(i, correctSetup.Count);
-            (correctSetup[i], correctSetup[rand]) = (correctSetup[rand], correctSetup[i]);
-        }
+            Transform t = socket.fusePoint.transform;
+            if (t.childCount == 0) continue;
 
-        Debug.Log("🔌 Ordem correta de fusíveis definida.");
+            GameObject fuseModel = t.GetChild(0).gameObject;
+
+            if (!materialMap.TryGetValue(socket.color, out var mat))
+                continue;
+
+            Renderer[] rends = fuseModel.GetComponentsInChildren<Renderer>(true);
+            foreach (var r in rends)
+                r.material = mat;
+        }
     }
 
+    // --------------------------------------------------------------------
+    // 4) ORDEM CORRETA = ORDEM DOS SOCKETS
+    // --------------------------------------------------------------------
+    private void GenerateCorrectOrder()
+    {
+        correctColorOrder = sockets.ConvertAll(s => s.color);
+
+        Debug.Log("🎯 ORDEM CORRETA: " +
+            string.Join(", ", correctColorOrder));
+    }
+
+    // --------------------------------------------------------------------
+    // 5) CHECAR SOLUÇÃO
+    // --------------------------------------------------------------------
     protected override void CheckSolution()
     {
-        // Verifica se todos os holders estão preenchidos
         for (int i = 0; i < holders.Count; i++)
         {
-            if (currentSetup[i] == null)
+            Fuse fuse = holders[i].currentItem as Fuse;
+            if (fuse == null) return;
+
+            if (fuse.color != correctColorOrder[i])
                 return;
         }
 
-        // Compara com a ordem correta
-        for (int i = 0; i < holders.Count; i++)
-        {
-            if (currentSetup[i] != correctSetup[i])
-                return;
-        }
-
-        // Se chegou aqui, puzzle resolvido!
-        foreach (var holder in holders)
-        {
-            //holder.LockHolder(false);
-
-            var interactables = holder.GetComponentsInChildren<IInteractable>(true);
-            foreach (var interactable in interactables)
-            {
-                if (interactable is InteractableBase baseInteractable && interactable != holder)
-                {
-                    baseInteractable.IsInteractable = false;
-                    Debug.Log($"[FusePuzzle] Desativou interação em {baseInteractable.gameObject.name}");
-                }
-            }
-        }
-
+        Debug.Log("🎉 Puzzle resolvido!");
         OnPuzzleSolved();
     }
+}
+
+
+// --------------------------------------------------------------------
+//       CLASSES DE SUPORTE
+// --------------------------------------------------------------------
+[System.Serializable]
+public class FuseSocket
+{
+    public ItemHolder holder;
+    public GameObject switchObject;
+    public Point fusePoint;
+    public FuseColor color;
+
+    [HideInInspector] public Fuse assignedFuse;
+
+    [HideInInspector] public Renderer fuseRenderer;
+    [HideInInspector] public Renderer fitaRenderer1;
+    [HideInInspector] public Renderer fitaRenderer2;
 }
 
 [System.Serializable]
@@ -188,15 +200,3 @@ public class FuseColorMaterial
     public Material material;
 }
 
-[System.Serializable]
-public class FuseSocket
-{
-    public ItemHolder holder;
-    public GameObject fuseVisual;
-    public GameObject switchObject;
-    public FuseColor color;
-
-    [HideInInspector] public Renderer fuseRenderer;
-    [HideInInspector] public Renderer fitaRenderer1;
-    [HideInInspector] public Renderer fitaRenderer2;
-}

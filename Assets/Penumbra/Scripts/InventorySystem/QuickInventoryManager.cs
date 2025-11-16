@@ -7,20 +7,16 @@ public class QuickSlot
 {
     public Item item;
     public int quantity;
-
-    // referências físicas reais coletadas (cada elemento é um GameObject do mundo)
-    public List<GameObject> instances = new List<GameObject>();
+    public List<GameObject> instances = new();
 }
 
 public class QuickInventoryManager : MonoBehaviour
 {
     public static QuickInventoryManager Instance;
 
-    [Header("Inventário Dinâmico")]
-    public List<QuickSlot> internalInventory = new List<QuickSlot>();
+    public List<QuickSlot> internalInventory = new();
     public int selectedIndex = 0;
 
-    // Evento disparado sempre que o inventário muda
     public event Action OnInventoryChanged;
 
     private void Awake()
@@ -31,196 +27,238 @@ public class QuickInventoryManager : MonoBehaviour
         internalInventory.Clear();
     }
 
-    /// <summary>Adiciona item ao inventário; se 'instance' for fornecido, guarda referência física.</summary>
+    // =====================================================================
+    // ADD ITEM
+    // =====================================================================
     public void AddItem(Item item, int quantity = 1, GameObject instance = null)
     {
         if (item == null) return;
 
-        // procura slot existente
+        bool inventoryWasEmpty = internalInventory.Count == 0;
+
+        // 1) Localiza slot
         QuickSlot slot = internalInventory.Find(s => s.item == item);
-        if (slot != null)
+
+        // 2) Cria slot ou atualiza
+        if (slot == null)
+        {
+            slot = new QuickSlot { item = item, quantity = quantity };
+            internalInventory.Add(slot);
+        }
+        else
         {
             slot.quantity += quantity;
-            if (instance != null)
-            {
-                // garante que a instância esteja configurada como ItemInstance
-                var instComp = instance.GetComponent<ItemInstance>();
-                if (instComp == null) instComp = instance.AddComponent<ItemInstance>();
-                instComp.data = item;
-                slot.instances.Add(instance);
-            }
-
-            OnInventoryChanged?.Invoke();
-            return;
         }
 
-        // cria um novo slot
-        var newSlot = new QuickSlot
-        {
-            item = item,
-            quantity = quantity,
-            instances = new List<GameObject>()
-        };
-
+        // 3) Registra instância física
         if (instance != null)
         {
             var instComp = instance.GetComponent<ItemInstance>();
             if (instComp == null) instComp = instance.AddComponent<ItemInstance>();
             instComp.data = item;
-            newSlot.instances.Add(instance);
+
+            slot.instances.Add(instance);
         }
 
-        // --- ADICIONA AO INVENTÁRIO ---
-        bool wasEmpty = internalInventory.Count == 0;
-
-        internalInventory.Add(newSlot);
-
-        // dispara UI
+        // 4) Dispara atualização de inventário
         OnInventoryChanged?.Invoke();
 
-        // --- EQUIPA AUTOMATICAMENTE SE ERA O PRIMEIRO ITEM ---
-        if (wasEmpty && ArmsManager.Instance != null)
+        // ============================================================
+        //            EQUIPAR AUTOMATICAMENTE O PRIMEIRO ITEM
+        // ============================================================
+        if (inventoryWasEmpty)
         {
             selectedIndex = 0;
 
-            // garantir que existe instância física
-            if (newSlot.instances.Count > 0)
-            {
-                var inst = newSlot.instances[0];
-                inst.SetActive(true); // <- OBRIGATÓRIO
-            }
-
-            ArmsManager.Instance.EquipItem(item);
+            // precisamos esperar 1 frame para garantir que o braço
+            // e os transforms já atualizaram depois do OnInventoryChanged
+            StartCoroutine(EquipNextFrame(item));
         }
-
     }
 
-    /// <summary>Remove quantidade do inventário (não remove instâncias físicas a menos que slot esvazie).</summary>
+    private System.Collections.IEnumerator EquipNextFrame(Item item)
+    {
+        // espera 1 frame
+        yield return null;
+
+        var instObj = GetSelectedInstance();
+        if (instObj != null)
+            instObj.SetActive(true);
+
+        ArmsManager.Instance?.EquipItem(item);
+    }
+
+
+    // =====================================================================
+    // REMOVE ITEM
+    // =====================================================================
     public void RemoveItem(Item item, int quantity = 1)
     {
         for (int i = 0; i < internalInventory.Count; i++)
         {
             var slot = internalInventory[i];
-            if (slot.item == item)
+            if (slot.item != item) continue;
+
+            bool wasEquipped = (i == selectedIndex);
+
+            slot.quantity -= quantity;
+
+            if (slot.quantity <= 0)
             {
-                bool wasEquipped = (i == selectedIndex);
+                internalInventory.RemoveAt(i);
+                selectedIndex = Mathf.Clamp(selectedIndex, 0, internalInventory.Count - 1);
+            }
 
-                slot.quantity -= quantity;
+            OnInventoryChanged?.Invoke();
 
-                if (slot.quantity <= 0)
-                {
-                    // Se havia instâncias físicas, elas permanecem (normalmente gerenciadas por holder),
-                    // mas removemos o slot vazio.
-                    internalInventory.RemoveAt(i);
-
-                    if (selectedIndex >= internalInventory.Count)
-                        selectedIndex = Mathf.Max(0, internalInventory.Count - 1);
-                }
-
-                OnInventoryChanged?.Invoke();
-
-                if (internalInventory.Count == 0)
-                {
-                    ArmsManager.Instance?.EquipItem(null);
-                }
-                else if (wasEquipped)
-                {
-                    ArmsManager.Instance?.EquipItem(GetSelectedItem());
-                }
-
+            // inventário vazio
+            if (internalInventory.Count == 0)
+            {
+                ArmsManager.Instance?.EquipItem(null);
                 return;
             }
+
+            // equipa próximo item
+            if (wasEquipped)
+            {
+                ArmsManager.Instance?.EquipItem(GetSelectedItem());
+
+                var inst = GetSelectedInstance();
+                if (inst != null)
+                    inst.SetActive(true);
+            }
+
+            return;
         }
     }
 
-    /// <summary>Retorna o ItemScriptable selecionado.</summary>
+
+    // =====================================================================
     public Item GetSelectedItem()
     {
-        if (selectedIndex < 0 || selectedIndex >= internalInventory.Count) return null;
+        if (selectedIndex < 0 || selectedIndex >= internalInventory.Count)
+            return null;
+
         return internalInventory[selectedIndex].item;
     }
 
-    /// <summary>Retorna true se o jogador tem o item com quantidade mínima.</summary>
     public bool HasItem(Item item, int quantity = 1)
     {
-        if (item == null) return false;
         foreach (var slot in internalInventory)
-            if (slot.item == item && slot.quantity >= quantity) return true;
+            if (slot.item == item && slot.quantity >= quantity)
+                return true;
+
         return false;
     }
 
-    /// <summary>Retorna (sem remover) a instância física a ser usada quando equipar o item selecionado.</summary>
+    // =====================================================================
     public GameObject GetSelectedInstance()
     {
-        var item = GetSelectedItem();
-        if (item == null) return null;
+        var slot = (selectedIndex >= 0 && selectedIndex < internalInventory.Count)
+            ? internalInventory[selectedIndex]
+            : null;
 
-        var slot = internalInventory.Find(s => s.item == item);
-        if (slot == null || slot.instances.Count == 0) return null;
+        if (slot == null || slot.instances.Count == 0)
+            return null;
 
-        // regra D: escolhemos a última adicionada (LIFO) por padrão
-        return slot.instances[slot.instances.Count - 1];
+        return slot.instances[^1];
     }
 
-    /// <summary>Remove e retorna uma instância física do slot selecionado (usado ao colocar em holder).</summary>
+    // =====================================================================
     public GameObject RemoveInstanceFromSelectedSlot()
     {
-        var item = GetSelectedItem();
-        if (item == null) return null;
+        if (selectedIndex < 0 || selectedIndex >= internalInventory.Count)
+            return null;
 
-        var slot = internalInventory.Find(s => s.item == item);
-        if (slot == null || slot.instances.Count == 0) return null;
+        var slot = internalInventory[selectedIndex];
+        if (slot == null || slot.instances.Count == 0)
+            return null;
 
-        // pega a última instância
-        var inst = slot.instances[slot.instances.Count - 1];
+        // verifica se o item removido era o item atualmente equipado
+        bool removedEquippedItem = true;
+        // (pois sempre removemos do slot selecionado)
+
+        // pega a instância física
+        var inst = slot.instances[^1];
         slot.instances.RemoveAt(slot.instances.Count - 1);
 
-        // decrementa quantidade também
-        slot.quantity = Mathf.Max(0, slot.quantity - 1);
-        if (slot.quantity == 0)
+        // reduz quantidade
+        slot.quantity--;
+
+        // se esvaziou o slot, remove
+        if (slot.quantity <= 0)
         {
-            internalInventory.Remove(slot);
-            selectedIndex = Mathf.Clamp(selectedIndex, 0, Mathf.Max(0, internalInventory.Count - 1));
+            internalInventory.RemoveAt(selectedIndex);
+
+            // ajusta index para o próximo item possível
+            selectedIndex = Mathf.Clamp(selectedIndex, 0, internalInventory.Count - 1);
         }
 
+        // avisa UI
         OnInventoryChanged?.Invoke();
+
+        // =============================================================
+        // EQUIPAR AUTOMATICAMENTE O PRÓXIMO ITEM SE O ATUAL FOI REMOVIDO
+        // =============================================================
+        if (removedEquippedItem && internalInventory.Count > 0)
+        {
+            // equipa o novo item selecionado
+            ArmsManager.Instance?.EquipItem(GetSelectedItem());
+
+            // ativa sua instância física
+            var newInst = GetSelectedInstance();
+            if (newInst != null)
+                newInst.SetActive(true);
+        }
+
         return inst;
     }
 
-    /// <summary>Adiciona de volta uma instância física a um slot correspondente ao Item.</summary>
+
+    // =====================================================================
     public void ReturnInstanceToSlot(Item item, GameObject instance)
     {
-        if (item == null || instance == null) return;
-
         var slot = internalInventory.Find(s => s.item == item);
+
         if (slot == null)
         {
-            slot = new QuickSlot { item = item, quantity = 1, instances = new List<GameObject>() { instance } };
+            slot = new QuickSlot { item = item, quantity = 1 };
+            slot.instances.Add(instance);
             internalInventory.Add(slot);
         }
         else
         {
-            slot.quantity += 1;
+            slot.quantity++;
             slot.instances.Add(instance);
         }
 
         OnInventoryChanged?.Invoke();
     }
 
-    // seleção por rolagem
+    // =====================================================================
     public void SelectNext()
     {
         if (internalInventory.Count == 0) return;
+
         selectedIndex = (selectedIndex + 1) % internalInventory.Count;
-        OnInventoryChanged?.Invoke();
+
+        var inst = GetSelectedInstance();
+        if (inst != null) inst.SetActive(true);
+
         ArmsManager.Instance?.EquipItem(GetSelectedItem());
+        OnInventoryChanged?.Invoke();
     }
 
     public void SelectPrevious()
     {
         if (internalInventory.Count == 0) return;
+
         selectedIndex = (selectedIndex - 1 + internalInventory.Count) % internalInventory.Count;
-        OnInventoryChanged?.Invoke();
+
+        var inst = GetSelectedInstance();
+        if (inst != null) inst.SetActive(true);
+
         ArmsManager.Instance?.EquipItem(GetSelectedItem());
+        OnInventoryChanged?.Invoke();
     }
 }

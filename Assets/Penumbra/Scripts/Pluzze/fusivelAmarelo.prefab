@@ -91,9 +91,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 429524193aee2c74eb4c76162eadbe43, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4c2aede3efc411f4391f2daaae022019, type: 2}
     - target: {fileID: 919132149155446097, guid: 429524193aee2c74eb4c76162eadbe43, type: 3}
       propertyPath: m_Name
-      value: fusivelv2
+      value: fusivelAmarelo
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -158,5 +162,5 @@ MonoBehaviour:
   isInteractable: 1
   requiredItem: {fileID: 0}
   requiredItemQuantity: 0
-  collectableItem: {fileID: 0}
+  collectableItem: {fileID: 11400000, guid: 8316e39589f37e44186513017845d872, type: 2}
   collectableQuantity: 1

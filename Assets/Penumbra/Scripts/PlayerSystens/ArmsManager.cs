@@ -2,11 +2,12 @@
 
 public class ArmsManager : MonoBehaviour
 {
-    public static ArmsManager Instance { get; private set; }
+    public static ArmsManager Instance;
 
-    [Header("Referências")]
     public RightArmController rightArm;
     public LeftArmController leftArm;
+
+    private bool armsEnabled = true;
 
     private void Awake()
     {
@@ -16,68 +17,52 @@ public class ArmsManager : MonoBehaviour
     private void Start()
     {
         ToggleLamp(true);
-
-        // 🔹 Garante que os braços não sejam escondidos pela câmera
-        ForceEnableRenderers();
+        RefreshVisibility();
     }
-    private void Update()
+
+    public void EquipItem(Item newItem)
     {
-        ForceEnableRenderers();
+        if (!armsEnabled) return;
+
+        leftArm?.SetEquippedItem(newItem);
+        RefreshVisibility();
     }
 
-    /// <summary>Mostra ou esconde o lampião no braço direito.</summary>
     public void ToggleLamp(bool state)
     {
         rightArm?.SetLampVisible(state);
-        ForceEnableRenderers(); // garante visibilidade mesmo após mudança
+        RefreshVisibility();
     }
 
-    /// <summary>Atualiza o item atual do braço esquerdo, vindo do inventário.</summary>
-    public void EquipItem(Item newItem)
-    {
-        leftArm?.SetEquippedItem(newItem);
-        ForceEnableRenderers();
-    }
-
-    /// <summary>Desativa ambos os braços (por exemplo, durante menus).</summary>
     public void SetArmsEnabled(bool enabled)
     {
-        rightArm.enabled = enabled;
-        leftArm.enabled = enabled;
+        armsEnabled = enabled;
+
+        if (rightArm != null) rightArm.gameObject.SetActive(enabled);
+        if (leftArm != null) leftArm.gameObject.SetActive(enabled);
+
+        RefreshVisibility();
     }
 
-    /// <summary>
-    /// 🔥 Garante que NENHUM MeshRenderer dos braços seja desativado por scripts ou câmeras.
-    /// </summary>
-    public void ForceEnableRenderers()
+    private void Update()
     {
-        // 🔹 Braço esquerdo (socket do item)
-        if (leftArm != null && leftArm.itemSocket != null)
-        {
-            EnableAllRenderers(leftArm.itemSocket);
-        }
-
-        // 🔹 Braço direito (lampião instanciado)
-        if (rightArm != null && rightArm.lampSocket != null)
-        {
-            EnableAllRenderers(rightArm.lampSocket.transform);
-        }
+        // reforço visual
+        RefreshVisibility();
     }
 
-    /// <summary>
-    /// Ativa MeshRenderers e SkinnedMeshRenderers em todos os filhos do transform informado.
-    /// </summary>
-    private void EnableAllRenderers(Transform root)
+    private void RefreshVisibility()
+    {
+        if (!armsEnabled) return;
+
+        ForceEnable(leftArm?.transform);
+        ForceEnable(rightArm?.transform);
+    }
+
+    private void ForceEnable(Transform root)
     {
         if (root == null) return;
 
-        var meshRenderers = root.GetComponentsInChildren<MeshRenderer>(true);
-        var skinnedRenderers = root.GetComponentsInChildren<SkinnedMeshRenderer>(true);
-
-        foreach (var renderer in meshRenderers)
-            renderer.enabled = true;
-
-        foreach (var renderer in skinnedRenderers)
-            renderer.enabled = true;
+        foreach (var r in root.GetComponentsInChildren<Renderer>(true))
+            r.enabled = true;
     }
 }
