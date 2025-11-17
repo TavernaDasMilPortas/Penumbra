@@ -19,7 +19,7 @@ public class Chaser : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.autoBraking = true;
         agent.updateRotation = false;
-        agent.stoppingDistance = 1.2f; // valor padrão, pode ser sobrescrito pelo Hunter
+        agent.stoppingDistance = 1.2f; // pode ser sobrescrito
     }
 
     private void Update()
@@ -27,9 +27,10 @@ public class Chaser : MonoBehaviour
         if (currentTarget == null || !agent.isActiveAndEnabled)
             return;
 
-        // 🔹 Atualiza destino só se estiver longe o suficiente
+        // Distância até o alvo
         float dist = Vector3.Distance(transform.position, currentTarget.position);
 
+        // Continua perseguindo enquanto estiver fora da distância de parada
         if (dist > agent.stoppingDistance + stopDistanceBuffer)
         {
             if (!agent.pathPending)
@@ -37,7 +38,7 @@ public class Chaser : MonoBehaviour
         }
         else
         {
-            StopChasing(); // 🔹 para completamente ao chegar
+            StopChasing();
         }
 
         RotateTowards(currentTarget.position);
@@ -50,6 +51,7 @@ public class Chaser : MonoBehaviour
     {
         if (target == null) return;
 
+        currentTarget = target; // 🔥 FIX: salva o alvo
         agent.isStopped = false;
         agent.updateRotation = false;
         agent.SetDestination(target.position);
@@ -71,8 +73,10 @@ public class Chaser : MonoBehaviour
     /// </summary>
     public bool HasReachedTarget(float stopDistance = -1f)
     {
+        if (currentTarget == null) return false;
+
         if (stopDistance <= 0) stopDistance = agent.stoppingDistance;
-        return Vector3.Distance(transform.position, currentTarget?.position ?? transform.position) <= stopDistance;
+        return Vector3.Distance(transform.position, currentTarget.position) <= stopDistance;
     }
 
     /// <summary>
@@ -88,5 +92,21 @@ public class Chaser : MonoBehaviour
             Quaternion lookRot = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * rotationSpeed);
         }
+    }
+
+    /// <summary>
+    /// Para uso pelo DogAI (para pegar o alvo atual).
+    /// </summary>
+    public Transform GetCurrentTarget()
+    {
+        return currentTarget;
+    }
+
+    /// <summary>
+    /// Para uso pelo DogAI ao mudar de estado.
+    /// </summary>
+    public void ClearTarget()
+    {
+        currentTarget = null;
     }
 }

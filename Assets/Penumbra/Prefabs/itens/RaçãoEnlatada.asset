@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8948de54074c2a04a81c9fcdbf4cdc7d, type: 3}
+  m_Name: "Ra\xE7\xE3oEnlatada"
+  m_EditorClassIdentifier: 
+  itemName: "Lata de Ra\xE7\xE3o"
+  description: 
+  icon: {fileID: 21300000, guid: 89cce6c937e453048a0a4965fbe52cc2, type: 3}
+  consumable: 0
+  handPrefab: {fileID: 5594434001482232698, guid: f4f4e6c0d1912b045829b39f745b92f2, type: 3}
+  leftArmState: 
+  placementOffset: {x: 0, y: 0, z: 0}
+  placementRotationOffset: {x: -90, y: 0, z: 0}
+  placementScaleOffset: {x: 100, y: 100, z: 100}
+  alignmentMode: 1
+  alignmentPointName: AlignmentPoint

@@ -29,6 +29,10 @@ public class Patrol : MonoBehaviour
     private float waitTimer = 0f;
     private bool isWaiting = false;
 
+    public event System.Action OnPatrolStarted;
+    public event System.Action OnPatrolStopped;
+    public event System.Action<Transform> OnPatrolPointReached;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -37,11 +41,13 @@ public class Patrol : MonoBehaviour
         agent.updateRotation = false;
         agent.stoppingDistance = arrivalThreshold;
         agent.autoBraking = true;
+
+        // 🚫 Impede Update de rodar antes de termos patrolGroup
+        enabled = false;
     }
 
     private void OnEnable()
     {
-        // 🔹 Garante que escutamos o evento do EnemyBase
         if (enemyBase != null)
             enemyBase.OnAgentReady.AddListener(OnAgentReady);
     }
@@ -54,76 +60,115 @@ public class Patrol : MonoBehaviour
 
     private void Start()
     {
-        // 🔹 Caso o grupo seja atribuído via Inspector
-        if (enemyBase.agentReady && patrolGroup != null)
-        {
-            InitializePatrol(patrolGroup);
-        }
+        // Não inicia aqui. Aguarda SetPatrolGroup()
     }
 
-    /// <summary>
-    /// Chamado quando o EnemyBase sinaliza que o agente está pronto.
-    /// </summary>
     private void OnAgentReady()
     {
         if (patrolGroup != null)
         {
             InitializePatrol(patrolGroup);
-            Debug.Log($"[{name}] Patrulha iniciada após agentReady com grupo {patrolGroup.name}.");
-        }
-        else
-        {
-            Debug.LogWarning($"[{name}] AgentReady, mas PatrolGroup ainda não definido!");
+            enabled = true;
         }
     }
 
-    /// <summary>
-    /// Define o grupo de patrulha, mas só inicia quando o agente estiver pronto.
-    /// </summary>
+    // =====================================================================
+    // ASSIGNACIÓN DO GRUPO
+    // =====================================================================
     public void SetPatrolGroup(PatrolPointGroup group)
     {
         patrolGroup = group;
-        Debug.Log($"[{name}] PatrolGroup {group.name} atribuído (aguardando agentReady).");
+
+        if (enemyBase != null && enemyBase.agentReady)
+        {
+            InitializePatrol(group);
+            enabled = true;
+        }
     }
 
-    /// <summary>
-    /// Inicializa efetivamente a patrulha.
-    /// </summary>
+    // =====================================================================
+    // INÍCIO DA PATRULHA
+    // =====================================================================
     public void InitializePatrol(PatrolPointGroup group)
     {
         if (!enemyBase.agentReady)
-        {
-            Debug.Log($"[{name}] Tentativa de iniciar patrulha antes de agentReady, abortando.");
             return;
-        }
 
-        if (group == null || group.patrolPoints == null || group.patrolPoints.Length == 0)
+        if (group == null)
         {
-            Debug.LogWarning($"[{name}] Grupo de patrulha inválido!");
+            Debug.LogError(
+                $"[Patrol] {name}: PatrolGroup é NULL!\n" +
+                $"- Isso significa que o spawner NÃO chamou patrol.SetPatrolGroup(group)\n" +
+                $"- OU você esqueceu de vincular o grupo no Inspector.\n"
+            );
             enabled = false;
             return;
         }
 
+        if (group.patrolPoints == null)
+        {
+            Debug.LogError(
+                $"[Patrol] {name}: PatrolGroup '{group.name}' possui patrolPoints = NULL!\n" +
+                "- Isso normalmente significa que o ScriptableObject foi criado, mas nenhum ponto foi atribuído no array.\n"
+            );
+            enabled = false;
+            return;
+        }
+
+        if (group.patrolPoints.Length == 0)
+        {
+            Debug.LogError(
+                $"[Patrol] {name}: PatrolGroup '{group.name}' possui patrolPoints VAZIO (0 pontos)!\n" +
+                "- Você deve adicionar pelo menos 1 ponto de patrulha no ScriptableObject."
+            );
+            enabled = false;
+            return;
+        }
+
+        // Verifica se existem pontos nulos dentro do array
+        bool hasNull = false;
+        for (int i = 0; i < group.patrolPoints.Length; i++)
+        {
+            if (group.patrolPoints[i] == null)
+            {
+                Debug.LogError(
+                    $"[Patrol] {name}: PatrolGroup '{group.name}' possui o ponto de índice {i} = NULL!\n" +
+                    $"- Abra o ScriptableObject e substitua o ponto faltando."
+                );
+                hasNull = true;
+            }
+        }
+
+        if (hasNull)
+        {
+            enabled = false;
+            return;
+        }
+
+
         patrolGroup = group;
         patrolPoints = patrolGroup.patrolPoints;
 
-        // Escolhe o ponto inicial
-        if (startFromClosest)
-            currentTarget = GetClosestPoint(transform.position, patrolPoints.ToList());
-        else
-            currentTarget = patrolPoints[0];
+        currentTarget = startFromClosest ?
+            GetClosestPoint(transform.position, patrolPoints.ToList()) :
+            patrolPoints[0];
 
         MoveTo(currentTarget);
     }
 
+    // =====================================================================
+    // UPDATE — agora SEM NULLS
+    // =====================================================================
     private void Update()
     {
-        if (!enemyBase.agentReady || currentTarget == null || patrolPoints == null || patrolPoints.Length == 0)
-            return;
+        if (!enemyBase.agentReady) return;
+        if (patrolPoints == null || patrolPoints.Length == 0) return;
+        if (currentTarget == null) return;
 
         if (isWaiting)
         {
             waitTimer -= Time.deltaTime;
+
             if (waitTimer <= 0f)
             {
                 isWaiting = false;
@@ -134,6 +179,8 @@ public class Patrol : MonoBehaviour
 
         if (!agent.pathPending && HasReachedTarget())
         {
+            OnPatrolPointReached?.Invoke(currentTarget);
+
             if (waitTimeAtPoint > 0f)
             {
                 isWaiting = true;
@@ -145,10 +192,6 @@ public class Patrol : MonoBehaviour
             {
                 ChooseNextPoint();
             }
-        }
-        else
-        {
-            agent.isStopped = false;
         }
 
         RotateTowardsTarget();
@@ -199,26 +242,41 @@ public class Patrol : MonoBehaviour
 
     private void MoveTo(Transform target)
     {
-        if (agent.isActiveAndEnabled && target != null)
-        {
-            agent.isStopped = false;
-            agent.SetDestination(target.position);
-        }
+        if (!agent.isActiveAndEnabled || target == null)
+            return;
+
+        agent.isStopped = false;
+        agent.SetDestination(target.position);
     }
 
+    // =====================================================================
+    // ROTACIONAMENTO SEGURO
+    // =====================================================================
     private void RotateTowardsTarget()
     {
-        if (agent.velocity.sqrMagnitude > 0.01f && currentTarget != null)
-        {
-            Vector3 direction = (agent.steeringTarget - transform.position).normalized;
-            direction.y = 0;
+        if (!agent.hasPath || agent.pathPending)
+            return;
 
-            if (direction.sqrMagnitude > 0.001f)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-        }
+        if (currentTarget == null)
+            return;
+
+        Vector3 steering = agent.steeringTarget;
+
+        if (float.IsNaN(steering.x))
+            return;
+
+        Vector3 direction = (steering - transform.position).normalized;
+        direction.y = 0;
+
+        if (direction.sqrMagnitude < 0.001f)
+            return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            rotationSpeed * Time.deltaTime
+        );
     }
 
     private bool HasReachedTarget()
@@ -248,5 +306,23 @@ public class Patrol : MonoBehaviour
         }
 
         return closest[Random.Range(0, closest.Count)];
+    }
+
+    public void StartPatrol()
+    {
+        enabled = true;
+        if (currentTarget == null && patrolPoints != null && patrolPoints.Length > 0)
+            currentTarget = startFromClosest ?
+                GetClosestPoint(transform.position, patrolPoints.ToList()) :
+                patrolPoints[0];
+
+        MoveTo(currentTarget);
+        OnPatrolStarted?.Invoke();
+    }
+
+    public void StopPatrol()
+    {
+        agent.isStopped = true;
+        OnPatrolStopped?.Invoke();
     }
 }

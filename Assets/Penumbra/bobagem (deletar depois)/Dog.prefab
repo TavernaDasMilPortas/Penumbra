@@ -13,12 +13,13 @@ GameObject:
   - component: {fileID: 1067881110918968380}
   - component: {fileID: 5539368607463611029}
   - component: {fileID: 9173024068312355590}
-  - component: {fileID: 3598418864652984986}
   - component: {fileID: 3831226117603724041}
-  - component: {fileID: 5935050935908780935}
-  - component: {fileID: 1787189707775114752}
+  - component: {fileID: 5122849501212018757}
+  - component: {fileID: 568730470895523626}
+  - component: {fileID: 2096403436933975446}
+  - component: {fileID: 3987497690979509122}
   m_Layer: 0
-  m_Name: teste
+  m_Name: Dog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,6 +40,7 @@ Transform:
   m_Children:
   - {fileID: 3870544011989183445}
   - {fileID: 2760583902956156404}
+  - {fileID: 2195082965440325035}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3676406296042642871
@@ -128,24 +130,6 @@ NavMeshAgent:
   m_BaseOffset: 6
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3598418864652984986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2787303738700761410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7983815e166eae245a90803f4a3d955d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolGroup: {fileID: 0}
-  patrolMode: 0
-  arrivalThreshold: 1
-  startFromClosest: 1
-  waitTimeAtPoint: 0.3
-  rotationSpeed: 5
 --- !u!64 &3831226117603724041
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -168,7 +152,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3240111963191467312, guid: 8df28363e2a34514993c420e57df90ef, type: 3}
---- !u!114 &5935050935908780935
+--- !u!114 &5122849501212018757
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -177,13 +161,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2787303738700761410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2601cb8cac471874c876950b4dabcf6b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7983815e166eae245a90803f4a3d955d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
-  rotationSpeed: 10
-  stopDistanceBuffer: 0.1
---- !u!114 &1787189707775114752
+  patrolGroup: {fileID: 0}
+  patrolMode: 0
+  arrivalThreshold: 1
+  startFromClosest: 1
+  waitTimeAtPoint: 0
+  rotationSpeed: 5
+--- !u!114 &568730470895523626
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -192,7 +179,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 2787303738700761410}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4239c4bd2bb938544bf065db381e87aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f5955485a11ea641b02025821438ea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2096403436933975446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2787303738700761410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52877ee62654a104189fbdfbc68d26a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  barkSource: {fileID: 0}
+  growlSource: {fileID: 0}
+  chargeSource: {fileID: 0}
+  eatingSource: {fileID: 0}
+  barkClip: {fileID: 0}
+  growlClip: {fileID: 0}
+  chargeClip: {fileID: 0}
+  eatingClip: {fileID: 0}
+--- !u!114 &3987497690979509122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2787303738700761410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 524fdb013478181438ddcecd34d235e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   groundPoint: {fileID: 2760583902956156404}
@@ -203,10 +222,20 @@ MonoBehaviour:
   OnAgentReady:
     m_PersistentCalls:
       m_Calls: []
-  chaseLostTime: 3
-  chaseStopDistance: 6
-  vision: {fileID: 6081763102341324876}
-  originalAgentSpeed: 20
+  detectionRadius: 12
+  chargePrepareDistance: 20
+  chargeSpeed: 25
+  normalSpeed: 15
+  prepareTime: 0.8
+  cooldownTime: 1.5
+  bowlPoint:
+    pointName: DogBowSpawn
+  foodBowl: {fileID: 0}
+  bowlInteractable: {fileID: 0}
+  patrol: {fileID: 5122849501212018757}
+  roomTracker: {fileID: 568730470895523626}
+  mouthPoint: {fileID: 2195082965440325035}
+  vision: {fileID: 0}
 --- !u!1 &3783767431427586956
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,12 +311,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1039929f211d241be3a12d6afc916a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewRadius: 300
-  viewAngle: 90
+  viewRadius: 50
+  viewAngle: 75
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
   targetMask:
     serializedVersion: 2
-    m_Bits: 63
+    m_Bits: 319
   target: {fileID: 0}
+--- !u!1 &5693695778326929136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2195082965440325035}
+  - component: {fileID: 3072687217700914945}
+  m_Layer: 0
+  m_Name: boca
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2195082965440325035
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5693695778326929136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5.95}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7605270307679617168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &3072687217700914945
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5693695778326929136}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.7174187
+  m_Height: 6.2841797
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.71401596, z: -1.4787598}

@@ -52,18 +52,34 @@ public class Vision : MonoBehaviour
 
             if (Vector3.Angle(viewDir, dirToTarget) < viewAngle / 2f)
             {
-                if (!Physics.Raycast(transform.position, dirToTarget, distToTarget, obstacleMask))
+                // --- NOVO TESTE DE LINHA DE VISÃO ---
+                RaycastHit[] hits = Physics.RaycastAll(transform.position, dirToTarget, distToTarget, obstacleMask);
+
+                bool blocked = false;
+
+                foreach (var hit in hits)
+                {
+                    if (hit.collider.transform.IsChildOf(transform))
+                        continue;
+
+                    if (hit.collider.transform != target)
+                    {
+                        blocked = true;
+                        break;
+                    }
+                }
+
+                if (!blocked)
                 {
                     if (!lastSeePlayer)
                     {
-                        Debug.Log($"{name}: Player avistado em distância {distToTarget:F2}");
+                        Debug.Log($"{name}: Player avistado (linha de visão limpa)");
                         lastSeePlayer = true;
                     }
                     return true;
                 }
             }
         }
-
         if (lastSeePlayer)
         {
             Debug.Log($"{name}: Perdeu o player de vista.");

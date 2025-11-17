@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0015145154f5ab543998735fa1f9b111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerTime: 4:50
+  triggerTime: 4:55
   nameReference: Spawn do Hunter
-  triggerSecond: 290
+  triggerSecond: 295
 --- !u!114 &8997363421317666736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
   spawns:
   - spawnName: Andar de Cima
     spawnData:
-    - monsterPrefab: {fileID: 2787303738700761410, guid: 2e7194753e18e4340aa33f728997933a, type: 3}
+    - monsterPrefab: {fileID: 2787303738700761410, guid: 95ce48c035e35aa4e995d00ee4274b6e, type: 3}
       spawnPointNames:
       - pointName: HunterSpawn(1)
       - pointName: HunterSpawn(2)
@@ -94,7 +94,7 @@ MonoBehaviour:
   basePoint:
     pointName: HunterPatrolGroup
   patrolPoints: []
-  patrolGroupName: PatrolGroup Hunter
+  patrolGroupName: PatrolGroupHunter
   gizmoColor: {r: 0, g: 1, b: 1, a: 1}
   gizmoRadius: 0.3
   autoUpdateInEditor: 1

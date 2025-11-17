@@ -1,13 +1,13 @@
-using UnityEngine;
+Ôªøusing UnityEngine;
 using System.Collections.Generic;
 
 public class PatrolPointGroup : MonoBehaviour
 {
-    [Header("ConfiguraÁ„o")]
-    [Tooltip("PointReference que define o objeto base que contÈm os pontos de patrulha como filhos.")]
+    [Header("Configura√ß√£o")]
+    [Tooltip("PointReference que define o objeto base que cont√©m os pontos de patrulha como filhos.")]
     public PointReference basePoint;
 
-    [Tooltip("Lista autom·tica dos pontos de patrulha (preenchida a partir dos filhos do Point).")]
+    [Tooltip("Lista autom√°tica dos pontos de patrulha (preenchida a partir dos filhos do Point).")]
     public Transform[] patrolPoints;
 
     public string patrolGroupName;
@@ -16,6 +16,19 @@ public class PatrolPointGroup : MonoBehaviour
     public Color gizmoColor = Color.cyan;
     public float gizmoRadius = 0.3f;
     public bool autoUpdateInEditor = true;
+
+    private void Awake()
+    {
+        // üî• ESSENCIAL: atualiza em runtime
+        RefreshPatrolPoints();
+    }
+
+    private void Start()
+    {
+        // caso o PointManager carregue depois
+        if (patrolPoints == null || patrolPoints.Length == 0)
+            RefreshPatrolPoints();
+    }
 
     private void OnValidate()
     {
@@ -31,22 +44,24 @@ public class PatrolPointGroup : MonoBehaviour
         patrolPoints = new Transform[0];
 
         if (basePoint == null || string.IsNullOrEmpty(basePoint.pointName))
+        {
+            Debug.LogWarning($"[PatrolPointGroup] basePoint n√£o definido em {name}");
             return;
+        }
 
         if (PointManager.Instance == null)
         {
-            Debug.LogWarning("[PatrolPointGroup] PointManager n„o encontrado na cena!");
+            Debug.LogWarning($"[PatrolPointGroup] PointManager ainda n√£o existe ao atualizar {name}");
             return;
         }
 
         Point basePointObj = PointManager.Instance.GetPointByName(basePoint.pointName);
         if (basePointObj == null)
         {
-            Debug.LogWarning($"[PatrolPointGroup] Nenhum Point encontrado com o nome '{basePoint.pointName}'");
+            Debug.LogWarning($"[PatrolPointGroup] N√£o existe Point chamado '{basePoint.pointName}'");
             return;
         }
 
-        // Coleta todos os filhos do transform do Point
         List<Transform> points = new List<Transform>();
         foreach (Transform child in basePointObj.selfTransform)
         {
@@ -55,6 +70,8 @@ public class PatrolPointGroup : MonoBehaviour
         }
 
         patrolPoints = points.ToArray();
+
+        Debug.Log($"[PatrolPointGroup] '{name}' atualizado com {patrolPoints.Length} pontos.");
     }
 
     private void OnDrawGizmos()
