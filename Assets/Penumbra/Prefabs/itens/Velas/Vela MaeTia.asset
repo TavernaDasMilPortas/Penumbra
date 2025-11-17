@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8948de54074c2a04a81c9fcdbf4cdc7d, type: 3}
-  m_Name: Vela 4
+  m_Name: Vela MaeTia
   m_EditorClassIdentifier: 
   itemName: Vela 4
   description: 
@@ -20,6 +20,6 @@ MonoBehaviour:
   leftArmState: 
   placementOffset: {x: 0, y: 0, z: 0}
   placementRotationOffset: {x: 0, y: 0, z: 0}
-  placementScaleOffset: {x: 0.1, y: 0.1, z: 0.1}
+  placementScaleOffset: {x: 0.01, y: 0.01, z: 0.01}
   alignmentMode: 1
   alignmentPointName: AlignmentPoint

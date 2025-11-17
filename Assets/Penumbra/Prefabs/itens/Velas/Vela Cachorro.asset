@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8948de54074c2a04a81c9fcdbf4cdc7d, type: 3}
-  m_Name: Vela 3
+  m_Name: Vela Cachorro
   m_EditorClassIdentifier: 
-  itemName: Vela 3
+  itemName: Vela 1
   description: 
-  icon: {fileID: 360942633, guid: 993ecbe10557dc44ca6c66c451360b4b, type: 3}
+  icon: {fileID: 298503523, guid: 993ecbe10557dc44ca6c66c451360b4b, type: 3}
   consumable: 0
-  handPrefab: {fileID: 3162780164848552013, guid: 2dd8e9b4fbaa78e479c18a1a58a277cc, type: 3}
+  handPrefab: {fileID: 1070016317510643733, guid: 73a6d0ab46c60584889adac330903179, type: 3}
   leftArmState: 
   placementOffset: {x: 0, y: 0, z: 0}
   placementRotationOffset: {x: -90, y: 0, z: 0}
-  placementScaleOffset: {x: 10, y: 10, z: 10}
+  placementScaleOffset: {x: 2, y: 2, z: 1}
   alignmentMode: 1
   alignmentPointName: AlignmentPoint

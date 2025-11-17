@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8948de54074c2a04a81c9fcdbf4cdc7d, type: 3}
-  m_Name: Vela 5
+  m_Name: Interruptor
   m_EditorClassIdentifier: 
-  itemName: Vela 5
+  itemName: Interruptor
   description: 
-  icon: {fileID: -267489317, guid: 993ecbe10557dc44ca6c66c451360b4b, type: 3}
+  icon: {fileID: 0}
   consumable: 0
-  handPrefab: {fileID: 8946285189530915994, guid: b6bc723a412a6be448d749499efbccf0, type: 3}
+  handPrefab: {fileID: 1345816324044474688, guid: 9cdb0aab18f03af418b364aa0371440a, type: 3}
   leftArmState: 
   placementOffset: {x: 0, y: 0, z: 0}
-  placementRotationOffset: {x: -90, y: 0, z: 0}
-  placementScaleOffset: {x: 10, y: 10, z: 10}
-  alignmentMode: 1
+  placementRotationOffset: {x: 0, y: 0, z: 0}
+  placementScaleOffset: {x: 1, y: 1, z: 1}
+  alignmentMode: 0
   alignmentPointName: AlignmentPoint
