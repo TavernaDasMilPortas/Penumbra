@@ -48,6 +48,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5727570212548825927, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4eb024665a6d5b74ba030adafef705b3, type: 2}
+    - target: {fileID: -5428429501129984718, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 3953909303915576665, guid: 65e2a2ecae15eb34997816d10f1a3aa0, type: 3}
+    - target: {fileID: -1019733728643823778, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: -1019733728643823778, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: -1019733728643823778, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: -1019733728643823778, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -1019733728643823778, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -1019733728643823778, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1019733728643823778, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1019733728643823778, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
       propertyPath: m_Name
       value: chao_madeira
@@ -65,7 +105,8 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6366489242019701185, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 23ef30096d62eba4ea28243d0fb49655, type: 3}

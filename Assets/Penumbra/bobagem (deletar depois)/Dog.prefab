@@ -36,7 +36,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 231.19806, y: 47.300003, z: -259.35254}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3870544011989183445}
@@ -128,7 +128,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 0.99999994
-  m_BaseOffset: 6
+  m_BaseOffset: 5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!64 &3831226117603724041
@@ -223,11 +223,11 @@ MonoBehaviour:
   OnAgentReady:
     m_PersistentCalls:
       m_Calls: []
-  detectionRadius: 12
-  chargePrepareDistance: 20
-  chargeSpeed: 25
-  normalSpeed: 15
-  prepareTime: 0.8
+  detectionRadius: 50
+  chargePrepareDistance: 35
+  chargeSpeed: 200
+  normalSpeed: 25
+  prepareTime: 1
   cooldownTime: 1.5
   bowlPoint:
     pointName: DogBowSpawn
