@@ -58,8 +58,6 @@ public class InputManager : MonoBehaviour
 
     private void HandleGameplayInput()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         PlayerController.Instance.HandleMovement();
         PlayerController.Instance.HandleMouseLook();
         InteractionHandler.Instance.FindInteractable();
