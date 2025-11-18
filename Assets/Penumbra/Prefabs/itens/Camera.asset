@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8948de54074c2a04a81c9fcdbf4cdc7d, type: 3}
-  m_Name: AbridorDeLatas
+  m_Name: Camera
   m_EditorClassIdentifier: 
   itemName: 
   description: 
-  icon: {fileID: 21300000, guid: 12f835aadddd87640969f1a675421970, type: 3}
+  icon: {fileID: 0}
   consumable: 0
-  handPrefab: {fileID: 2795254886177310201, guid: be8f45fa63ae6634480301ab79f6da07, type: 3}
+  handPrefab: {fileID: 919132149155446097, guid: 15b1759c7d47a194f86e3f4639522b14, type: 3}
   leftArmState: 
   placementOffset: {x: 0, y: 0, z: 0}
-  placementRotationOffset: {x: 90, y: 0, z: 0}
-  placementScaleOffset: {x: 6, y: 6, z: 6}
+  placementRotationOffset: {x: 0, y: 0, z: 0}
+  placementScaleOffset: {x: 0.1, y: 0.1, z: 0.1}
   alignmentMode: 0
   alignmentPointName: AlignmentPoint
