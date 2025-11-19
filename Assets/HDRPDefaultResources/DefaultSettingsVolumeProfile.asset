@@ -749,7 +749,7 @@ MonoBehaviour:
   active: 1
   indirectDiffuseLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.69
   indirectDiffuseLightingLayers:
     m_OverrideState: 1
     m_Value: 65535
@@ -825,7 +825,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.48
   response:
     m_OverrideState: 1
     m_Value: 0.8
@@ -1033,10 +1033,10 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 5.3
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 1
   scatter:
     m_OverrideState: 1
     m_Value: 0.7
@@ -1173,7 +1173,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.452
   smoothness:
     m_OverrideState: 1
     m_Value: 0.2
@@ -1649,7 +1649,7 @@ MonoBehaviour:
   active: 1
   enable:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   opacity:
     m_OverrideState: 1
     m_Value: 1
@@ -1699,7 +1699,7 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   meteringMode:
     m_OverrideState: 1
     m_Value: 2
@@ -1708,7 +1708,7 @@ MonoBehaviour:
     m_Value: 1
   fixedExposure:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 13.263158
   compensation:
     m_OverrideState: 1
     m_Value: 0
@@ -2101,7 +2101,7 @@ MonoBehaviour:
     m_Value: 1
   enable:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   tracing:
     m_OverrideState: 1
     m_Value: 1
@@ -2362,13 +2362,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 1, y: 0.8, z: 0.8566667, w: 0.109729216}
   midtones:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 1, y: 0.9461667, z: 0.81, w: 0}
   shadowsStart:
     m_OverrideState: 1
     m_Value: 0
@@ -2402,13 +2402,13 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0
   directLightingStrength:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.819
   radius:
     m_OverrideState: 1
-    m_Value: 1.5
+    m_Value: 1.49
   spatialBilateralAggressiveness:
     m_OverrideState: 1
     m_Value: 0.15
@@ -2548,7 +2548,7 @@ MonoBehaviour:
   interCascadeBorders: 1
   maxShadowDistance:
     m_OverrideState: 1
-    m_Value: 150
+    m_Value: 57.46
   directionalTransmissionMultiplier:
     m_OverrideState: 1
     m_Value: 1

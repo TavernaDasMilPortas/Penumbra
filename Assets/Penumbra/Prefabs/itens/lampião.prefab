@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: eed1d7fb2bd1e8041a814d7aa1f91315, type: 2}
     - target: {fileID: -3756473180518285571, guid: c1496ffde4331084581c54be36d6e9e8, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -1823322365421230674, guid: c1496ffde4331084581c54be36d6e9e8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -86,15 +86,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c1496ffde4331084581c54be36d6e9e8, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5233112405309087440, guid: c1496ffde4331084581c54be36d6e9e8, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5767471447064098360, guid: c1496ffde4331084581c54be36d6e9e8, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lanternLight: {fileID: 7875883398609057144}
   timeLoopManager: {fileID: 0}
-  maxIntensity: 500
+  maxIntensity: 300
   minIntensity: 0.1
 --- !u!4 &8448878795476151216 stripped
 Transform:
@@ -196,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1392057565984755892, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1472172397127878863, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Name
@@ -204,30 +204,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1472172397127878863, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Range
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Color.b
-      value: 0.41320753
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Color.g
-      value: 0.7720723
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Intensity
-      value: 39.788734
+      value: 159154.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_ShadowRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_Shadows.m_Type
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_ColorTemperature
-      value: 8991
+      value: 3385
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_UseColorTemperature
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_UseViewFrustumForShadowCasterCull
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6486385449118189964, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
@@ -235,11 +251,31 @@ PrefabInstance:
       value: 0.095
       objectReference: {fileID: 0}
     - target: {fileID: 8772795221513127679, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_ShapeRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772795221513127679, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_ShadowNearPlane
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772795221513127679, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_ShadowUpdateMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772795221513127679, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_VolumetricShadowDimmer
       value: 0.602
       objectReference: {fileID: 0}
     - target: {fileID: 8772795221513127679, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_ShadowResolution.m_Level
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772795221513127679, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_UseContactShadow.m_Override
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772795221513127679, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_ShadowResolution.m_UseOverride
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
