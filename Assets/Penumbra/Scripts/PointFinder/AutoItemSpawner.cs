@@ -1,9 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+using System.Collections.Generic;
 
-[ExecuteAlways]
 public class AutoItemSpawner : MonoBehaviour
 {
-    [Tooltip("Se marcado, os itens instanciados ficarão como filhos desse transform. Se nulo, serão filhos do Point.")]
     public Transform spawnContainer;
 
     private void Start()
@@ -20,47 +19,30 @@ public class AutoItemSpawner : MonoBehaviour
             if (p.spawnItem == null) continue;
 
             Item item = p.spawnItem;
-
             if (item.handPrefab == null)
             {
-                Debug.LogWarning($"[AutoItemSpawner] Point '{p.name}' tem spawnItem mas sem handPrefab (Item: {item.itemName}).");
+                Debug.LogWarning($"[AutoItemSpawner] Point '{p.name}' tem spawnItem mas sem handPrefab.");
                 continue;
             }
 
-            // Instancia o modelo físico
-            GameObject go = Instantiate(
-                item.handPrefab,
-                p.selfTransform.position,
-                p.selfTransform.rotation
-            );
+            GameObject instance = Instantiate(item.handPrefab);
 
-            go.name = item.handPrefab.name;
+            Transform parent = spawnContainer != null ? spawnContainer : p.selfTransform;
 
-            // Define parent
-            if (spawnContainer != null)
-                go.transform.SetParent(spawnContainer, worldPositionStays: true);
-            else
-                go.transform.SetParent(p.selfTransform, worldPositionStays: true);
+            // parent correto
+            instance.transform.SetParent(parent, false);
 
-            // === APLICA TODOS OS OFFSETS DO ITEM ===
+            // alinhamento igual ao LeftArm
+            ItemAlignmentUtility.ApplyAlignment(instance, parent, item);
 
-            // 1) Escala
-            go.transform.localScale = item.placementScaleOffset;
-
-            // 2) Rotação
-            go.transform.localEulerAngles += item.placementRotationOffset;
-
-            // 3) Posição
-            go.transform.localPosition += item.placementOffset;
-
-            // === CONFIGURA ITEMINSTANCE ===
-            ItemInstance inst = go.GetComponent<ItemInstance>();
-            if (inst == null) inst = go.AddComponent<ItemInstance>();
+            // Configurar ItemInstance
+            ItemInstance inst = instance.GetComponent<ItemInstance>();
+            if (inst == null) inst = instance.AddComponent<ItemInstance>();
 
             inst.data = item;
             inst.originPoint = p;
 
-            Debug.Log($"[AutoItemSpawner] Spawned '{go.name}' at Point '{p.name}' with offsets.");
+            Debug.Log($"[AutoItemSpawner] Spawn final de '{instance.name}' alinhado no point '{p.name}'.");
         }
     }
 }

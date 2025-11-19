@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c1496ffde4331084581c54be36d6e9e8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c1496ffde4331084581c54be36d6e9e8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c1496ffde4331084581c54be36d6e9e8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c1496ffde4331084581c54be36d6e9e8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -120,14 +120,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2432543569283875322}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e86da28a1f95c39489388f0fb1335f6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lanternLight: {fileID: 7875883398609057144}
   timeLoopManager: {fileID: 0}
-  maxIntensity: 20000
+  maxIntensity: 500
   minIntensity: 0.1
 --- !u!4 &8448878795476151216 stripped
 Transform:
@@ -142,6 +142,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8448878795476151216}
     m_Modifications:
+    - target: {fileID: 1067423728451215340, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067423728451215340, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067423728451215340, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1067423728451215340, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -196,7 +208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Range
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Color.b
@@ -208,11 +220,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_Intensity
-      value: 15915.494
+      value: 39.788734
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_ColorTemperature
-      value: 8830
+      value: 8991
       objectReference: {fileID: 0}
     - target: {fileID: 2473340011630549612, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: m_UseColorTemperature
@@ -221,6 +233,14 @@ PrefabInstance:
     - target: {fileID: 6486385449118189964, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
       propertyPath: InitialModule.startSize.scalar
       value: 0.095
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772795221513127679, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_VolumetricShadowDimmer
+      value: 0.602
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772795221513127679, guid: d12ac051a5e21af4eb14fa1e59a98f4a, type: 3}
+      propertyPath: m_UseContactShadow.m_Override
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

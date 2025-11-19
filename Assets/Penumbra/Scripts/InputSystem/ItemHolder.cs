@@ -30,20 +30,21 @@ public class ItemHolder : InteractableBase
         GameObject instance = QuickInventoryManager.Instance.RemoveInstanceFromSelectedSlot();
         if (instance == null) return;
 
-        // avisa o braço que perdeu a instância
         ArmsManager.Instance.leftArm.NotifyInstanceTakenFromHand(instance);
 
+        // define o parent do holder
         instance.transform.SetParent(itemSpawnPoint, false);
 
-        instance.transform.localPosition = selectedItem.placementOffset;
-        instance.transform.localRotation = Quaternion.Euler(selectedItem.placementRotationOffset);
-        instance.transform.localScale = selectedItem.placementScaleOffset;
+        // 🟦 usa o alinhamento unificado
+        ItemAlignmentUtility.ApplyAlignment(instance, itemSpawnPoint, selectedItem);
 
         instance.SetActive(true);
 
         currentItem = selectedItem;
         currentItemObject = instance;
     }
+
+
 
     private void TryTakeItem()
     {

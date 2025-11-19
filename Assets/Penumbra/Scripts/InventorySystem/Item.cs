@@ -21,13 +21,15 @@ public class Item : ScriptableObject
 
     public enum ItemAlignmentMode
     {
-        None,           // Sem alinhamento especial — usa offsets normais
-        Vertical,       // Alinha o Y do AlignmentPoint com o Y do Holder
-        Horizontal      // Alinha X/Z do AlignmentPoint com o Holder
+        None,
+        Vertical,       // Alinha Y do alignment point com Y do holder
+        Horizontal      // Alinha XZ do alignment point com o holder
     }
 
     [Header("Alinhamento")]
     public ItemAlignmentMode alignmentMode = ItemAlignmentMode.None;
-    public string alignmentPointName = "AlignmentPoint"; // se quiser customizar
+
+    [Tooltip("Nome do ponto de alinhamento dentro do prefab")]
+    public string alignmentPointName = "AlignmentPoint";
 
 }

@@ -16,3 +16,10 @@ MonoBehaviour:
   description: furiaaaaaaaaaa
   icon: {fileID: -354886806, guid: 4a3b36c7a8527d8499577f5faa50a2af, type: 3}
   consumable: 0
+  handPrefab: {fileID: 0}
+  leftArmState: 
+  placementOffset: {x: 0, y: 0, z: 0}
+  placementRotationOffset: {x: 0, y: 0, z: 0}
+  placementScaleOffset: {x: 1, y: 1, z: 1}
+  alignmentMode: 0
+  alignmentPointName: AlignmentPoint
