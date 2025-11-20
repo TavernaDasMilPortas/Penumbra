@@ -3979,12 +3979,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1024993814}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 927ca246a7fa5b944ac9241523367723, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nights: []
+  nights:
+  - {fileID: 11400000, guid: 93ac2dc8293204b4d86a44bca12b5085, type: 2}
   currentNightIndex: 0
   attemptManager: {fileID: 1024993817}
 --- !u!114 &1024993817

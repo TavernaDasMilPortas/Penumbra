@@ -5,8 +5,8 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance;
 
     [Header("Referências")]
-    public Camera playerCamera;          // Arraste a câmera do jogador aqui
-    public CharacterController controller; // Arraste o CharacterController do Player
+    public Camera playerCamera;
+    public CharacterController controller;
 
     [Header("Configuração Movimento")]
     public float moveSpeed = 2.5f;
@@ -15,15 +15,15 @@ public class PlayerController : MonoBehaviour
 
     [Header("Configuração Mouse")]
     public float mouseSensitivity = 500f;
-    private float xRotation = 0f; // Controle vertical (olhar para cima/baixo)
+    private float xRotation = 0f;
 
-    private Vector3 velocity;
+    private Vector3 velocity;   // usada para gravidade e movimento adicional
+    private Vector3 externalVelocity; // usada pelo StairLink
 
     private void Awake()
     {
         Instance = this;
 
-        // Trava e esconde o cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -31,20 +31,24 @@ public class PlayerController : MonoBehaviour
     // === Movimento com WASD ===
     public void HandleMovement()
     {
-        float h = Input.GetAxis("Horizontal"); // A/D
-        float v = Input.GetAxis("Vertical");   // W/S
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * h + transform.forward * v;
-        controller.Move(move * moveSpeed * Time.deltaTime);
 
-        // Gravidade
+        // movimento padrão + external velocity
+        controller.Move((move * moveSpeed + externalVelocity) * Time.deltaTime);
+
+        // gravidade
         if (controller.isGrounded && velocity.y < 0)
-        {
             velocity.y = -2f;
-        }
 
         velocity.y += gravity * Time.deltaTime;
+
         controller.Move(velocity * Time.deltaTime);
+
+        // external velocity se dissipa rápido
+        externalVelocity = Vector3.Lerp(externalVelocity, Vector3.zero, Time.deltaTime * 8f);
     }
 
     // === Rotação com o mouse ===
@@ -53,17 +57,36 @@ public class PlayerController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        // Rotaciona o corpo (horizontal)
         transform.Rotate(Vector3.up * mouseX);
 
-        // Rotação vertical da câmera (limitada)
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-
         playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
     }
 
-    // Funções extra (caso queira usar em outros scripts)
+    // === Utilitários para StairLink ===
+
+    /// <summary>
+    /// Retorna a velocidade do jogador no plano XZ.
+    /// </summary>
+    public Vector3 GetCurrentVelocity()
+    {
+        Vector3 flatVel = transform.forward * Input.GetAxis("Vertical") * moveSpeed +
+                          transform.right * Input.GetAxis("Horizontal") * moveSpeed;
+        return flatVel;
+    }
+
+    /// <summary>
+    /// Define uma velocidade externa temporária (teleporte suave).
+    /// </summary>
+    public void SetExternalVelocity(Vector3 vel)
+    {
+        externalVelocity = vel;
+    }
+
+
+    // === Funções auxiliares ===
+
     public void Move(float h, float v)
     {
         Vector3 move = transform.right * h + transform.forward * v;
@@ -73,6 +96,7 @@ public class PlayerController : MonoBehaviour
     public void Stop()
     {
         velocity = Vector3.zero;
+        externalVelocity = Vector3.zero;
     }
 
     public void Interagir()

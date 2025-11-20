@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6621856070725856700
+--- !u!1001 &7139324515413871880
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.0241
+      value: -1.832
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       propertyPath: m_LocalRotation.w
@@ -66,32 +66,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       propertyPath: m_Name
-      value: fusivel azul
+      value: fusivel amarelo
       objectReference: {fileID: 0}
     - target: {fileID: 8442510506162454399, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 4d8ad4b454b88eb4c82ac7c5c81bc3ca, type: 2}
+      objectReference: {fileID: 2100000, guid: 26fff3dd144777d46954f1d4264bf7fc, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5519283505477319073}
+      addedObject: {fileID: 8912309836673773607}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8415697798252009752}
   m_SourcePrefab: {fileID: 100100000, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
---- !u!1 &6279397573391143149 stripped
+--- !u!1 &8057661029258522713 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
-  m_PrefabInstance: {fileID: 6621856070725856700}
+  m_PrefabInstance: {fileID: 7139324515413871880}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &5519283505477319073
+--- !u!64 &8912309836673773607
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6279397573391143149}
+  m_GameObject: {fileID: 8057661029258522713}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -107,3 +110,21 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &8415697798252009752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8057661029258522713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d81b31d23234b040b8061467f32efc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionMessage: Pressione E para interagir
+  isInteractable: 1
+  requiredItem: {fileID: 0}
+  requiredItemQuantity: 0
+  collectableItem: {fileID: 11400000, guid: 8316e39589f37e44186513017845d872, type: 2}
+  collectableQuantity: 1

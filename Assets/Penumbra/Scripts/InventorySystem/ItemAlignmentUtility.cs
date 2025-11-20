@@ -7,7 +7,6 @@ public static class ItemAlignmentUtility
         if (instance == null || holder == null || item == null)
             return;
 
-        Debug.Log($"[ItemAlignment] Aplicando alinhamento em '{instance.name}' no holder '{holder.name}'");
 
         // ======================================================
         // 1) Parent igual ao holder — base fundamental
@@ -50,7 +49,6 @@ public static class ItemAlignmentUtility
 
         if (alignPoint != null && alignPoint != instance.transform)
         {
-            Debug.Log($"[ItemAlignment] Ajustando com AlignmentPoint '{alignPoint.name}'");
 
             // Posição do alignmentPoint em localSpace do holder
             Vector3 apWorldPos = alignPoint.position;
@@ -62,12 +60,8 @@ public static class ItemAlignmentUtility
             // Movemos o item INVERTENDO esse delta
             instance.transform.position -= worldDelta;
         }
-        else
-        {
-            Debug.Log($"[ItemAlignment] Sem AlignmentPoint em '{instance.name}'.");
-        }
 
-        Debug.Log($"[ItemAlignment] FINAL localPos={instance.transform.localPosition}, localRot={instance.transform.localEulerAngles}, scale={instance.transform.localScale}");
+
     }
 
     // Busca profunda de children

@@ -15,15 +15,20 @@ MonoBehaviour:
   nightName: Noite 1
   tasks:
   - rid: 1434773746233639006
-  spawnPrefabs:
-  - {fileID: 1067644997654388716, guid: 6b2cb0b1f38840742badc54127203d16, type: 3}
+  - rid: 283484240413458510
+  spawnPrefabs: []
   references:
     version: 2
     RefIds:
+    - rid: 283484240413458510
+      type: {class: SimpleTask, ns: , asm: Assembly-CSharp}
+      data:
+        taskName: Realizar_Oferenda
+        isCompleted: 0
     - rid: 1434773746233639006
       type: {class: ProgressiveTask, ns: , asm: Assembly-CSharp}
       data:
-        taskName: 
+        taskName: Encontrar_Velas
         isCompleted: 0
         currentProgress: 0
         targetProgress: 5

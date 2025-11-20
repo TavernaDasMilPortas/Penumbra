@@ -21,7 +21,6 @@ public class AutoItemSpawner : MonoBehaviour
             Item item = p.spawnItem;
             if (item.handPrefab == null)
             {
-                Debug.LogWarning($"[AutoItemSpawner] Point '{p.name}' tem spawnItem mas sem handPrefab.");
                 continue;
             }
 
@@ -42,7 +41,6 @@ public class AutoItemSpawner : MonoBehaviour
             inst.data = item;
             inst.originPoint = p;
 
-            Debug.Log($"[AutoItemSpawner] Spawn final de '{instance.name}' alinhado no point '{p.name}'.");
         }
     }
 }

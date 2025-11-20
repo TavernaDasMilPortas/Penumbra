@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class NightManager : MonoBehaviour
@@ -34,8 +35,8 @@ public class NightManager : MonoBehaviour
     private void Start()
     {
         // 🔹 Agora a primeira noite também prepara a cena e seus spawns
-        //ScenePreparator.PrepareScene();
-
+        // ScenePreparator.PrepareScene();
+        Debug.Log("[NightManager] Iniciando NightManager...");
         LoadCurrentNightTasks();
         UpdateUI();
     }
@@ -58,7 +59,44 @@ public class NightManager : MonoBehaviour
 
     private void LoadCurrentNightTasks()
     {
-        taskManager.LoadFromNightData(CurrentNight);
+        if (nights == null || nights.Length == 0)
+        {
+            Debug.LogWarning("[NightManager] Nenhuma night configurada!");
+            return;
+        }
+
+        if (currentNightIndex < 0 || currentNightIndex >= nights.Length)
+        {
+            Debug.LogError($"[NightManager] currentNightIndex ({currentNightIndex}) fora do range!");
+            return;
+        }
+
+        NightData night = CurrentNight;
+        if (night == null)
+        {
+            Debug.LogWarning("[NightManager] CurrentNight é null!");
+            return;
+        }
+
+        // Carrega no TaskManager
+        taskManager.LoadFromNightData(night);
+
+        // --- Logs detalhados das tasks carregadas ---
+        if (night.tasks == null || night.tasks.Length == 0)
+        {
+            Debug.Log($"[NightManager] Night '{night.nightName}' não possui tasks.");
+        }
+        else
+        {
+            Debug.Log($"[NightManager] Night '{night.nightName}' carregada — {night.tasks.Length} task(s):");
+            for (int i = 0; i < night.tasks.Length; i++)
+            {
+                var t = night.tasks[i];
+                string name = t != null ? t.taskName : "<null task>";
+                bool completed = t != null && t.isCompleted;
+                Debug.Log($"   [{i}] {name}  (completed: {completed})");
+            }
+        }
     }
 
     public void CompleteTask(string taskName)
