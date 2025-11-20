@@ -83,6 +83,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CandleFlame
       objectReference: {fileID: 0}
+    - target: {fileID: 1472172397127878863, guid: 301cc10a5fcfa3e4a84c6dfaed2671b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -179,7 +183,7 @@ PrefabInstance:
       addedObject: {fileID: 491071594612901597}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9cd0acb69a0e0b646b4758a493aee8d6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5383634825564961499}
+      addedObject: {fileID: 5964526701671069429}
   m_SourcePrefab: {fileID: 100100000, guid: 9cd0acb69a0e0b646b4758a493aee8d6, type: 3}
 --- !u!4 &8605330324922322464 stripped
 Transform:
@@ -231,7 +235,8 @@ MonoBehaviour:
   requiredItemQuantity: 0
   collectableItem: {fileID: 11400000, guid: adaf1b8da2466f84a8b85fbe873786f1, type: 2}
   collectableQuantity: 1
---- !u!114 &5383634825564961499
+  isCollected: 0
+--- !u!114 &5964526701671069429
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -240,7 +245,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8946285189530915994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3da01327b33407748b81f9d2186a1e80, type: 3}
+  m_Script: {fileID: 11500000, guid: e09ea89815e062249ad3cbae6741ccf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionColor: {r: 1, g: 0.5, b: 0, a: 1}
+  TaskName: Encontrar_Velas

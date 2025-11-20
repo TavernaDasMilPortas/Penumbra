@@ -16,7 +16,7 @@ MonoBehaviour:
   description: 
   icon: {fileID: 79017971, guid: 4a3b36c7a8527d8499577f5faa50a2af, type: 3}
   consumable: 0
-  handPrefab: {fileID: 847368719982304604, guid: 66dabe3e2a8036b4e801e248b1c6210c, type: 3}
+  handPrefab: {fileID: 3459164391739456458, guid: 23686143072602a4286afacfc9616a65, type: 3}
   leftArmState: 
   placementOffset: {x: 0, y: 0, z: 0}
   placementRotationOffset: {x: 0, y: 0, z: 0}

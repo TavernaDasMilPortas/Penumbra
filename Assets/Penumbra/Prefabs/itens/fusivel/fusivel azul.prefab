@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.503
+      value: -0.49
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       propertyPath: m_LocalPosition.z
@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -1253996098385199550, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       propertyPath: m_Name
       value: fusivel azul
@@ -72,44 +76,29 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 4d8ad4b454b88eb4c82ac7c5c81bc3ca, type: 2}
+    - target: {fileID: 8821623529969584324, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
+      propertyPath: m_Name
+      value: AlignmentPoint
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5519283505477319073}
+      addedObject: {fileID: -2443484569559920897}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -2443484569559920897}
+      addedObject: {fileID: 3929838837637943341}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5367890729423560631}
   m_SourcePrefab: {fileID: 100100000, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
 --- !u!1 &6279397573391143149 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: cdb550e8de83a114281dc09a0e0fef19, type: 3}
   m_PrefabInstance: {fileID: 6621856070725856700}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &5519283505477319073
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6279397573391143149}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!114 &-2443484569559920897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,3 +117,40 @@ MonoBehaviour:
   requiredItemQuantity: 0
   collectableItem: {fileID: 11400000, guid: 8eb46cf9cd648494cbe7433392b1c663, type: 2}
   collectableQuantity: 1
+  isCollected: 0
+--- !u!114 &3929838837637943341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6279397573391143149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09ea89815e062249ad3cbae6741ccf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TaskName: Encontrar_Fusiveis
+--- !u!136 &-5367890729423560631
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6279397573391143149}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.05
+  m_Height: 0.10630286
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.03568951, z: 0}

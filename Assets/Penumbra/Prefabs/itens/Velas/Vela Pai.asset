@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8948de54074c2a04a81c9fcdbf4cdc7d, type: 3}
   m_Name: Vela Pai
   m_EditorClassIdentifier: 
-  itemName: Vela 5
+  itemName: Vela E
   description: 
   icon: {fileID: -267489317, guid: 993ecbe10557dc44ca6c66c451360b4b, type: 3}
   consumable: 0

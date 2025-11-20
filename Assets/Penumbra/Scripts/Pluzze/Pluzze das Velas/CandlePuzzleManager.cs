@@ -1,10 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CandlePuzzleManager : PuzzleManager
 {
     [Header("Configuração das Velas")]
     public List<Item> candleItems;
+
+    [Header("Acendimento das Luzes")]
+    [Tooltip("Prefab ou objeto de luz da vela que deve ser encontrado dentro dos holders")]
+    public GameObject candleLightPrefab;
+
+    [Tooltip("Delay entre cada vela acendendo")]
+    public float lightActivationDelay = 0.3f;
 
     protected override void Start()
     {
@@ -42,17 +50,13 @@ public class CandlePuzzleManager : PuzzleManager
                 return;
         }
 
-        // Se chegou aqui, o puzzle está correto
+        // Tudo certo → Puzzle resolvido
         foreach (var holder in holders)
         {
-            //holder.LockHolder(false);
-
-            // Pega todos os IInteractable dentro do holder, inclusive filhos inativos
             var interactables = holder.GetComponentsInChildren<IInteractable>(true);
 
             foreach (var interactable in interactables)
             {
-                // Evita afetar o próprio holder se ele também implementar IInteractable
                 if (interactable is InteractableBase baseInteractable && interactable != holder)
                 {
                     baseInteractable.IsInteractable = false;
@@ -61,8 +65,57 @@ public class CandlePuzzleManager : PuzzleManager
             }
         }
 
+        NightManager.Instance.CompleteTask("Realizar_Oferenda");
+
+        // Acende as velas com delay
+        StartCoroutine(ActivateCandleLightsSequence());
 
         OnPuzzleSolved();
     }
 
+    // ===================================================================
+    //  SEQUÊNCIA DE ACENDIMENTO DAS VELAS
+    // ===================================================================
+    private IEnumerator ActivateCandleLightsSequence()
+    {
+        if (candleLightPrefab == null)
+        {
+            Debug.LogWarning("[CandlePuzzle] Nenhum prefab de luz configurado!");
+            yield break;
+        }
+
+        List<GameObject> lightsToActivate = new List<GameObject>();
+
+        // Procura o prefab dentro de cada holder
+        foreach (var holder in holders)
+        {
+            Transform[] children = holder.GetComponentsInChildren<Transform>(true);
+
+            foreach (var child in children)
+            {
+                // Procura por nome OU por tag
+                if (child.gameObject.name == candleLightPrefab.name ||
+                    (!string.IsNullOrEmpty(candleLightPrefab.tag) &&
+                     child.gameObject.CompareTag(candleLightPrefab.tag)))
+                {
+                    lightsToActivate.Add(child.gameObject);
+                }
+            }
+        }
+
+        if (lightsToActivate.Count == 0)
+        {
+            Debug.LogWarning("[CandlePuzzle] Nenhuma vela/luz encontrada nos holders!");
+            yield break;
+        }
+
+        Debug.Log($"[CandlePuzzle] Ativando {lightsToActivate.Count} velas...");
+
+        // Ativa uma por vez
+        foreach (var lightObj in lightsToActivate)
+        {
+            lightObj.SetActive(true);
+            yield return new WaitForSeconds(lightActivationDelay);
+        }
+    }
 }

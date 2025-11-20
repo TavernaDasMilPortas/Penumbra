@@ -11,7 +11,7 @@ public class NightManager : MonoBehaviour
     [Header("Tentativas")]
     public AttemptManager attemptManager;
 
-    private TaskManager taskManager = new TaskManager();
+    public TaskManager taskManager = new TaskManager();
 
     public static NightManager Instance { get; private set; }
 

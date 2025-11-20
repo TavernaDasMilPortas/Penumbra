@@ -14,9 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nightName: Noite 1
   tasks:
-  - taskName: Matar deus
-    isCompleted: 0
-  - taskName: Reciclar
-    isCompleted: 0
-  - taskName: Comer o cu de quem ta lendo
-    isCompleted: 0
+  - rid: 283484248979537997
+  - rid: 283484248979537998
+  spawnPrefabs: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 283484248979537997
+      type: {class: ProgressiveTask, ns: , asm: Assembly-CSharp}
+      data:
+        taskName: Encontrar_Fusiveis
+        isCompleted: 0
+        currentProgress: 0
+        targetProgress: 5
+    - rid: 283484248979537998
+      type: {class: SimpleTask, ns: , asm: Assembly-CSharp}
+      data:
+        taskName: Religar_Luz
+        isCompleted: 0

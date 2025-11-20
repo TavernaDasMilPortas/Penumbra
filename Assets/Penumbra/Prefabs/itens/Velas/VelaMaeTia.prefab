@@ -85,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1472172397127878863, guid: 301cc10a5fcfa3e4a84c6dfaed2671b7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -192,6 +192,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 04a69727b0634fc46954b347855ab2ac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8363907201726055564}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 04a69727b0634fc46954b347855ab2ac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7822526903010167312}
     - targetCorrespondingSourceObject: {fileID: -5568371526223589888, guid: 04a69727b0634fc46954b347855ab2ac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4302618602524394035}
@@ -273,6 +276,20 @@ MonoBehaviour:
   requiredItemQuantity: 0
   collectableItem: {fileID: 11400000, guid: be811ceae5a4ccf499f60d430b4262a0, type: 2}
   collectableQuantity: 1
+  isCollected: 0
+--- !u!114 &7822526903010167312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4756270655598675048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09ea89815e062249ad3cbae6741ccf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TaskName: Encontrar_Velas
 --- !u!4 &5281168043100249810 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 04a69727b0634fc46954b347855ab2ac, type: 3}
@@ -350,7 +367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1472172397127878863, guid: 301cc10a5fcfa3e4a84c6dfaed2671b7, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

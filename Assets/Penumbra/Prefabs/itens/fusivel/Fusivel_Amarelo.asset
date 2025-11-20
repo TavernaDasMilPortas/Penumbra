@@ -16,11 +16,11 @@ MonoBehaviour:
   description: 
   icon: {fileID: 79017971, guid: 4a3b36c7a8527d8499577f5faa50a2af, type: 3}
   consumable: 0
-  handPrefab: {fileID: 847368719982304604, guid: 2eacc8492432ce74c8a76f85cf140133, type: 3}
+  handPrefab: {fileID: 8057661029258522713, guid: 986de34f12ff65c48bdf60a8ed61dd1b, type: 3}
   leftArmState: 
   placementOffset: {x: 0, y: 0, z: 0}
   placementRotationOffset: {x: 0, y: 0, z: 0}
   placementScaleOffset: {x: 1, y: 1, z: 1}
-  alignmentMode: 1
+  alignmentMode: 2
   alignmentPointName: AlignmentPoint
   color: 3

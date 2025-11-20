@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adc4904ddbe1c4d408317c250bf0bc24, type: 3}
+  m_Name: Fusiveis
+  m_EditorClassIdentifier: 
+  groupName: Fusiveis
+  points:
+  - pointName: Spawn Fusivel 1
+  - pointName: Spawn Fusivel 2
+  - pointName: Spawn Fusivel 3
+  - pointName: Spawn Fusivel 4
+  - pointName: Spawn Fusivel 5
+  - pointName: Spawn Fusivel 6
+  - pointName: Spawn Fusivel 7
+  - pointName: Spawn Fusivel 8

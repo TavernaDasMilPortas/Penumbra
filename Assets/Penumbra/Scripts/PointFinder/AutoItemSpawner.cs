@@ -7,40 +7,90 @@ public class AutoItemSpawner : MonoBehaviour
 
     private void Start()
     {
+        // Spawn padrão
         SpawnAllPoints();
     }
 
+    // ============================================================
+    // 1️⃣ SPAWN NORMAL → TODOS OS POINTS COM spawnItem
+    // ============================================================
     public void SpawnAllPoints()
     {
-        Point[] points = FindObjectsOfType<Point>(true);
-
-        foreach (var p in points)
+        foreach (var p in PointManager.Instance.points)
         {
             if (p.spawnItem == null) continue;
+            SpawnAtPoint(p, p.spawnItem);
+        }
+    }
 
-            Item item = p.spawnItem;
-            if (item.handPrefab == null)
-            {
-                continue;
-            }
+    // ============================================================
+    // 2️⃣ SPAWN DE MÚLTIPLOS ITENS EM UM POINTGROUP (SEM REPETIÇÃO)
+    // ============================================================
+    public void SpawnGroupItems(string groupName, List<Item> itemsToSpawn)
+    {
+        var points = PointManager.Instance.GetPointsFromGroup(groupName);
 
-            GameObject instance = Instantiate(item.handPrefab);
+        if (points == null || points.Count == 0)
+        {
+            Debug.LogError($"[AutoItemSpawner] Grupo '{groupName}' está vazio.");
+            return;
+        }
 
-            Transform parent = spawnContainer != null ? spawnContainer : p.selfTransform;
+        // Filtra points que ainda NÃO possuem instâncias
+        List<Point> freePoints = new();
+        foreach (var p in points)
+        {
+            if (p.selfTransform.childCount == 0) // ainda não spawnou nada
+                freePoints.Add(p);
+        }
 
-            // parent correto
-            instance.transform.SetParent(parent, false);
+        if (freePoints.Count == 0)
+        {
+            Debug.LogWarning($"[AutoItemSpawner] Todos os points do grupo '{groupName}' já estão ocupados.");
+            return;
+        }
 
-            // alinhamento igual ao LeftArm
-            ItemAlignmentUtility.ApplyAlignment(instance, parent, item);
+        // Embaralha os points livres
+        Shuffle(freePoints);
 
-            // Configurar ItemInstance
-            ItemInstance inst = instance.GetComponent<ItemInstance>();
-            if (inst == null) inst = instance.AddComponent<ItemInstance>();
+        int max = Mathf.Min(itemsToSpawn.Count, freePoints.Count);
 
-            inst.data = item;
-            inst.originPoint = p;
+        for (int i = 0; i < max; i++)
+        {
+            SpawnAtPoint(freePoints[i], itemsToSpawn[i]);
+        }
+    }
 
+    // ============================================================
+    // 3️⃣ FUNÇÃO INTERNA → SPAWN NUM PONTO
+    // ============================================================
+    private void SpawnAtPoint(Point p, Item item)
+    {
+        if (item == null || item.handPrefab == null)
+            return;
+
+        GameObject instance = Instantiate(item.handPrefab);
+
+        Transform parent = spawnContainer != null ? spawnContainer : p.selfTransform;
+        instance.transform.SetParent(parent, false);
+
+        ItemAlignmentUtility.ApplyAlignment(instance, parent, item);
+
+        var inst = instance.GetComponent<ItemInstance>();
+        if (inst == null) inst = instance.AddComponent<ItemInstance>();
+
+        inst.data = item;
+        inst.originPoint = p;
+
+        Debug.Log($"[AutoItemSpawner] Spawnou '{item.itemName}' em '{p.objectName}'.");
+    }
+
+    private void Shuffle<T>(List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int r = Random.Range(i, list.Count);
+            (list[i], list[r]) = (list[r], list[i]);
         }
     }
 }
