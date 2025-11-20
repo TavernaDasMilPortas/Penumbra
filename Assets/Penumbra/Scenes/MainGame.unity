@@ -3952,6 +3952,123 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1141618805}
   m_CullTransparentMesh: 1
+--- !u!1 &1142068985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1142068987}
+  - component: {fileID: 1142068986}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1142068986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142068985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0fd0d0e32ca47849b73b1a144fcb132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audios:
+  - name: "Ambienta\xE7\xE3o"
+    clip: {fileID: 8300000, guid: 5404529add020724b9bf0b1cc2360029, type: 3}
+    volume: 0.3
+    pitch: 1.5
+    loop: 1
+    source: {fileID: 0}
+  - name: Porta Abrindo
+    clip: {fileID: 8300000, guid: 652a9df70ad5d2347ba50d319d3d87e1, type: 3}
+    volume: 0.5
+    pitch: 1.5
+    loop: 0
+    source: {fileID: 0}
+  - name: "Est\xE1tica"
+    clip: {fileID: 8300000, guid: 17a009573deb2ae4b909e95726e63913, type: 3}
+    volume: 0.5
+    pitch: 1.5
+    loop: 1
+    source: {fileID: 0}
+  - name: Tenso Boom
+    clip: {fileID: 8300000, guid: 94b00c460cafa48449d3fd0b490f73ea, type: 3}
+    volume: 0.5
+    pitch: 1.5
+    loop: 0
+    source: {fileID: 0}
+  - name: Tenso Alto
+    clip: {fileID: 8300000, guid: 2d6cbf53942dbfa43a06dfb6d8ca357a, type: 3}
+    volume: 0.5
+    pitch: 1.5
+    loop: 0
+    source: {fileID: 0}
+  - name: Tenso Grunhido
+    clip: {fileID: 8300000, guid: 6f908e55384302c40a4a87c722a85e16, type: 3}
+    volume: 0.5
+    pitch: 1.5
+    loop: 0
+    source: {fileID: 0}
+  - name: Coletar
+    clip: {fileID: 8300000, guid: 3552fa0507f98eb48ae4c2a7e38c1e80, type: 3}
+    volume: 0.25
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+  - name: Inserir
+    clip: {fileID: 8300000, guid: d9f2627b88421e742af87a90437a7d32, type: 3}
+    volume: 0.3
+    pitch: 2
+    loop: 0
+    source: {fileID: 0}
+  - name: Papel
+    clip: {fileID: 8300000, guid: a4613e6f0c08007458082523fd736c50, type: 3}
+    volume: 0.25
+    pitch: 0.5
+    loop: 0
+    source: {fileID: 0}
+  - name: "Persegui\xE7\xE3o"
+    clip: {fileID: 8300000, guid: 28e152511b791dc4cb03b66c9ccbc1f7, type: 3}
+    volume: 0.45
+    pitch: 1.5
+    loop: 1
+    source: {fileID: 0}
+  - name: Andar
+    clip: {fileID: 8300000, guid: f8f2b7eabda928f49abea49c5a3308c3, type: 3}
+    volume: 1
+    pitch: 1.5
+    loop: 1
+    source: {fileID: 0}
+  - name: Passos Distantes
+    clip: {fileID: 8300000, guid: 5f17e5fde4a87234886382e27ea7f898, type: 3}
+    volume: 0.5
+    pitch: 1.5
+    loop: 1
+    source: {fileID: 0}
+--- !u!4 &1142068987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142068985}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.95254904, y: -7.299276, z: 18.519922}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1142932656 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5993826277725589871, guid: ff374272ff2bb92449b6dc6f9245a30e, type: 3}
@@ -4193,7 +4310,7 @@ MonoBehaviour:
   moveSpeed: 2.5
   gravity: -9.81
   jumpHeight: 2
-  mouseSensitivity: 500
+  mouseSensitivity: 200
 --- !u!143 &1307030924 stripped
 CharacterController:
   m_CorrespondingSourceObject: {fileID: 6040419307367487848, guid: 97143add834ef554ba74b94790d35551, type: 3}
@@ -6458,6 +6575,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1658373145}
   - {fileID: 46199529}
+  - {fileID: 1142068987}
   - {fileID: 1330978450}
   - {fileID: 412715239}
   - {fileID: 1741669229}
