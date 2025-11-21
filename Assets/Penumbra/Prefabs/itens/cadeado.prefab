@@ -122,5 +122,6 @@ MonoBehaviour:
   isInteractable: 1
   requiredItem: {fileID: 0}
   requiredItemQuantity: 0
-  collectableItem: {fileID: 0}
+  collectableItem: {fileID: 11400000, guid: 74b9c748f09b011478ea51b0fef6b9c1, type: 2}
   collectableQuantity: 1
+  isCollected: 0

@@ -22,27 +22,22 @@ public class RadioMorse : MonoBehaviour
     public AudioClip staticClip;
 
     [Header("Efeito de rádio instável")]
-    [Range(0f, 1f)]
-    public float staticChance = 0.2f;
+    [Range(0f, 1f)] public float staticChance = 0.2f;
     public float minPitch = 0.85f;
     public float maxPitch = 1.15f;
 
     [Header("Item Holder para ativar Morse")]
-    public ItemHolder holder; // <<< atribua o holder que fica como filho do rádio
+    public ItemHolder holder;
 
     private Dictionary<char, string> morseMap;
-
     private bool isPlayingMorse = false;
 
     private void Start()
     {
         CreateMorseDictionary();
-
-        // Começa com estática constante
         StartCoroutine(StaticLoop());
     }
 
-    // -------------------------------------------------------------
     private void CreateMorseDictionary()
     {
         morseMap = new Dictionary<char, string>()
@@ -88,13 +83,12 @@ public class RadioMorse : MonoBehaviour
 
         while (holder != null && holder.currentItem != null)
         {
-            yield return StartCoroutine(PlayMessage(message));
+            yield return PlayMessage(message);
             yield return new WaitForSeconds(messagePause);
         }
 
         isPlayingMorse = false;
 
-        // Volta para estática contínua
         StartCoroutine(StaticLoop());
     }
 
@@ -106,7 +100,7 @@ public class RadioMorse : MonoBehaviour
         foreach (char c in msg)
         {
             if (holder.currentItem == null)
-                yield break; // item removido → parar no meio
+                yield break;
 
             if (c == ' ')
             {
@@ -128,7 +122,7 @@ public class RadioMorse : MonoBehaviour
                 yield return new WaitForSeconds(symbolSpacing);
 
                 if (holder.currentItem == null)
-                    yield break; // item removido → parar
+                    yield break;
             }
 
             yield return new WaitForSeconds(letterSpacing);
@@ -140,22 +134,23 @@ public class RadioMorse : MonoBehaviour
     {
         source.pitch = Random.Range(minPitch, maxPitch);
 
-        // chance de tocar estática no lugar do bip
-        if (staticClip != null && Random.value < staticChance)
-        {
-            PlayStatic();
-            return;
-        }
+        source.Stop(); // impede sobreposição
 
         if (symbol == '.')
-            source.PlayOneShot(dotClip);
+            source.clip = dotClip;
         else
-            source.PlayOneShot(dashClip);
+            source.clip = dashClip;
+
+        source.Play();
     }
 
     private void PlayStatic()
     {
-        if (staticClip != null)
-            source.PlayOneShot(staticClip, 0.7f);
+        if (staticClip == null) return;
+
+        source.Stop();          // garante que não sobrepõe
+        source.clip = staticClip;
+        source.pitch = 1f;
+        source.Play();
     }
 }
