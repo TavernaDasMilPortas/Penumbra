@@ -3992,6 +3992,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4796188437966614954, guid: ff374272ff2bb92449b6dc6f9245a30e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0ff3cb7f8c62c234a9dedc6bc418fa82, type: 2}
     - target: {fileID: 4886327566232761223, guid: ff374272ff2bb92449b6dc6f9245a30e, type: 3}
       propertyPath: group
       value: 
@@ -4068,6 +4072,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8230692846899248968, guid: ff374272ff2bb92449b6dc6f9245a30e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0ff3cb7f8c62c234a9dedc6bc418fa82, type: 2}
     - target: {fileID: 8812652603435564105, guid: ff374272ff2bb92449b6dc6f9245a30e, type: 3}
       propertyPath: m_Mesh
       value: 
