@@ -10,19 +10,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.314
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.9406948
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.041
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_LocalRotation.x
@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_LocalRotation.z
@@ -42,16 +42,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1100894082787687793, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df2c75ffc4989545bfc48f150ed1b2b, type: 2}
     - target: {fileID: 919132149155446097, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
       propertyPath: m_Name
       value: armario_cozinha
       objectReference: {fileID: 0}
+    - target: {fileID: 5374681246232898938, guid: 9189d9a82acc19943bc1c652477370fb, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1df2c75ffc4989545bfc48f150ed1b2b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
