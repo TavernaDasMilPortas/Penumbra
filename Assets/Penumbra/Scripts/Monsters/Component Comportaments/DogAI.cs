@@ -18,6 +18,10 @@ public class DogAI : EnemyBase
         Kill
     }
 
+    [Header("CONFIGURAÇÃO DO KILL")]
+    [Tooltip("Colisor que mata o player ao ser atingido. Deve ser TRIGGER.")]
+    public Collider killCollider;
+
     [Header("Distâncias")]
     public float detectionRadius = 12f;
     public float chargePrepareDistance = 7f;
@@ -39,52 +43,20 @@ public class DogAI : EnemyBase
     public Patrol patrol;
     public RoomTracker roomTracker;
 
-    [Header("Ponto da Boca (trigger de kill e medição de distância)")]
+    [Header("Ponto da Boca")]
     public Transform mouthPoint;
 
     private Transform player;
     private DogAudio audioSystem;
+    private Vision vision;
 
     private State currentState;
     private float stateTimer;
     private Vector3 chargeDirection;
+    private Vector3 lastChargeDir;
+    private Animator anim;
 
-    [Header("Componentes")]
-    public Vision vision;
     public State CurrentState => currentState;
-
-
-    // ============================================================
-    // UTILS — posição da boca
-    // ============================================================
-    private Vector3 GetMouthPos()
-    {
-        return mouthPoint != null ? mouthPoint.position : transform.position;
-    }
-
-
-    // ============================================================
-    // TRIGGER DE KILL — classe interna
-    // ============================================================
-    private class DogAIMouthTrigger : MonoBehaviour
-    {
-        public DogAI owner;
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!other.CompareTag("Player"))
-                return;
-
-            // Kill só permitido se estiver atacando
-            //if (owner.currentState == State.Charging ||
-            //    owner.currentState == State.PreparingCharge)
-            //{
-                Debug.Log("[DogAI] Kill por boca → Player colidiu com mouth trigger");
-                owner.SetState(State.Kill);
-            //}
-        }
-    }
-
 
     // ============================================================
     // AWAKE
@@ -97,33 +69,18 @@ public class DogAI : EnemyBase
         roomTracker = GetComponent<RoomTracker>();
         audioSystem = GetComponent<DogAudio>();
         vision = GetComponentInChildren<Vision>();
+        anim = GetComponentInChildren<Animator>();
 
         GameObject pObj = GameObject.FindGameObjectWithTag("Player");
         if (pObj != null)
-        {
             player = pObj.transform;
-            Debug.Log($"[DogAI] Player encontrado: {player.name}");
-        }
-        else
-            Debug.LogError("[DogAI] Nenhum objeto com tag 'Player' encontrado!");
 
+        if (killCollider == null)
+            Debug.LogWarning("[DogAI] KillCollider NÃO atribuído!");
 
-        // ===============================
-        // VALIDAR MOUTHPOINT
-        // ===============================
-        if (mouthPoint != null)
-        {
-            Collider col = mouthPoint.GetComponent<Collider>();
-            if (col == null)
-                Debug.LogWarning("[DogAI] mouthPoint NÃO possui collider — kill não funcionará!");
-            else if (!col.isTrigger)
-                Debug.LogWarning("[DogAI] mouthPoint collider existe mas isTrigger = false!");
-
-            var trigger = mouthPoint.gameObject.AddComponent<DogAIMouthTrigger>();
-            trigger.owner = this;
-        }
+        if (killCollider != null && !killCollider.isTrigger)
+            Debug.LogError("[DogAI] O KillCollider deve ter 'isTrigger = true'!");
     }
-
 
     // ============================================================
     // START
@@ -133,13 +90,38 @@ public class DogAI : EnemyBase
         base.Start();
 
         ResolveFoodBowlPoint();
-
         patrol.enabled = false;
 
         if (agentReady)
             HandleAgentReady();
         else
             OnAgentReady.AddListener(HandleAgentReady);
+    }
+
+    // ============================================================
+    // REGISTRO DO COLISOR
+    // ============================================================
+    private void OnEnable()
+    {
+        if (killCollider != null)
+        {
+            KillTriggerListener listener = killCollider.gameObject.AddComponent<KillTriggerListener>();
+            listener.owner = this;
+        }
+    }
+
+    private class KillTriggerListener : MonoBehaviour
+    {
+        public DogAI owner;
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag("Player"))
+                return;
+                Debug.Log("[DogAI] KILL TRIGGER → Player atingido durante o Charge!");
+                owner.SetState(State.Kill);
+            
+        }
     }
 
     private void HandleAgentReady()
@@ -152,58 +134,14 @@ public class DogAI : EnemyBase
         SetState(State.Searching);
     }
 
-
-    // ============================================================
-    // RESTAURADO — RESOLVE FOOD BOWL
-    // ============================================================
-    private void ResolveFoodBowlPoint()
-    {
-        if (bowlPoint == null || string.IsNullOrEmpty(bowlPoint.pointName))
-        {
-            Debug.LogError($"[DogAI] bowlPoint não definido.");
-            return;
-        }
-
-        if (PointManager.Instance == null)
-        {
-            Debug.LogError("[DogAI] PointManager não encontrado.");
-            return;
-        }
-
-        Debug.Log($"[DogAI] Resolvendo ponto do pote: {bowlPoint.pointName}");
-
-        Point point = PointManager.Instance.GetPointByName(bowlPoint.pointName);
-
-        if (point == null)
-        {
-            Debug.LogError($"[DogAI] Nenhum Point chamado '{bowlPoint.pointName}' foi encontrado.");
-            return;
-        }
-
-        ItemInstance inst = point.selfTransform.GetComponentInChildren<ItemInstance>();
-
-        if (inst == null)
-        {
-            Debug.LogError($"[DogAI] Nenhum ItemInstance encontrado no point '{bowlPoint.pointName}'.");
-            return;
-        }
-
-        foodBowl = inst.transform;
-        bowlInteractable = inst.GetComponent<DogFoodBowlInteractable>();
-
-        if (bowlInteractable == null)
-            Debug.LogWarning($"[DogAI] O objeto no point '{bowlPoint.pointName}' não possui DogFoodBowlInteractable.");
-
-        Debug.Log($"[DogAI] FoodBowl resolvido → {foodBowl.name}");
-    }
-
-
     // ============================================================
     // UPDATE
     // ============================================================
     private void Update()
     {
         if (!agentReady) return;
+
+        UpdateAnimation();
 
         switch (currentState)
         {
@@ -217,14 +155,38 @@ public class DogAI : EnemyBase
         }
     }
 
+    // ============================================================
+    // ANIMAÇÕES
+    // ============================================================
+    private void UpdateAnimation()
+    {
+        if (anim == null || agent == null)
+            return;
+
+        float speed = agent.velocity.magnitude;
+
+        anim.SetFloat("Speed", speed);
+        anim.SetBool("IsPreparing", currentState == State.PreparingCharge);
+        anim.SetBool("IsCharging", currentState == State.Charging);
+
+        float baseSpeed = 1f;
+
+        if (currentState == State.Charging)
+            baseSpeed = 2f;
+        else if (speed > normalSpeed * 0.8f)
+            baseSpeed = 1.4f;
+
+        if (currentState == State.PreparingCharge)
+            baseSpeed = 1f;
+
+        anim.speed = baseSpeed;
+    }
 
     // ============================================================
-    // STATE MACHINE — com logs
+    // STATE MACHINE
     // ============================================================
     private void SetState(State newState)
     {
-        Debug.Log($"[DogAI] Estado: {currentState} → {newState}");
-
         currentState = newState;
         stateTimer = 0f;
 
@@ -239,18 +201,15 @@ public class DogAI : EnemyBase
             case State.Spotted:
                 patrol?.StopPatrol();
                 agent.isStopped = false;
-                audioSystem?.PlayBark();
                 break;
 
             case State.PreparingCharge:
                 agent.isStopped = true;
-                audioSystem?.PlayGrowl();
                 break;
 
             case State.Charging:
                 agent.isStopped = false;
                 agent.speed = chargeSpeed;
-                audioSystem?.PlayCharge();
                 break;
 
             case State.Cooldown:
@@ -260,7 +219,6 @@ public class DogAI : EnemyBase
 
             case State.Eating:
                 agent.isStopped = false;
-                audioSystem?.PlayEating();
                 break;
 
             case State.Kill:
@@ -269,69 +227,37 @@ public class DogAI : EnemyBase
         }
     }
 
-
     // ============================================================
-    // STATES IMPLEMENTATION
+    // STATES
     // ============================================================
-
     private void UpdateSearching()
     {
         if (vision != null && vision.CanSeePlayer())
         {
-            Debug.Log("[DogAI] Player detectado → Spotted");
             SetState(State.Spotted);
             return;
         }
-
-        if (bowlInteractable != null && !bowlInteractable.isEmpyt)
-        {
-            var loc = SessionManager.Instance.GetLocation(transform.position);
-            if (loc.Item2 != null && loc.Item2.roomName == "Lavanderia")
-            {
-                Debug.Log("[DogAI] Bowl cheio e dog na lavanderia → Eating");
-                SetState(State.Eating);
-            }
-        }
     }
-
 
     private void UpdateSpotted()
     {
         if (!vision.CanSeePlayer())
         {
-            Debug.Log("[DogAI] Perdeu visão → Searching");
             SetState(State.Searching);
             return;
         }
 
         agent.SetDestination(player.position);
 
-        Vector3 dir = (player.position - GetMouthPos()).normalized;
-        dir.y = 0;
-        if (dir.sqrMagnitude > 0.1f)
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                Quaternion.LookRotation(dir),
-                Time.deltaTime * 8f
-            );
-
         if (Vector3.Distance(GetMouthPos(), player.position) <= chargePrepareDistance)
         {
-            Debug.Log("[DogAI] Distância ideal → PreparingCharge");
             SetState(State.PreparingCharge);
         }
     }
 
-
     private void UpdatePreparingCharge()
     {
-        if (!vision.CanSeePlayer())
-        {
-            Debug.Log("[DogAI] Perdeu visão durante preparo → Searching");
-            SetState(State.Searching);
-            return;
-        }
-
+        agent.isStopped = true;
         stateTimer += Time.deltaTime;
 
         chargeDirection = (player.position - GetMouthPos()).normalized;
@@ -339,72 +265,70 @@ public class DogAI : EnemyBase
 
         if (stateTimer >= prepareTime)
         {
-            Debug.Log("[DogAI] Preparação completa → Charging");
+            lastChargeDir = chargeDirection;
             SetState(State.Charging);
         }
     }
 
-
     private void UpdateCharging()
     {
-        agent.SetDestination(GetMouthPos() + chargeDirection * 2f);
-        transform.rotation = Quaternion.LookRotation(chargeDirection);
+        agent.SetDestination(GetMouthPos() + lastChargeDir * 2f);
 
         if (!vision.CanSeePlayer())
         {
-            Debug.Log("[DogAI] Perdeu visão → Cooldown");
             SetState(State.Cooldown);
         }
     }
-
 
     private void UpdateCooldown()
     {
         stateTimer += Time.deltaTime;
         if (stateTimer >= cooldownTime)
         {
-            Debug.Log("[DogAI] Cooldown terminado → Searching");
             SetState(State.Searching);
         }
     }
 
-
     private void UpdateEating()
     {
-        if (foodBowl == null)
-        {
-            Debug.LogWarning("[DogAI] Eating mas foodBowl é null!");
-            return;
-        }
+        if (foodBowl == null) return;
 
         agent.SetDestination(foodBowl.position);
-
-        if (Vector3.Distance(GetMouthPos(), foodBowl.position) < 1.5f)
-        {
-            agent.isStopped = true;
-
-            Vector3 look = foodBowl.position - transform.position;
-            look.y = 0;
-            transform.rotation = Quaternion.LookRotation(look);
-        }
     }
-
 
     private void UpdateKill()
     {
-        Debug.Log("[DogAI] Player morto.");
         NightManager.Instance.OnPlayerDeath();
     }
 
+    // ============================================================
+    private Vector3 GetMouthPos()
+    {
+        return mouthPoint != null ? mouthPoint.position : transform.position;
+    }
 
-    // ============================================================
-    // DEBUG STATE
-    // ============================================================
-    public void DebugForceState(State newState)
+    private void ResolveFoodBowlPoint()
+    {
+        if (bowlPoint == null) return;
+
+        Point point = PointManager.Instance.GetPointByName(bowlPoint.pointName);
+        if (point == null) return;
+
+        ItemInstance inst = point.selfTransform.GetComponentInChildren<ItemInstance>();
+        if (inst == null) return;
+
+        foodBowl = inst.transform;
+        bowlInteractable = inst.GetComponent<DogFoodBowlInteractable>();
+    }
+
+// ============================================================
+// DEBUG FORCE
+// ============================================================
+public void DebugForceState(State newState)
     {
         if (!agentReady)
         {
-            Debug.LogWarning("[DogAI] agentReady = false, não pode forçar estado.");
+            Debug.LogWarning("[DogAI] agentReady = false.");
             return;
         }
 

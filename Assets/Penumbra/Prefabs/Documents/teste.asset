@@ -12,91 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dd767b21c7a58049bad78e13e7921d6, type: 3}
   m_Name: teste
   m_EditorClassIdentifier: 
-  documentTitle: teste
+  documentTitle: Ecos da penumbra 1/5
   pages:
   - pageName: pagina 1
     sideMode: 1
-    frontText: 11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-    backText: "222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222public
-      void ContinueReading()\r\n{\r\n    if (documentData == null || viewer == null)
-      return;\r\n\r\n    var page = documentData.pages[currentPageIndex];\r\n\r\n   
-      // TwoSide: se ainda n\xE3o mostramos o verso, mostrar agora\r\n    if (page.sideMode
-      == DocumentPage.PageSideMode.TwoSide && !showingBackSide)\r\n    {\r\n       
-      showingBackSide = true;\r\n        viewer.UpdatePage(this);\r\n        return;\r\n   
-      }\r\n\r\n    // Pr\xF3xima p\xE1gina\r\n    if (currentPageIndex < documentData.pages.Count
-      - 1)\r\n    {\r\n        currentPageIndex++;\r\n        showingBackSide = false;
-      // sempre come\xE7ar a nova p\xE1gina pelo lado da frente\r\n        viewer.UpdatePage(this);\r\n   
-      }\r\n    else\r\n    {\r\n        // \xDAltima p\xE1gina \u2192 fechar documento\r\n       
-      CloseReading();\r\n    }\r\n}\r\n\r\npublic void PreviousReading()\r\n{\r\n   
-      if (documentData == null || viewer == null) return;\r\n\r\n    var page = documentData.pages[currentPageIndex];\r\n\r\n   
-      // Se a p\xE1gina atual for TwoSide e estamos no verso, volta para frente\r\n   
-      if (page.sideMode == DocumentPage.PageSideMode.TwoSide && showingBackSide)\r\n   
-      {\r\n        showingBackSide = false;\r\n        viewer.UpdatePage(this);\r\n       
-      return;\r\n    }\r\n\r\n    // Voltar para p\xE1gina anterior\r\n    if (currentPageIndex
-      > 0)\r\n    {\r\n        currentPageIndex--;\r\n        var prevPage = documentData.pages[currentPageIndex];\r\n\r\n       
-      // Se a p\xE1gina anterior for TwoSide, come\xE7ar mostrando o verso (ao voltar)\r\n       
-      showingBackSide = prevPage.sideMode == DocumentPage.PageSideMode.TwoSide ?
-      true : false;\r\n        viewer.UpdatePage(this);\r\n    }\r\n}\r\npublic void
-      ContinueReading()\r\n{\r\n    if (documentData == null || viewer == null) return;\r\n\r\n   
-      var page = documentData.pages[currentPageIndex];\r\n\r\n    // TwoSide: se
-      ainda n\xE3o mostramos o verso, mostrar agora\r\n    if (page.sideMode == DocumentPage.PageSideMode.TwoSide
-      && !showingBackSide)\r\n    {\r\n        showingBackSide = true;\r\n       
-      viewer.UpdatePage(this);\r\n        return;\r\n    }\r\n\r\n    // Pr\xF3xima
-      p\xE1gina\r\n    if (currentPageIndex < documentData.pages.Count - 1)\r\n   
-      {\r\n        currentPageIndex++;\r\n        showingBackSide = false; // sempre
-      come\xE7ar a nova p\xE1gina pelo lado da frente\r\n        viewer.UpdatePage(this);\r\n   
-      }\r\n    else\r\n    {\r\n        // \xDAltima p\xE1gina \u2192 fechar documento\r\n       
-      CloseReading();\r\n    }\r\n}\r\n\r\npublic void PreviousReading()\r\n{\r\n   
-      if (documentData == null || viewer == null) return;\r\n\r\n    var page = documentData.pages[currentPageIndex];\r\n\r\n   
-      // Se a p\xE1gina atual for TwoSide e estamos no verso, volta para frente\r\n   
-      if (page.sideMode == DocumentPage.PageSideMode.TwoSide && showingBackSide)\r\n   
-      {\r\n        showingBackSide = false;\r\n        viewer.UpdatePage(this);\r\n       
-      return;\r\n    }\r\n\r\n    // Voltar para p\xE1gina anterior\r\n    if (currentPageIndex
-      > 0)\r\n    {\r\n        currentPageIndex--;\r\n        var prevPage = documentData.pages[currentPageIndex];\r\n\r\n       
-      // Se a p\xE1gina anterior for TwoSide, come\xE7ar mostrando o verso (ao voltar)\r\n       
-      showingBackSide = prevPage.sideMode == DocumentPage.PageSideMode.TwoSide ?
-      true : false;\r\n        viewer.UpdatePage(this);\r\n    }\r\n}\r\npublic void
-      ContinueReading()\r\n{\r\n    if (documentData == null || viewer == null) return;\r\n\r\n   
-      var page = documentData.pages[currentPageIndex];\r\n\r\n    // TwoSide: se
-      ainda n\xE3o mostramos o verso, mostrar agora\r\n    if (page.sideMode == DocumentPage.PageSideMode.TwoSide
-      && !showingBackSide)\r\n    {\r\n        showingBackSide = true;\r\n       
-      viewer.UpdatePage(this);\r\n        return;\r\n    }\r\n\r\n    // Pr\xF3xima
-      p\xE1gina\r\n    if (currentPageIndex < documentData.pages.Count - 1)\r\n   
-      {\r\n        currentPageIndex++;\r\n        showingBackSide = false; // sempre
-      come\xE7ar a nova p\xE1gina pelo lado da frente\r\n        viewer.UpdatePage(this);\r\n   
-      }\r\n    else\r\n    {\r\n        // \xDAltima p\xE1gina \u2192 fechar documento\r\n       
-      CloseReading();\r\n    }\r\n}\r\n\r\npublic void PreviousReading()\r\n{\r\n   
-      if (documentData == null || viewer == null) return;\r\n\r\n    var page = documentData.pages[currentPageIndex];\r\n\r\n   
-      // Se a p\xE1gina atual for TwoSide e estamos no verso, volta para frente\r\n   
-      if (page.sideMode == DocumentPage.PageSideMode.TwoSide && showingBackSide)\r\n   
-      {\r\n        showingBackSide = false;\r\n        viewer.UpdatePage(this);\r\n       
-      return;\r\n    }\r\n\r\n    // Voltar para p\xE1gina anterior\r\n    if (currentPageIndex
-      > 0)\r\n    {\r\n        currentPageIndex--;\r\n        var prevPage = documentData.pages[currentPageIndex];\r\n\r\n       
-      // Se a p\xE1gina anterior for TwoSide, come\xE7ar mostrando o verso (ao voltar)\r\n       
-      showingBackSide = prevPage.sideMode == DocumentPage.PageSideMode.TwoSide ?
-      true : false;\r\n        viewer.UpdatePage(this);\r\n    }\r\n}\r\npublic void
-      ContinueReading()\r\n{\r\n    if (documentData == null || viewer == null) return;\r\n\r\n   
-      var page = documentData.pages[currentPageIndex];\r\n\r\n    // TwoSide: se
-      ainda n\xE3o mostramos o verso, mostrar agora\r\n    if (page.sideMode == DocumentPage.PageSideMode.TwoSide
-      && !showingBackSide)\r\n    {\r\n        showingBackSide = true;\r\n       
-      viewer.UpdatePage(this);\r\n        return;\r\n    }\r\n\r\n    // Pr\xF3xima
-      p\xE1gina\r\n    if (currentPageIndex < documentData.pages.Count - 1)\r\n   
-      {\r\n        currentPageIndex++;\r\n        showingBackSide = false; // sempre
-      come\xE7ar a nova p\xE1gina pelo lado da frente\r\n        viewer.UpdatePage(this);\r\n   
-      }\r\n    else\r\n    {\r\n        // \xDAltima p\xE1gina \u2192 fechar documento\r\n       
-      CloseReading();\r\n    }\r\n}\r\n\r\npublic void PreviousReading()\r\n{\r\n   
-      if (documentData == null || viewer == null) return;\r\n\r\n    var page = documentData.pages[currentPageIndex];\r\n\r\n   
-      // Se a p\xE1gina atual for TwoSide e estamos no verso, volta para frente\r\n   
-      if (page.sideMode == DocumentPage.PageSideMode.TwoSide && showingBackSide)\r\n   
-      {\r\n        showingBackSide = false;\r\n        viewer.UpdatePage(this);\r\n       
-      return;\r\n    }\r\n\r\n    // Voltar para p\xE1gina anterior\r\n    if (currentPageIndex
-      > 0)\r\n    {\r\n        currentPageIndex--;\r\n        var prevPage = documentData.pages[currentPageIndex];\r\n\r\n       
-      // Se a p\xE1gina anterior for TwoSide, come\xE7ar mostrando o verso (ao voltar)\r\n       
-      showingBackSide = prevPage.sideMode == DocumentPage.PageSideMode.TwoSide ?
-      true : false;\r\n        viewer.UpdatePage(this);\r\n    }\r\n}\r\n"
+    frontText: "O cachorro da fazenda, antes d\xF3cil e sempre atento aos passos
+      de seu dono, come\xE7ou a mudar ap\xF3s a primeira apari\xE7\xE3o daquilo que
+      os moradores chamavam apenas de Penumbra. No in\xEDcio eram tremores sutis,
+      como se ele percebesse algo que ningu\xE9m mais via."
+    backText: "Depois vieram os latidos para o vazio, o olhar fixo em cantos escuros
+      e, por fim, a completa perda de controle. Seus movimentos tornaram-se err\xE1ticos,
+      como se algo invis\xEDvel o puxasse para dire\xE7\xF5es diferentes, e seu corpo
+      reagia com espasmos que desafiavam qualquer l\xF3gica"
   - pageName: pagina 2
-    sideMode: 1
-    frontText: 3333333333333333333333333333333333333333333333333333333333
+    sideMode: 0
+    frontText: "Agora, o animal vaga pela propriedade durante a noite, emitindo sons
+      imposs\xEDveis de serem confundidos com um simples rosnado \u2014 como se a
+      Penumbra tivesse tomado sua mente e deixado apenas um reflexo distorcido do
+      que ele foi um dia."
     backText: 4444
   - pageName: pagina 3
     sideMode: 0
