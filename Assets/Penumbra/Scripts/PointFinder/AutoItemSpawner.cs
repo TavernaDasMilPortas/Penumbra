@@ -14,7 +14,7 @@ public class AutoItemSpawner : MonoBehaviour
     // ============================================================
     // 1️⃣ SPAWN NORMAL → TODOS OS POINTS COM spawnItem
     // ============================================================
-    public void SpawnAllPoints()
+    public void SpawnAllPoints() 
     {
         foreach (var p in PointManager.Instance.points)
         {

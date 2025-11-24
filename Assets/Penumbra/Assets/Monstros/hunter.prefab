@@ -408,9 +408,9 @@ MonoBehaviour:
   killCollider: {fileID: 1199476763108701817}
   detectionRadius: 50
   chargePrepareDistance: 35
-  chargeSpeed: 200
+  chargeSpeed: 80
   normalSpeed: 15
-  prepareTime: 3
+  prepareTime: 1.5
   cooldownTime: 1.5
   bowlPoint:
     pointName: DogBowSpawn

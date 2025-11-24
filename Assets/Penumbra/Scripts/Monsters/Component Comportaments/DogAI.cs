@@ -58,9 +58,6 @@ public class DogAI : EnemyBase
 
     public State CurrentState => currentState;
 
-    // ============================================================
-    // AWAKE
-    // ============================================================
     protected override void Awake()
     {
         base.Awake();
@@ -82,9 +79,6 @@ public class DogAI : EnemyBase
             Debug.LogError("[DogAI] O KillCollider deve ter 'isTrigger = true'!");
     }
 
-    // ============================================================
-    // START
-    // ============================================================
     protected override void Start()
     {
         base.Start();
@@ -98,9 +92,6 @@ public class DogAI : EnemyBase
             OnAgentReady.AddListener(HandleAgentReady);
     }
 
-    // ============================================================
-    // REGISTRO DO COLISOR
-    // ============================================================
     private void OnEnable()
     {
         if (killCollider != null)
@@ -118,9 +109,9 @@ public class DogAI : EnemyBase
         {
             if (!other.CompareTag("Player"))
                 return;
-                Debug.Log("[DogAI] KILL TRIGGER → Player atingido durante o Charge!");
-                owner.SetState(State.Kill);
-            
+
+            Debug.Log("[DogAI] KILL TRIGGER → Player atingido durante o Charge!");
+            owner.SetState(State.Kill);
         }
     }
 
@@ -134,9 +125,6 @@ public class DogAI : EnemyBase
         SetState(State.Searching);
     }
 
-    // ============================================================
-    // UPDATE
-    // ============================================================
     private void Update()
     {
         if (!agentReady) return;
@@ -155,9 +143,6 @@ public class DogAI : EnemyBase
         }
     }
 
-    // ============================================================
-    // ANIMAÇÕES
-    // ============================================================
     private void UpdateAnimation()
     {
         if (anim == null || agent == null)
@@ -182,9 +167,6 @@ public class DogAI : EnemyBase
         anim.speed = baseSpeed;
     }
 
-    // ============================================================
-    // STATE MACHINE
-    // ============================================================
     private void SetState(State newState)
     {
         currentState = newState;
@@ -205,6 +187,13 @@ public class DogAI : EnemyBase
 
             case State.PreparingCharge:
                 agent.isStopped = true;
+
+                // 🔥 FORÇA A ENTRADA DA ANIMAÇÃO AttackPrepare
+                if (anim != null)
+                {
+                    Debug.Log("[DogAI] Tocando animação AttackPrepare");
+                    anim.CrossFade("AttackPrepare", 0.1f);
+                }
                 break;
 
             case State.Charging:
@@ -227,9 +216,6 @@ public class DogAI : EnemyBase
         }
     }
 
-    // ============================================================
-    // STATES
-    // ============================================================
     private void UpdateSearching()
     {
         if (vision != null && vision.CanSeePlayer())
@@ -301,7 +287,6 @@ public class DogAI : EnemyBase
         NightManager.Instance.OnPlayerDeath();
     }
 
-    // ============================================================
     private Vector3 GetMouthPos()
     {
         return mouthPoint != null ? mouthPoint.position : transform.position;
@@ -321,10 +306,7 @@ public class DogAI : EnemyBase
         bowlInteractable = inst.GetComponent<DogFoodBowlInteractable>();
     }
 
-// ============================================================
-// DEBUG FORCE
-// ============================================================
-public void DebugForceState(State newState)
+    public void DebugForceState(State newState)
     {
         if (!agentReady)
         {
@@ -332,13 +314,8 @@ public void DebugForceState(State newState)
             return;
         }
 
-        DebugForce_Internal(newState);
-    }
-
-    private void DebugForce_Internal(State s)
-    {
         typeof(DogAI)
             .GetMethod("SetState", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-            .Invoke(this, new object[] { s });
+            .Invoke(this, new object[] { newState });
     }
 }
