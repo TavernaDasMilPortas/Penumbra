@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Penumbra/Scenes/MainGame.unity
     guid: 55fea53316c9c874a8a86e50de0d8393
+  - enabled: 1
+    path: Assets/Penumbra/Scenes/HouseIdle.unity
+    guid: 617a8996e8ddf5d4693be7d82542cfc6
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
