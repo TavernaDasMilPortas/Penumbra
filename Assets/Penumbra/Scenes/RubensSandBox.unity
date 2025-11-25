@@ -1872,54 +1872,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sessions: []
---- !u!1 &538181644
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 538181646}
-  - component: {fileID: 538181645}
-  m_Layer: 0
-  m_Name: Point (5)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &538181645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 538181644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4c0db8c5b2e35741a03cbe71fe8207f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectName: Candle_5_Spawn
-  group: {fileID: 0}
-  spawnItem: {fileID: 11400000, guid: adaf1b8da2466f84a8b85fbe873786f1, type: 2}
-  selfTransform: {fileID: 538181646}
---- !u!4 &538181646
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 538181644}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 242.45, y: 45.16, z: -300.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &556165843
 GameObject:
   m_ObjectHideFlags: 0
@@ -3767,8 +3719,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Candle_4_Spawn
-  group: {fileID: 0}
-  spawnItem: {fileID: 11400000, guid: be811ceae5a4ccf499f60d430b4262a0, type: 2}
+  group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
+  spawnItem: {fileID: 0}
   selfTransform: {fileID: 1138833862}
 --- !u!4 &1138833862
 Transform:
@@ -4878,8 +4830,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Candle_5_Spawn
-  group: {fileID: 0}
-  spawnItem: {fileID: 11400000, guid: adaf1b8da2466f84a8b85fbe873786f1, type: 2}
+  group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
+  spawnItem: {fileID: 0}
   selfTransform: {fileID: 1425849892}
 --- !u!4 &1425849892
 Transform:
@@ -5119,8 +5071,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Candle_2_Spawn
-  group: {fileID: 0}
-  spawnItem: {fileID: 11400000, guid: 834de539d21e18e4593c4255c04ec14a, type: 2}
+  group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
+  spawnItem: {fileID: 0}
   selfTransform: {fileID: 1487465187}
 --- !u!4 &1487465187
 Transform:
@@ -6079,8 +6031,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Candle_1_Spawn
-  group: {fileID: 0}
-  spawnItem: {fileID: 11400000, guid: 7f312ffad9c0e0549880c17797e5641f, type: 2}
+  group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
+  spawnItem: {fileID: 0}
   selfTransform: {fileID: 1771324026}
 --- !u!4 &1771324026
 Transform:
@@ -6665,8 +6617,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectName: Candle_3_Spawn
-  group: {fileID: 0}
-  spawnItem: {fileID: 11400000, guid: b6afb2370e3d5ae409fd56dffe1fb5da, type: 2}
+  group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
+  spawnItem: {fileID: 0}
   selfTransform: {fileID: 1885904717}
 --- !u!4 &1885904717
 Transform:
@@ -7173,7 +7125,6 @@ MonoBehaviour:
   points:
   - {fileID: 345242874}
   - {fileID: 410782168}
-  - {fileID: 538181645}
   - {fileID: 632268847}
   - {fileID: 688314616}
   - {fileID: 705167919}
@@ -8348,7 +8299,6 @@ SceneRoots:
   - {fileID: 1885904717}
   - {fileID: 1138833862}
   - {fileID: 1425849892}
-  - {fileID: 538181646}
   - {fileID: 5314680966121900682}
   - {fileID: 185406886}
   - {fileID: 287689750}

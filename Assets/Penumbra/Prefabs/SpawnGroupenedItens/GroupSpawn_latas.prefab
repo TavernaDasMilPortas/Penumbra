@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6502893109205520926}
   - component: {fileID: 6794038239728246803}
   m_Layer: 0
-  m_Name: GroupSpawn_Katas
+  m_Name: GroupSpawn_latas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,5 +47,8 @@ MonoBehaviour:
   spawner: {fileID: 0}
   groupName: grupo_ComidaEnlatada
   itemsToSpawn:
+  - {fileID: 11400000, guid: 6ec18ad7d1cb67749a5f0f19ef29c5d8, type: 2}
+  - {fileID: 11400000, guid: 6ec18ad7d1cb67749a5f0f19ef29c5d8, type: 2}
+  - {fileID: 11400000, guid: 6ec18ad7d1cb67749a5f0f19ef29c5d8, type: 2}
   - {fileID: 11400000, guid: 6ec18ad7d1cb67749a5f0f19ef29c5d8, type: 2}
   spawnOnStart: 1

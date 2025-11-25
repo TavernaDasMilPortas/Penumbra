@@ -10,13 +10,20 @@ public class Interactable_door : MonoBehaviour, IInteractable
     public string interactionMessage = "Interagiu com Interactable";
 
     [Header("Referências da porta")]
-    public Transform doorModel;           // O objeto que irá girar
-    public float openAngle = -90f;        // Ângulo final quando aberta
-    public float closedAngle = 0f;        // Ângulo final quando fechada
-    public float openSpeed = 4f;          // Velocidade de abertura/fechamento
+    public Transform doorModel;
+    public float openAngle = -90f;
+    public float closedAngle = 0f;
+    public float openSpeed = 4f;
 
-    private bool isOpen = false;
-    private bool isAnimating = false;     // Evita sobreposição de animações
+    [Header("Estado atual (visível no inspector)")]
+    public bool isOpen = false;   // <<<< exposto agora
+
+    private bool isAnimating = false;
+
+    private Quaternion initialRotation;
+    private Quaternion closedRotation;
+    private Quaternion openRotation;
+
     private DoorLinkGenerator linkGen;
 
     [Header("Flag")]
@@ -29,30 +36,33 @@ public class Interactable_door : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        // Procura o DoorLinkGenerator
-        linkGen = GetComponent<DoorLinkGenerator>();
-        if (linkGen == null) linkGen = GetComponentInChildren<DoorLinkGenerator>();
-        if (linkGen == null) linkGen = GetComponentInParent<DoorLinkGenerator>();
+        linkGen = GetComponent<DoorLinkGenerator>() ??
+                  GetComponentInChildren<DoorLinkGenerator>() ??
+                  GetComponentInParent<DoorLinkGenerator>();
 
         if (linkGen == null)
             Debug.LogWarning("[Interactable_door] Nenhum DoorLinkGenerator encontrado.");
 
-        // Garante que a porta começa fechada
-        if (doorModel != null)
-            doorModel.localRotation = Quaternion.Euler(0, closedAngle, 0);
+        // 🔥 Salva a rotação exata colocada no editor
+        initialRotation = doorModel.localRotation;
+
+        // 🔥 Calcula rotações baseando-se no ponto REAL como referência
+        closedRotation = initialRotation * Quaternion.Euler(0, closedAngle, 0);
+        openRotation = initialRotation * Quaternion.Euler(0, openAngle, 0);
+
+        // 🔥 NÃO ALTERA A ROTAÇÃO DA PORTA
+        // Apenas sincroniza os links com o estado atual
+        linkGen?.SetDoorOpen(isOpen);
     }
 
     public void Interact()
     {
-        if (!IsInteractable || isAnimating)
-            return;
+        if (!IsInteractable || isAnimating) return;
 
         if (RequiredItem == null)
         {
-            if (!isOpen)
-                OpenDoor();
-            else
-                CloseDoor();
+            if (!isOpen) OpenDoor();
+            else CloseDoor();
         }
         else
         {
@@ -60,57 +70,41 @@ public class Interactable_door : MonoBehaviour, IInteractable
         }
     }
 
-    // ===============================
-    //        MÉTODO DE ABRIR
-    // ===============================
     private void OpenDoor()
     {
         if (isAnimating) return;
 
         isOpen = true;
-        if (linkGen != null)
-            linkGen.SetDoorOpen(true);
+        linkGen?.SetDoorOpen(true);
 
-        StartCoroutine(AnimateDoor(openAngle));
+        StartCoroutine(AnimateDoor(openRotation));
     }
 
-    // ===============================
-    //        MÉTODO DE FECHAR
-    // ===============================
     private void CloseDoor()
     {
         if (isAnimating) return;
 
         isOpen = false;
-        if (linkGen != null)
-            linkGen.SetDoorOpen(false);
+        linkGen?.SetDoorOpen(false);
 
-        StartCoroutine(AnimateDoor(closedAngle));
+        StartCoroutine(AnimateDoor(closedRotation));
     }
 
-    // ===============================
-    //      ANIMAÇÃO DA PORTA
-    // ===============================
-    private System.Collections.IEnumerator AnimateDoor(float targetY)
+    private System.Collections.IEnumerator AnimateDoor(Quaternion targetRot)
     {
         isAnimating = true;
 
         Quaternion startRot = doorModel.localRotation;
-        Quaternion endRot = Quaternion.Euler(0, targetY, 0);
-
         float t = 0f;
 
         while (t < 1f)
         {
             t += Time.deltaTime * openSpeed;
-            doorModel.localRotation = Quaternion.Lerp(startRot, endRot, t);
+            doorModel.localRotation = Quaternion.Lerp(startRot, targetRot, t);
             yield return null;
         }
 
-        doorModel.localRotation = endRot;
+        doorModel.localRotation = targetRot;
         isAnimating = false;
-
-        Debug.Log(isOpen ? "Porta aberta" : "Porta fechada");
-        Debug.Log(InteractionMessage);
     }
 }

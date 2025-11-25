@@ -66,7 +66,8 @@ MonoBehaviour:
     spawnData:
     - monsterPrefab: {fileID: 3251693783595989519, guid: 0c62501126de700478c52d5228109625, type: 3}
       spawnPointNames:
-      - pointName: HunterSpawn(1)
+      - pointName: Hunter_Spawn_2
+      - pointName: Hunter_Spawn_3
       resolvedSpawnPoints: []
       patrolGroup: {fileID: -1429905069994520820}
       eventReference: {fileID: 1343057542699681023}
@@ -91,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basePoint:
-    pointName: HunterPatrolGroup
+    pointName: PatrolGroup2Andar
   patrolPoints: []
   patrolGroupName: 
   gizmoColor: {r: 0, g: 1, b: 1, a: 1}

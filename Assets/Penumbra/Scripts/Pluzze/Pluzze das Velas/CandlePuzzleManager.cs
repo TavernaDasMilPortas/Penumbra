@@ -17,8 +17,22 @@ public class CandlePuzzleManager : PuzzleManager
     protected override void Start()
     {
         base.Start();
+
         GenerateRandomOrder();
+
+        Debug.Log("========== ORDEM DO PUZZLE ==========");
+
+        for (int i = 0; i < holders.Count; i++)
+        {
+            string holderName = holders[i] != null ? holders[i].name : "(NULL)";
+            string candleName = correctSetup[i] != null ? correctSetup[i].itemName : "(NULL)";
+
+            Debug.Log($"Posição {i} → Holder: {holderName} | Vela: {candleName}");
+        }
+
+        Debug.Log("=====================================");
     }
+
 
     private void GenerateRandomOrder()
     {
