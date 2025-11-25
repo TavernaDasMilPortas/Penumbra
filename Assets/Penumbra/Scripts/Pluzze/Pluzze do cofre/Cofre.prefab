@@ -399,8 +399,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1.6650009, y: 0.644001}
-  m_SizeDelta: {x: -197.445, y: -99.181}
+  m_AnchoredPosition: {x: 1.6930008, y: 0.644001}
+  m_SizeDelta: {x: -197.388, y: -99.181}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6888515156017328530
 CanvasRenderer:
@@ -3839,6 +3839,7 @@ MonoBehaviour:
   doorAnimator: {fileID: 2827187208587014046}
   interactable: {fileID: 3834156539257040181}
   colliderToDisable: {fileID: 6291063777102136788}
+  radio: {fileID: 0}
   OnSafeOpened:
     m_PersistentCalls:
       m_Calls: []

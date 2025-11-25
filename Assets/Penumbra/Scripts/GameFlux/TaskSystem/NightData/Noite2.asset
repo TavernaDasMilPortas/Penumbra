@@ -18,6 +18,7 @@ MonoBehaviour:
   - rid: 283484248979537998
   spawnPrefabs:
   - {fileID: 2944732771390379213, guid: 67dfb9f29370fc24a94df3806c5204bf, type: 3}
+  - {fileID: 1067644997654388716, guid: 6b2cb0b1f38840742badc54127203d16, type: 3}
   references:
     version: 2
     RefIds:

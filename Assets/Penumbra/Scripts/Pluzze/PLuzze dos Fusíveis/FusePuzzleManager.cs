@@ -5,7 +5,10 @@ using System.Linq;
 public class FusePuzzleManager : PuzzleManager
 {
     [Header("Night necessária para ativar o puzzle")]
-    public NightData requiredNight; // <<< NOVO
+    public NightData requiredNight;
+
+    [Header("Documento onde será escrita a ordem dos fusíveis")]
+    public DocumentData documentToFill; // <<< NOVO
 
     [Header("Cores e Materiais Disponíveis")]
     public int colorCount;
@@ -29,9 +32,9 @@ public class FusePuzzleManager : PuzzleManager
     {
         base.Start();
 
-        // --------------------------------------------------------------------
-        // ✅ 1 — VERIFICA SE O PUZZLE DEVE SER ATIVADO NESTA NOITE
-        // --------------------------------------------------------------------
+        // --------------------------------------------------------------
+        // 1 — VERIFICA NOITE
+        // --------------------------------------------------------------
         if (requiredNight != null)
         {
             if (NightManager.Instance == null)
@@ -40,17 +43,16 @@ public class FusePuzzleManager : PuzzleManager
                 return;
             }
 
-            NightData currentNight = NightManager.Instance.CurrentNight;
-
-            if (currentNight != requiredNight)
+            if (NightManager.Instance.CurrentNight != requiredNight)
             {
-                Debug.Log($"[FusePuzzle] Puzzle ignorado — noite atual é '{currentNight.nightName}', mas este puzzle pertence à noite '{requiredNight.nightName}'.");
-                return; // ❌ NÃO CONFIGURA O PUZZLE
+                Debug.Log($"[FusePuzzle] Puzzle ignorado — noite atual é '{NightManager.Instance.CurrentNight.nightName}', mas pertence à '{requiredNight.nightName}'.");
+                return;
             }
         }
 
-        // Se chegou aqui → está na noite correta e o puzzle ativa normalmente
-        // --------------------------------------------------------------------
+        // --------------------------------------------------------------
+        // 2 — CONFIGURAÇÃO NORMAL DO PUZZLE
+        // --------------------------------------------------------------
 
         if (fuseSpawnGroup == null)
         {
@@ -66,12 +68,16 @@ public class FusePuzzleManager : PuzzleManager
 
         AssignColors();
         GenerateCorrectOrder();
+
+        // NOVO — escreve documento
+        WriteDocument();
+
         SpawnFuses();
     }
 
-    // ============================================================
-    // 1️⃣ CRIA ORDEM ALEATÓRIA DE CORES PARA OS SOCKETS
-    // ============================================================
+    // ======================================================================
+    //  GERA PALETA E APLICA CORES NOS SOCKETS
+    // ======================================================================
     private void AssignColors()
     {
         List<FuseColor> allColors = new((FuseColor[])System.Enum.GetValues(typeof(FuseColor)));
@@ -117,19 +123,50 @@ public class FusePuzzleManager : PuzzleManager
         ApplyMaterialToSwitch(socket, color);
     }
 
-    // ============================================================
-    // 2️⃣ SPAWN DOS FUSÍVEIS
-    // ============================================================
+    // ======================================================================
+    //  ESCREVE DOCUMENTO
+    // ======================================================================
+    private void WriteDocument()
+    {
+        if (documentToFill == null)
+        {
+            Debug.LogWarning("[FusePuzzle] Nenhum DocumentData configurado.");
+            return;
+        }
+
+        if (documentToFill.pages == null || documentToFill.pages.Count == 0)
+        {
+            Debug.LogError("[FusePuzzle] DocumentData não possui páginas.");
+            return;
+        }
+
+        string title = "Alinhamento dos Fusíveis\n\n";
+        string body = "";
+
+        for (int i = 0; i < correctColorOrder.Count; i++)
+        {
+            FuseColor c = correctColorOrder[i];
+
+            string fuseName = fuseMap.ContainsKey(c) ? fuseMap[c].itemName : c.ToString();
+            body += $"{i + 1}º — {fuseName}\n";
+        }
+
+        string finalText = title + body;
+
+        documentToFill.pages[0].frontText = finalText;
+
+        Debug.Log("[FusePuzzle] Documento preenchido com a ordem dos fusíveis:\n" + finalText);
+    }
+
+    // ======================================================================
     private void SpawnFuses()
     {
         List<Item> itemsToSpawn = new();
 
         foreach (var socket in sockets)
         {
-            if (socket.assignedFuse == null)
-                continue;
-
-            itemsToSpawn.Add(socket.assignedFuse);
+            if (socket.assignedFuse != null)
+                itemsToSpawn.Add(socket.assignedFuse);
         }
 
         AutoItemSpawner spawner = FindObjectOfType<AutoItemSpawner>();

@@ -82,7 +82,7 @@ public class Document : InteractableBase
         ActionHintManager.Instance.ClearHints();
         ActionHintManager.Instance.ShowHint("E", "Próxima Página");
         ActionHintManager.Instance.ShowHint("Q", "Página Anterior");
-        ActionHintManager.Instance.ShowHint("Esc", "Fechar Documento");
+        ActionHintManager.Instance.ShowHint("R", "Fechar Documento");
     }
 
     public void ContinueReading()

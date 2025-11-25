@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7800252dbc2d45644bae67cf391fc01f, type: 3}
+  m_Name: noite3
+  m_EditorClassIdentifier: 
+  nightName: 
+  tasks:
+  - rid: 1434774188401360988
+  spawnPrefabs:
+  - {fileID: 1067644997654388716, guid: 6b2cb0b1f38840742badc54127203d16, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 1434774188401360988
+      type: {class: SimpleTask, ns: , asm: Assembly-CSharp}
+      data:
+        taskName: Sair da Casa
+        isCompleted: 0

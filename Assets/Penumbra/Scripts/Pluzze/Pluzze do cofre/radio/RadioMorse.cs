@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class RadioMorse : MonoBehaviour
 {
+    [Header("Night necessária para ativar o rádio")]
+    public NightData requiredNight;
+
     [Header("Configuração do Morse")]
     public string message = "SOS";
     public float dotDuration = 0.1f;
@@ -32,8 +35,31 @@ public class RadioMorse : MonoBehaviour
     private Dictionary<char, string> morseMap;
     private bool isPlayingMorse = false;
 
+
+    private void Awake()
+    {
+        // Se existe uma Night configurada, valida
+        if (requiredNight != null)
+        {
+            if (NightManager.Instance == null)
+            {
+                Debug.LogWarning("[RadioMorse] NightManager não existe ainda. O objeto permanecerá ativo.");
+            }
+            else if (NightManager.Instance.CurrentNight != requiredNight)
+            {
+                Debug.Log($"[RadioMorse] Desativado. Só deve funcionar na noite: {requiredNight.nightName}");
+                gameObject.SetActive(false);
+                return;
+            }
+        }
+    }
+
+
     private void Start()
     {
+        if (!gameObject.activeSelf)
+            return; // já foi desativado no Awake
+
         CreateMorseDictionary();
         StartCoroutine(StaticLoop());
     }
@@ -51,7 +77,6 @@ public class RadioMorse : MonoBehaviour
             {'S', "..."}, {'T', "-"}, {'U', "..-"},
             {'V', "...-"}, {'W', ".--"}, {'X', "-..-"},
             {'Y', "-.--"}, {'Z', "--.."},
-
             {'0', "-----"}, {'1', ".----"}, {'2', "..---"},
             {'3', "...--"}, {'4', "....-"}, {'5', "....."},
             {'6', "-...."}, {'7', "--..."}, {'8', "---.."},
@@ -59,12 +84,10 @@ public class RadioMorse : MonoBehaviour
         };
     }
 
-    // -------------------------------------------------------------
     private IEnumerator StaticLoop()
     {
         while (true)
         {
-            // Se item foi colocado → iniciar Morse
             if (holder != null && holder.currentItem != null && !isPlayingMorse)
             {
                 StartCoroutine(PlayMorseLoop());
@@ -76,7 +99,6 @@ public class RadioMorse : MonoBehaviour
         }
     }
 
-    // -------------------------------------------------------------
     private IEnumerator PlayMorseLoop()
     {
         isPlayingMorse = true;
@@ -88,11 +110,9 @@ public class RadioMorse : MonoBehaviour
         }
 
         isPlayingMorse = false;
-
         StartCoroutine(StaticLoop());
     }
 
-    // -------------------------------------------------------------
     private IEnumerator PlayMessage(string msg)
     {
         msg = msg.ToUpper();
@@ -129,18 +149,12 @@ public class RadioMorse : MonoBehaviour
         }
     }
 
-    // -------------------------------------------------------------
     private void PlaySymbol(char symbol)
     {
         source.pitch = Random.Range(minPitch, maxPitch);
+        source.Stop();
 
-        source.Stop(); // impede sobreposição
-
-        if (symbol == '.')
-            source.clip = dotClip;
-        else
-            source.clip = dashClip;
-
+        source.clip = (symbol == '.') ? dotClip : dashClip;
         source.Play();
     }
 
@@ -148,7 +162,7 @@ public class RadioMorse : MonoBehaviour
     {
         if (staticClip == null) return;
 
-        source.Stop();          // garante que não sobrepõe
+        source.Stop();
         source.clip = staticClip;
         source.pitch = 1f;
         source.Play();

@@ -146,7 +146,7 @@ public class InputManager : MonoBehaviour
         }
 
         // Fechar documento diretamente
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             doc.CloseReading();
         }

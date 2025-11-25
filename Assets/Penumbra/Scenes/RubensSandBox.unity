@@ -3721,6 +3721,7 @@ MonoBehaviour:
   objectName: Candle_4_Spawn
   group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
   spawnItem: {fileID: 0}
+  requiredNight: {fileID: 0}
   selfTransform: {fileID: 1138833862}
 --- !u!4 &1138833862
 Transform:
@@ -3769,6 +3770,7 @@ MonoBehaviour:
   objectName: 
   group: {fileID: 0}
   spawnItem: {fileID: 11400000, guid: 2521a18eb73efe94b90d160b17ab0176, type: 2}
+  requiredNight: {fileID: 0}
   selfTransform: {fileID: 1163631798}
 --- !u!4 &1163631798
 Transform:
@@ -4832,6 +4834,7 @@ MonoBehaviour:
   objectName: Candle_5_Spawn
   group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
   spawnItem: {fileID: 0}
+  requiredNight: {fileID: 0}
   selfTransform: {fileID: 1425849892}
 --- !u!4 &1425849892
 Transform:
@@ -5040,6 +5043,7 @@ MonoBehaviour:
   objectName: HunterSpawn(1)
   group: {fileID: 0}
   spawnItem: {fileID: 0}
+  requiredNight: {fileID: 0}
   selfTransform: {fileID: 1484072896}
 --- !u!1 &1487465185
 GameObject:
@@ -5073,6 +5077,7 @@ MonoBehaviour:
   objectName: Candle_2_Spawn
   group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
   spawnItem: {fileID: 0}
+  requiredNight: {fileID: 0}
   selfTransform: {fileID: 1487465187}
 --- !u!4 &1487465187
 Transform:
@@ -5545,6 +5550,7 @@ MonoBehaviour:
   - {fileID: 1822894460}
   - {fileID: 972597619}
   - {fileID: 1595184545}
+  requiredNight: {fileID: 0}
   colorCount: 5
   colorMaterials:
   - color: 0
@@ -5774,6 +5780,7 @@ MonoBehaviour:
   objectName: HunterPatrolGroup
   group: {fileID: 0}
   spawnItem: {fileID: 0}
+  requiredNight: {fileID: 0}
   selfTransform: {fileID: 1697477691}
 --- !u!1001 &1708242727
 PrefabInstance:
@@ -6033,6 +6040,7 @@ MonoBehaviour:
   objectName: Candle_1_Spawn
   group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
   spawnItem: {fileID: 0}
+  requiredNight: {fileID: 0}
   selfTransform: {fileID: 1771324026}
 --- !u!4 &1771324026
 Transform:
@@ -6619,6 +6627,7 @@ MonoBehaviour:
   objectName: Candle_3_Spawn
   group: {fileID: 11400000, guid: ad170442a20623d47ba89e26d182190c, type: 2}
   spawnItem: {fileID: 0}
+  requiredNight: {fileID: 0}
   selfTransform: {fileID: 1885904717}
 --- !u!4 &1885904717
 Transform:
@@ -7265,6 +7274,7 @@ MonoBehaviour:
   objectName: HunterSpawn(2)
   group: {fileID: 0}
   spawnItem: {fileID: 0}
+  requiredNight: {fileID: 0}
   selfTransform: {fileID: 737157197}
 --- !u!1001 &2070852478
 PrefabInstance:
@@ -7816,6 +7826,10 @@ PrefabInstance:
       propertyPath: letterSpacing
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5294300660262373135, guid: 3679fd724945c6f45be8cc82c961bd4c, type: 3}
+      propertyPath: requiredNight
+      value: 
+      objectReference: {fileID: 11400000, guid: 93ac2dc8293204b4d86a44bca12b5085, type: 2}
     - target: {fileID: 5294300660262373135, guid: 3679fd724945c6f45be8cc82c961bd4c, type: 3}
       propertyPath: symbolSpacing
       value: 1
