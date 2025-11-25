@@ -1954,9 +1954,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nights:
-  - {fileID: 11400000, guid: 37fb0e359eb717544a11fc9062a5a906, type: 2}
   - {fileID: 11400000, guid: 93ac2dc8293204b4d86a44bca12b5085, type: 2}
   - {fileID: 11400000, guid: a64361860cef4db4c8a72d6573131867, type: 2}
+  - {fileID: 11400000, guid: 37fb0e359eb717544a11fc9062a5a906, type: 2}
   currentNightIndex: 0
   attemptManager: {fileID: 286321551}
 --- !u!114 &286321551
@@ -13338,6 +13338,10 @@ PrefabInstance:
     - target: {fileID: 7862093751509265420, guid: 76edbdbbdcb9b0947aa5365928884c53, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862093751509265420, guid: 76edbdbbdcb9b0947aa5365928884c53, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7862093751509265420, guid: 76edbdbbdcb9b0947aa5365928884c53, type: 3}
       propertyPath: m_TagString
