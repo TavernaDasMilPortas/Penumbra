@@ -16,7 +16,8 @@ MonoBehaviour:
   tasks:
   - rid: 283484248979537997
   - rid: 283484248979537998
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 2944732771390379213, guid: 67dfb9f29370fc24a94df3806c5204bf, type: 3}
   references:
     version: 2
     RefIds:
