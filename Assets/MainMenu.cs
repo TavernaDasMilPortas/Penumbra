@@ -27,11 +27,21 @@ public class MainMenu : MonoBehaviour
         
         SceneManager.LoadSceneAsync("MainGame");
     }
+    public void OpenShowcase()
+    {
+        // Aqui você decide: Se o showcase for interativo (tipo gameplay), trave o cursor.
+        // Se for apenas visual (tipo museu com mouse), deixe o cursor livre.
+
+        // Exemplo: Deixando cursor livre para clicar em coisas no showcase
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        SceneManager.LoadScene("Showcase");
+    }
 
     public void QuitGame()
     {
         Application.Quit();
-        
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
