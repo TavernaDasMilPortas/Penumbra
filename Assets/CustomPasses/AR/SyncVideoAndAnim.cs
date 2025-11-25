@@ -9,7 +9,7 @@ using UnityEngine.Video;
 public class SyncVideoAndAnim : MonoBehaviour
 {
     VideoPlayer videoPlayer;
-    new Animation animation;
+    new Animation animationn;
 
     bool firstUpdate = true;
     
@@ -17,9 +17,9 @@ public class SyncVideoAndAnim : MonoBehaviour
     void Start()
     {
         videoPlayer = GetComponent<VideoPlayer>();
-        animation = GetComponent<Animation>();
+        animationn = GetComponent<Animation>();
 
-        animation.Play();
+        animationn.Play();
 
         videoPlayer.Play();
         videoPlayer.loopPointReached += Loop;
@@ -32,7 +32,7 @@ public class SyncVideoAndAnim : MonoBehaviour
         {
             var t = (float) videoPlayer.time;
             
-            foreach (AnimationState state in animation)
+            foreach (AnimationState state in animationn)
             {
                 state.time = t;
             }
@@ -44,7 +44,7 @@ public class SyncVideoAndAnim : MonoBehaviour
     // Force a sync of the animation each time the video player loops
     void Loop(VideoPlayer vp)
     {
-        foreach (AnimationState state in animation)
+        foreach (AnimationState state in animationn)
         {
             state.time = 0;
         }

@@ -17,5 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Penumbra/Scenes/Showcase.unity
     guid: 9ca8a55995e9b1742a0b2ff63119cb3b
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 30047191ae18eaf4bb5787e75dfb825a, type: 2}
   m_UseUCBPForAssetBundles: 0

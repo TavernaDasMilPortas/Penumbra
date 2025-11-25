@@ -24,7 +24,7 @@ public class Interactable_door : MonoBehaviour, IInteractable
     private Quaternion closedRotation;
     private Quaternion openRotation;
 
-    private DoorLinkGenerator linkGen;
+
 
     [Header("Flag")]
     public bool isInteractable = true;
@@ -36,12 +36,8 @@ public class Interactable_door : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        linkGen = GetComponent<DoorLinkGenerator>() ??
-                  GetComponentInChildren<DoorLinkGenerator>() ??
-                  GetComponentInParent<DoorLinkGenerator>();
 
-        if (linkGen == null)
-            Debug.LogWarning("[Interactable_door] Nenhum DoorLinkGenerator encontrado.");
+
 
         // 🔥 Salva a rotação exata colocada no editor
         initialRotation = doorModel.localRotation;
@@ -50,9 +46,7 @@ public class Interactable_door : MonoBehaviour, IInteractable
         closedRotation = initialRotation * Quaternion.Euler(0, closedAngle, 0);
         openRotation = initialRotation * Quaternion.Euler(0, openAngle, 0);
 
-        // 🔥 NÃO ALTERA A ROTAÇÃO DA PORTA
-        // Apenas sincroniza os links com o estado atual
-        linkGen?.SetDoorOpen(isOpen);
+
     }
 
     public void Interact()
@@ -75,7 +69,6 @@ public class Interactable_door : MonoBehaviour, IInteractable
         if (isAnimating) return;
 
         isOpen = true;
-        linkGen?.SetDoorOpen(true);
 
         StartCoroutine(AnimateDoor(openRotation));
     }
@@ -85,7 +78,6 @@ public class Interactable_door : MonoBehaviour, IInteractable
         if (isAnimating) return;
 
         isOpen = false;
-        linkGen?.SetDoorOpen(false);
 
         StartCoroutine(AnimateDoor(closedRotation));
     }
