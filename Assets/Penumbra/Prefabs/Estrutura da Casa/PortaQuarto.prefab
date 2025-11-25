@@ -128,7 +128,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1005059348273967296}
-  - component: {fileID: 7169796077361294542}
   m_Layer: 0
   m_Name: Link generator
   m_TagString: Untagged
@@ -152,21 +151,6 @@ Transform:
   - {fileID: 8993574878349256312}
   m_Father: {fileID: 1016771239215151938}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7169796077361294542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7052453722144859289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e1d4dd1d8741d24f87f98cb1db75e7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftPoint: {fileID: 7347129700119389200}
-  rightPoint: {fileID: 3072796517714723655}
-  autoToggle: 1
 --- !u!1 &7298380981243393558
 GameObject:
   m_ObjectHideFlags: 0

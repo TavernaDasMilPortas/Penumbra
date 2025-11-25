@@ -7,28 +7,35 @@ public class AutoItemSpawner : MonoBehaviour
 
     private void Start()
     {
-        // Spawn padrão
         SpawnAllPoints();
     }
 
     // ============================================================
-    // 1️⃣ SPAWN NORMAL → TODOS OS POINTS COM spawnItem
+    // 1️⃣ SPAWN NORMAL → COM VERIFICAÇÃO DE NIGHTDATA
     // ============================================================
-    public void SpawnAllPoints() 
+    public void SpawnAllPoints()
     {
+        NightData currentNight = NightManager.Instance?.CurrentNight;
+
         foreach (var p in PointManager.Instance.points)
         {
             if (p.spawnItem == null) continue;
+
+            // --- NOVA REGRA ---
+            if (p.requiredNight != null && p.requiredNight != currentNight)
+                continue;
+
             SpawnAtPoint(p, p.spawnItem);
         }
     }
 
     // ============================================================
-    // 2️⃣ SPAWN DE MÚLTIPLOS ITENS EM UM POINTGROUP (SEM REPETIÇÃO)
+    // 2️⃣ SPAWN DE MÚLTIPLOS ITENS EM UM POINTGROUP
     // ============================================================
     public void SpawnGroupItems(string groupName, List<Item> itemsToSpawn)
     {
         var points = PointManager.Instance.GetPointsFromGroup(groupName);
+        NightData currentNight = NightManager.Instance?.CurrentNight;
 
         if (points == null || points.Count == 0)
         {
@@ -36,33 +43,31 @@ public class AutoItemSpawner : MonoBehaviour
             return;
         }
 
-        // Filtra points que ainda NÃO possuem instâncias
-        List<Point> freePoints = new();
+        // Filtra para usar apenas points válidos nesta noite
+        List<Point> validPoints = new();
+
         foreach (var p in points)
         {
-            if (p.selfTransform.childCount == 0) // ainda não spawnou nada
-                freePoints.Add(p);
+            if (p.requiredNight == null || p.requiredNight == currentNight)
+                if (p.selfTransform.childCount == 0) // não ocupados
+                    validPoints.Add(p);
         }
 
-        if (freePoints.Count == 0)
+        if (validPoints.Count == 0)
         {
-            Debug.LogWarning($"[AutoItemSpawner] Todos os points do grupo '{groupName}' já estão ocupados.");
+            Debug.LogWarning($"[AutoItemSpawner] Nenhum point disponível para esta noite no grupo '{groupName}'.");
             return;
         }
 
-        // Embaralha os points livres
-        Shuffle(freePoints);
+        Shuffle(validPoints);
 
-        int max = Mathf.Min(itemsToSpawn.Count, freePoints.Count);
-
+        int max = Mathf.Min(itemsToSpawn.Count, validPoints.Count);
         for (int i = 0; i < max; i++)
         {
-            SpawnAtPoint(freePoints[i], itemsToSpawn[i]);
+            SpawnAtPoint(validPoints[i], itemsToSpawn[i]);
         }
     }
 
-    // ============================================================
-    // 3️⃣ FUNÇÃO INTERNA → SPAWN NUM PONTO
     // ============================================================
     private void SpawnAtPoint(Point p, Item item)
     {
@@ -70,8 +75,8 @@ public class AutoItemSpawner : MonoBehaviour
             return;
 
         GameObject instance = Instantiate(item.handPrefab);
-
         Transform parent = spawnContainer != null ? spawnContainer : p.selfTransform;
+
         instance.transform.SetParent(parent, false);
 
         ItemAlignmentUtility.ApplyAlignment(instance, parent, item);

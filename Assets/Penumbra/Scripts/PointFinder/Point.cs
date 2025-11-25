@@ -11,6 +11,9 @@ public class Point : MonoBehaviour
     [Header("Item a spawnar automaticamente")]
     public Item spawnItem;
 
+    [Header("Night específica para spawn (opcional)")]
+    public NightData requiredNight;   // <<< NOVO
+
     [HideInInspector]
     public Transform selfTransform;
 

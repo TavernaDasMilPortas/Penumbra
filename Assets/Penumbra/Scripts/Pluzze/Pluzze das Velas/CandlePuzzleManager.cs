@@ -34,6 +34,7 @@ public class CandlePuzzleManager : PuzzleManager
     }
 
 
+
     private void GenerateRandomOrder()
     {
         correctSetup = new List<Item>(candleItems);
