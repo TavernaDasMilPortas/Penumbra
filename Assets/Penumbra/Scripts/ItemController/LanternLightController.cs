@@ -14,13 +14,7 @@ public class LanternLightController : MonoBehaviour
 
     void Start()
     {
-        if (lanternLight == null)
-            lanternLight = GetComponentInChildren<Light>();
-
-        startTime = timeLoopManager.startTimeInSeconds;
-
-        // escutar evento do timer
-        TimeLoopManager.OnSecondPassed += UpdateLight;
+ 
     }
 
     private void OnDestroy()

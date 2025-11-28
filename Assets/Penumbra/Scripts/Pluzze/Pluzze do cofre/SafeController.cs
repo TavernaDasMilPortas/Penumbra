@@ -105,7 +105,7 @@ public class SafeController : MonoBehaviour
     public void StartInteraction()
     {
         if (isOpened) return;
-
+        GameStateManager.Instance.SetState(InputState.Safe);
         isInteracting = true;
         cameraController.EnterSafeView();
         currentInput = "";
@@ -114,6 +114,7 @@ public class SafeController : MonoBehaviour
 
     public void StopInteraction()
     {
+        GameStateManager.Instance.RestorePreviousState();
         cameraController.ExitSafeView();
     }
 

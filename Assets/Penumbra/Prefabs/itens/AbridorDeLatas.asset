@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8948de54074c2a04a81c9fcdbf4cdc7d, type: 3}
   m_Name: AbridorDeLatas
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: Abridor de Latas
   description: 
   icon: {fileID: 21300000, guid: 12f835aadddd87640969f1a675421970, type: 3}
   consumable: 0

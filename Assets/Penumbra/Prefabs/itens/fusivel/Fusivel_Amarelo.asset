@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10998de94aca9fc479897deab351e94a, type: 3}
   m_Name: Fusivel_Amarelo
   m_EditorClassIdentifier: 
-  itemName: Fusivel
+  itemName: Fusivel Amarelo
   description: 
   icon: {fileID: 79017971, guid: 4a3b36c7a8527d8499577f5faa50a2af, type: 3}
   consumable: 0
