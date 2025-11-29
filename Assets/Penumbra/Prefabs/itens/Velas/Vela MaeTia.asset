@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8948de54074c2a04a81c9fcdbf4cdc7d, type: 3}
   m_Name: Vela MaeTia
   m_EditorClassIdentifier: 
-  itemName: "Vela M\xE3e\\Tia"
+  itemName: "Vela M\xE3e e Tia"
   description: 
-  icon: {fileID: -221392066, guid: 993ecbe10557dc44ca6c66c451360b4b, type: 3}
+  icon: {fileID: 21300000, guid: 62ed66644600bf34c8a7d1a070f41531, type: 3}
   consumable: 0
   handPrefab: {fileID: 4756270655598675048, guid: 1b8c31cb4b1a2414c9032568351dcf3d, type: 3}
   leftArmState: 

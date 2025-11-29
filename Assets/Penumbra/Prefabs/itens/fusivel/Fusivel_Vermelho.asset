@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Fusivel Vermelho
   description: 
-  icon: {fileID: 79017971, guid: 4a3b36c7a8527d8499577f5faa50a2af, type: 3}
+  icon: {fileID: 21300000, guid: 8bb41465dc14db94789bf3fd069fb727, type: 3}
   consumable: 0
   handPrefab: {fileID: 847368719982304604, guid: 3e7530f224ec08f49925ef27175d6c0f, type: 3}
   leftArmState: 

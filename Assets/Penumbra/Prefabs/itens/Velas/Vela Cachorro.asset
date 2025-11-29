@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Vela Cachorro
   description: 
-  icon: {fileID: 298503523, guid: 993ecbe10557dc44ca6c66c451360b4b, type: 3}
+  icon: {fileID: 21300000, guid: 2437129556c189c429931f172812cbf1, type: 3}
   consumable: 0
   handPrefab: {fileID: 1070016317510643733, guid: 73a6d0ab46c60584889adac330903179, type: 3}
   leftArmState: 

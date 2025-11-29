@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Vela Pai
   description: 
-  icon: {fileID: -267489317, guid: 993ecbe10557dc44ca6c66c451360b4b, type: 3}
+  icon: {fileID: 21300000, guid: 22329b0d7dddc8640afb250680e77db2, type: 3}
   consumable: 0
   handPrefab: {fileID: 8946285189530915994, guid: b6bc723a412a6be448d749499efbccf0, type: 3}
   leftArmState: 

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Fusivel Azul
   description: 
-  icon: {fileID: 79017971, guid: 4a3b36c7a8527d8499577f5faa50a2af, type: 3}
+  icon: {fileID: 21300000, guid: 94abceff30c53f94b87acbc47db6db60, type: 3}
   consumable: 0
   handPrefab: {fileID: 6279397573391143149, guid: 03502b5ca0c9f6b4bbad5d271d8f1bdf, type: 3}
   leftArmState: 

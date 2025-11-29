@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Fusivel Amarelo
   description: 
-  icon: {fileID: 79017971, guid: 4a3b36c7a8527d8499577f5faa50a2af, type: 3}
+  icon: {fileID: 21300000, guid: c94f938fa36e7de4288ee695613dd0ea, type: 3}
   consumable: 0
   handPrefab: {fileID: 8057661029258522713, guid: 986de34f12ff65c48bdf60a8ed61dd1b, type: 3}
   leftArmState: 
