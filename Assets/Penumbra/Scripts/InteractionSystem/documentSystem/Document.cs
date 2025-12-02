@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
 public class Document : InteractableBase
 {
     [Header("Referência ao Documento")]
@@ -10,45 +9,28 @@ public class Document : InteractableBase
     [SerializeField] private int currentPageIndex = 0;
     [SerializeField] private bool showingBackSide = false;
 
-    private MeshRenderer meshRenderer;
     private DocumentViewer viewer;
-
-    private void Awake()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-    }
-
-    private void Start()
-    {
-        viewer = FindObjectOfType<DocumentViewer>();
-        if (viewer == null)
-            Debug.LogWarning("[Document] Nenhum DocumentViewer encontrado na cena!");
-
-        ApplyDocumentMaterial();
-
-        InteractionMessage = "Pressione E para ler o documento";
-    }
-
-    private void ApplyDocumentMaterial()
-    {
-        if (documentData == null)
-        {
-            Debug.LogWarning($"[Document] Documento inválido em {name}");
-            return;
-        }
-
-        Material mat = documentData.GetMaterial();
-        if (mat != null)
-            meshRenderer.material = mat;
-    }
 
     public string GetCurrentText()
     {
         return documentData?.GetPageText(currentPageIndex, showingBackSide) ?? string.Empty;
     }
+    private void Start()
+    {
+        viewer = DocumentViewer.Instance;
+        if (viewer == null)
+        {
+            viewer = FindObjectOfType<DocumentViewer>();
+        }
+
+        Debug.Log($"[DOC] Start() name={name} viewer={(viewer != null ? viewer.name : "NULL")} activeInHierarchy={gameObject.activeInHierarchy} layer={LayerMask.LayerToName(gameObject.layer)}");
+        InteractionMessage = "Pressione E para ler o documento";
+    }
 
     public override void Interact()
     {
+        Debug.Log($"[DOC] Interact() called on {name} - IsInteractable={IsInteractable}");
+
         if (!IsInteractable)
         {
             Debug.LogWarning($"[Document] {gameObject.name} não está interagível no momento.");
@@ -67,11 +49,7 @@ public class Document : InteractableBase
 
     private void StartReading()
     {
-        if (viewer == null)
-        {
-            Debug.LogWarning("[Document] DocumentViewer não configurado.");
-            return;
-        }
+        if (viewer == null) return;
 
         currentPageIndex = 0;
         showingBackSide = false;

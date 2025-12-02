@@ -46,7 +46,7 @@ public class DocumentViewer : MonoBehaviour
     public void OpenDocument(Document document)
     {
         if (isViewing) return;
-
+        Debug.Log($"[DOCVIEWER] OpenDocument() called for {document.name} isViewing={isViewing}");
         currentDocument = document;
         documentOriginalParent = document.transform.parent;
         documentOriginalPosition = document.transform.position;
@@ -75,7 +75,7 @@ public class DocumentViewer : MonoBehaviour
     public void CloseDocument()
     {
         if (!isViewing || currentDocument == null) return;
-
+        Debug.Log($"[DOCVIEWER] CloseDocument() called isViewing={isViewing}");
         // Retorna o documento à origem
         currentDocument.transform.SetParent(documentOriginalParent);
         currentDocument.transform.position = documentOriginalPosition;

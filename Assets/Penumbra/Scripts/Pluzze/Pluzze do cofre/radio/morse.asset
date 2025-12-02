@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dd767b21c7a58049bad78e13e7921d6, type: 3}
+  m_Name: morse
+  m_EditorClassIdentifier: 
+  documentTitle: Codigo Morse
+  pages:
+  - pageName: "P\xE1gina 3"
+    sideMode: 1
+    frontText: "O C\xF3digo Morse utiliza sinais curtos (\xB7) e longos (\u2013)
+      para representar letras e n\xFAmeros.\nEle foi criado para permitir comunica\xE7\xE3o
+      mesmo \xE0 dist\xE2ncia, usando luz, som ou impactos.\n\nComo Ler\n_______________________________\n\xB7
+      = curto\n\u2013 = longo\nEspa\xE7o menor = nova letra\nEspa\xE7o maior = nova
+      palavra\n\nExemplo:\nSOS = \xB7\xB7\xB7 \u2013\u2013\u2013 \xB7\xB7\xB7"
+    backText: "A  \xB7\u2013       N  \u2013\xB7\r\nB  \u2013\xB7\xB7\xB7     O 
+      \u2013\u2013\u2013\r\nC  \u2013\xB7\u2013\xB7     P  \xB7\u2013\u2013\xB7\r\nD 
+      \u2013\xB7\xB7      Q  \u2013\u2013\xB7\u2013\r\nE  \xB7        R  \xB7\u2013\xB7\r\nF 
+      \xB7\xB7\u2013\xB7     S  \xB7\xB7\xB7\r\nG  \u2013\u2013\xB7      T  \u2013\r\nH 
+      \xB7\xB7\xB7\xB7     U  \xB7\xB7\u2013\r\nI  \xB7\xB7       V  \xB7\xB7\xB7\u2013\r\nJ 
+      \xB7\u2013\u2013\u2013     W  \xB7\u2013\u2013\r\nK  \u2013\xB7\u2013     
+      X  \u2013\xB7\xB7\u2013\r\nL  \xB7\u2013\xB7\xB7     Y  \u2013\xB7\u2013\u2013\r\nM 
+      \u2013\u2013       Z  \u2013\u2013\xB7\xB7"
+  - pageName: "P\xE1gina 2"
+    sideMode: 0
+    frontText: "0  \u2013\u2013\u2013\u2013\u2013     5  \xB7\xB7\xB7\xB7\xB7\r\n1 
+      \xB7\u2013\u2013\u2013\u2013     6  \u2013\xB7\xB7\xB7\xB7\r\n2  \xB7\xB7\u2013\u2013\u2013    
+      7  \u2013\u2013\xB7\xB7\xB7\r\n3  \xB7\xB7\xB7\u2013\u2013     8  \u2013\u2013\u2013\xB7\xB7\r\n4 
+      \xB7\xB7\xB7\xB7\u2013     9  \u2013\u2013\u2013\u2013\xB7"
+    backText: 

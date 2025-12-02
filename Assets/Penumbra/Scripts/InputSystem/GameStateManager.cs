@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -23,9 +24,19 @@ public class GameStateManager : MonoBehaviour
 
     public void RestorePreviousState()
     {
-        InputState temp = CurrentState;
-        CurrentState = PreviousState;
-        PreviousState = temp;
+        if (PreviousState == InputState.Pause)
+        {
+            InputState temp = CurrentState;
+            CurrentState = InputState.Gameplay;
+            PreviousState = temp;
+        }
+        else
+        {
+            InputState temp = CurrentState;
+            CurrentState = PreviousState;
+            PreviousState = temp;
+        }
+
     }
 
     public void ResetToGameplay()
